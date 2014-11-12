@@ -3,13 +3,24 @@
   <groupId>de.unistuttgart.iste.rss.stardust</groupId>
   <artifactId>stardust</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
-  <dependencies>
-  	<dependency>
-	<groupId>org.hibernate.javax.persistence</groupId>
-	<artifactId>hibernate-jpa-2.0-api</artifactId>
-	<version>1.0.1.Final</version>
-</dependency>
-  	
-  </dependencies>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<version>1.0.1.Final</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>1.1.8.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.3.2</version>
+		</dependency>	
+	</dependencies>
 </project>
