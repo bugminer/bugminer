@@ -3,14 +3,17 @@ package de.unistuttgart.iste.rss.stardust.model;
 import java.util.Collection;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
-public class Label {
-	@ManyToOne
-	private Project projet;
+public class BugParticipant {
+
+	@OneToMany
+	private Collection<Bug> bugs;
 	
-	@ManyToMany
-	private Collection<Bug> issue;
+	@ManyToOne
+	private Person person;
+	
+	private ParticipationType type;
 }

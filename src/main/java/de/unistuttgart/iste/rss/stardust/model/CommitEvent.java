@@ -4,9 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Commit {
+public class CommitEvent extends Event {
 	@ManyToOne
-	private Repository repository;
-	
-	private String commitId;
+	private Commit commit;
 }

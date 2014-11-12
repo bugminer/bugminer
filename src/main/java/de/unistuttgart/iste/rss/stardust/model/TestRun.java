@@ -1,12 +1,16 @@
 package de.unistuttgart.iste.rss.stardust.model;
 
+import java.time.Instant;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Commit {
+public class TestRun {
 	@ManyToOne
-	private Repository repository;
+	private Commit commit;
 	
-	private String commitId;
+	private Instant date;
+	
+	private String jsonBuildInfo;
 }

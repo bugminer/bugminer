@@ -1,8 +1,10 @@
 package de.unistuttgart.iste.rss.stardust.model;
 
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-public class ProjectMember {
+@Entity
+public class Person {
 	@ManyToOne
-	Project project;
+	private Project project;
 }

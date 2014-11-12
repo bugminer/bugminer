@@ -4,9 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Commit {
+public class BugStatus {
+
 	@ManyToOne
-	private Repository repository;
+	private Project project;
 	
-	private String commitId;
+	private String name;
 }

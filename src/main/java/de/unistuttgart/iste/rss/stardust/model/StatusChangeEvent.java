@@ -4,9 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class Commit {
+public class StatusChangeEvent extends Event {
+
 	@ManyToOne
-	private Repository repository;
+	private BugStatus oldStatus;
 	
-	private String commitId;
+	@ManyToOne
+	private BugStatus newStatus;
 }

@@ -2,15 +2,28 @@ package de.unistuttgart.iste.rss.stardust.model;
 
 import java.util.Collection;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+@Entity
 public class Project {
 	@OneToMany
-	Collection<Issue> issues;
+	private Collection<Bug> bugs;
 	
 	@OneToMany
-	Collection<Label> labels;
+	private Collection<Label> labels;
 	
 	@OneToMany
-	Collection<Repository> repositories;
+	private Collection<BugRepository> bugRepositories;
+	
+	@OneToMany
+	private Collection<Repository> repositories;
+	
+	@Column (unique = true)
+	private String name;
+	
+	@OneToMany
+	private Collection<BugStatus> bugStatuses;
 }
+
