@@ -7,7 +7,7 @@ import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table (uniqueConstraints = @UniqueConstraint (columnNames = {"project", "name"}))
-public class Repository {
+public class CodeRepo {
 	@ManyToOne
 	private Project project;
 	

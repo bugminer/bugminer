@@ -6,7 +6,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Commit {
 	@ManyToOne
-	private Repository repository;
+	private CodeRepo codeRepo;
 	
 	private String commitId;
 }

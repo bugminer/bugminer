@@ -3,6 +3,13 @@
   <groupId>de.unistuttgart.iste.rss.stardust</groupId>
   <artifactId>stardust</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
+  	<repositories>
+		<repository>
+			<id>atlassian-public</id>
+			<url>https://maven.atlassian.com/content/repositories/atlassian-public/</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<dependency>
@@ -22,5 +29,35 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.3.2</version>
 		</dependency>	
+		
+		<dependency>
+			<groupId>com.atlassian.jira</groupId>
+			<artifactId>jira-rest-java-client-api</artifactId>
+			<version>2.0.0-m31</version>
+		</dependency>
+		
+		<dependency>
+  			<groupId>com.atlassian.jira</groupId>
+ 			<artifactId>jira-rest-java-client-core</artifactId>
+  			<version>2.0.0-m31</version>
+		</dependency>
+		
+		<dependency>
+  			<groupId>com.atlassian.httpclient</groupId>
+  			<artifactId>atlassian-httpclient-api</artifactId>
+  			<version>0.13.2</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>4.1.2.RELEASE</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>1.9.5</version>
+		</dependency>
 	</dependencies>
 </project>

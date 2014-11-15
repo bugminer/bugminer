@@ -11,7 +11,7 @@ public class LineChange {
 	private Bug bug;
 	
 	@ManyToOne
-	private Repository repository;
+	private CodeRepo codeRepo;
 	
 	private String fileName;
 	
