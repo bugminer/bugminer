@@ -1,12 +1,12 @@
-package de.unistuttgart.iste.rss.stardust.computing.vagrant;
+package de.unistuttgart.iste.rss.bugminer.computing.vagrant;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import de.unistuttgart.iste.rss.stardust.annotations.Strategy;
-import de.unistuttgart.iste.rss.stardust.computing.ClusterStrategy;
-import de.unistuttgart.iste.rss.stardust.model.Node;
-import de.unistuttgart.iste.rss.stardust.model.NodeStatus;
+import de.unistuttgart.iste.rss.bugminer.annotations.Strategy;
+import de.unistuttgart.iste.rss.bugminer.computing.ClusterStrategy;
+import de.unistuttgart.iste.rss.bugminer.model.Node;
+import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
 
 @Strategy(type = ClusterStrategy.class, name = "vagrant")
 @Component

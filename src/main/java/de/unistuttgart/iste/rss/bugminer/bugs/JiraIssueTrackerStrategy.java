@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.stardust.bugs;
+package de.unistuttgart.iste.rss.bugminer.bugs;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -15,9 +15,9 @@ import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import com.atlassian.jira.rest.client.auth.AnonymousAuthenticationHandler;
 import com.atlassian.util.concurrent.Promise;
 
-import de.unistuttgart.iste.rss.stardust.annotations.Strategy;
-import de.unistuttgart.iste.rss.stardust.model.Bug;
-import de.unistuttgart.iste.rss.stardust.model.IssueTracker;
+import de.unistuttgart.iste.rss.bugminer.annotations.Strategy;
+import de.unistuttgart.iste.rss.bugminer.model.Bug;
+import de.unistuttgart.iste.rss.bugminer.model.IssueTracker;
 
 @Strategy(name = "jira", type = IssueTrackerStrategy.class)
 public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {

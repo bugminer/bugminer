@@ -1,8 +1,8 @@
-package de.unistuttgart.iste.rss.stardust.bugs;
+package de.unistuttgart.iste.rss.bugminer.bugs;
 
 import java.util.Collection;
 
-import de.unistuttgart.iste.rss.stardust.model.Bug;
+import de.unistuttgart.iste.rss.bugminer.model.Bug;
 
 public class BugSynchronizationResult {
 

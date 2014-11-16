@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.stardust.model;
+package de.unistuttgart.iste.rss.bugminer.model;
 
 import java.util.Collection;
 
@@ -6,10 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import de.unistuttgart.iste.rss.stardust.bugs.BugSynchronizationException;
-import de.unistuttgart.iste.rss.stardust.bugs.BugSynchronizationResult;
-import de.unistuttgart.iste.rss.stardust.bugs.IssueTrackerStrategy;
-import de.unistuttgart.iste.rss.stardust.strategies.StrategyFactory;
+import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationException;
+import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationResult;
+import de.unistuttgart.iste.rss.bugminer.bugs.IssueTrackerStrategy;
+import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 
 @Entity
 public class IssueTracker {

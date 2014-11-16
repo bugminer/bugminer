@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.stardust.computing;
+package de.unistuttgart.iste.rss.bugminer.computing;
 
 public class UnsupportedSystemSpecificationException extends UnsupportedOperationException {
 	private static final long serialVersionUID = -3389051543433805666L;

@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.stardust.bugs;
+package de.unistuttgart.iste.rss.bugminer.bugs;
 
 public class BugSynchronizationException extends Exception {
 

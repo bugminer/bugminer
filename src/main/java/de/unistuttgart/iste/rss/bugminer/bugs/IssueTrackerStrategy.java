@@ -1,6 +1,6 @@
-package de.unistuttgart.iste.rss.stardust.bugs;
+package de.unistuttgart.iste.rss.bugminer.bugs;
 
-import de.unistuttgart.iste.rss.stardust.model.IssueTracker;
+import de.unistuttgart.iste.rss.bugminer.model.IssueTracker;
 
 public interface IssueTrackerStrategy {
 

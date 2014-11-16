@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.stardust.utils;
+package de.unistuttgart.iste.rss.bugminer.utils;
 
 import java.io.File;
 import java.io.IOException;

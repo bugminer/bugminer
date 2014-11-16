@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.stardust.strategies;
+package de.unistuttgart.iste.rss.bugminer.strategies;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 
-import de.unistuttgart.iste.rss.stardust.annotations.Strategy;
+import de.unistuttgart.iste.rss.bugminer.annotations.Strategy;
 
 @Component
 public class StrategyFactory {

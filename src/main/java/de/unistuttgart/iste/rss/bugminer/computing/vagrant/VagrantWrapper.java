@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.stardust.computing.vagrant;
+package de.unistuttgart.iste.rss.bugminer.computing.vagrant;
 
 import org.springframework.stereotype.Component;
 

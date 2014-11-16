@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.stardust.model;
+package de.unistuttgart.iste.rss.bugminer.model;
 
 import java.time.Instant;
 

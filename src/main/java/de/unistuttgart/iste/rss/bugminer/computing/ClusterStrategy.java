@@ -1,8 +1,8 @@
-package de.unistuttgart.iste.rss.stardust.computing;
+package de.unistuttgart.iste.rss.bugminer.computing;
 
-import de.unistuttgart.iste.rss.stardust.model.Node;
-import de.unistuttgart.iste.rss.stardust.model.NodeStatus;
-import de.unistuttgart.iste.rss.stardust.model.SystemSpecification;
+import de.unistuttgart.iste.rss.bugminer.model.Node;
+import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
+import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
 
 public interface ClusterStrategy {
 	boolean isAvailable();

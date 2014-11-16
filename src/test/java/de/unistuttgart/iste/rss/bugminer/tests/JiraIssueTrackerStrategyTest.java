@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.stardust.tests;
+package de.unistuttgart.iste.rss.bugminer.tests;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
@@ -27,11 +27,11 @@ import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import com.atlassian.jira.rest.client.auth.AnonymousAuthenticationHandler;
 import com.atlassian.util.concurrent.Promise;
 
-import de.unistuttgart.iste.rss.stardust.bugs.BugSynchronizationException;
-import de.unistuttgart.iste.rss.stardust.bugs.BugSynchronizationResult;
-import de.unistuttgart.iste.rss.stardust.bugs.JiraIssueTrackerStrategy;
-import de.unistuttgart.iste.rss.stardust.model.IssueTracker;
-import de.unistuttgart.iste.rss.stardust.model.Project;
+import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationException;
+import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationResult;
+import de.unistuttgart.iste.rss.bugminer.bugs.JiraIssueTrackerStrategy;
+import de.unistuttgart.iste.rss.bugminer.model.IssueTracker;
+import de.unistuttgart.iste.rss.bugminer.model.Project;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicationContext-test.xml")

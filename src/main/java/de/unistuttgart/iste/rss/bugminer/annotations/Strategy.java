@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.stardust.annotations;
+package de.unistuttgart.iste.rss.bugminer.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
