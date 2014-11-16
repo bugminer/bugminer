@@ -10,19 +10,19 @@ import javax.persistence.OneToMany;
 public class Project {
 	@OneToMany
 	private Collection<Bug> bugs;
-	
+
 	@OneToMany
 	private Collection<Label> labels;
-	
+
 	@OneToMany
 	private Collection<IssueTracker> issueTrackers;
-	
+
 	@OneToMany
 	private Collection<CodeRepo> codeRepos;
-	
-	@Column (unique = true)
+
+	@Column(unique = true)
 	private String name;
-	
+
 	@OneToMany
 	private Collection<BugStatus> bugStatuses;
 
@@ -74,4 +74,3 @@ public class Project {
 		this.bugStatuses = bugStatuses;
 	}
 }
-

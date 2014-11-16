@@ -1,7 +1,7 @@
 package de.unistuttgart.iste.rss.stardust.bugs;
 
 public class BugSynchronizationException extends Exception {
-	
+
 	private static final long serialVersionUID = 3794854041856234917L;
 
 	public BugSynchronizationException() {

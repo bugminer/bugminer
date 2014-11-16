@@ -19,41 +19,46 @@ import de.unistuttgart.iste.rss.stardust.annotations.Strategy;
 import de.unistuttgart.iste.rss.stardust.model.Bug;
 import de.unistuttgart.iste.rss.stardust.model.IssueTracker;
 
-@Strategy (name = "jira", type = IssueTrackerStrategy.class)
+@Strategy(name = "jira", type = IssueTrackerStrategy.class)
 public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
-	
+
 	@Autowired
 	private JiraRestClientFactory factory;
 
-	public BugSynchronizationResult synchronize(IssueTracker issueTracker) throws BugSynchronizationException {
-        try {
-//        	final JiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
+	@Override
+	public BugSynchronizationResult synchronize(IssueTracker issueTracker)
+			throws BugSynchronizationException {
+		try {
+			// final JiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
 			final URI jiraServerUri = new URI(issueTracker.getUri());
-        	final JiraRestClient restClient = factory.create(jiraServerUri, new AnonymousAuthenticationHandler());
-			
-        	String projectName = issueTracker.getProject().getName();
-        	Set<String> fields = new HashSet<String>();
-        	fields.add("*all");
-        	
-			Promise<SearchResult> issues = restClient.getSearchClient().searchJql("project=" + projectName, Integer.MAX_VALUE, 0, fields);
+			final JiraRestClient restClient =
+					factory.create(jiraServerUri, new AnonymousAuthenticationHandler());
+
+			String projectName = issueTracker.getProject().getName();
+			Set<String> fields = new HashSet<String>();
+			fields.add("*all");
+
+			Promise<SearchResult> issues =
+					restClient.getSearchClient().searchJql("project=" + projectName,
+							Integer.MAX_VALUE, 0, fields);
 
 			Collection<Bug> newBugs = new HashSet<Bug>();
-			
+
 			for (Issue issue : issues.claim().getIssues()) {
 				if (issue.getIssueType().getName().equals("Bug")) {
 					Bug bug = new Bug();
 					bug.setTitle(issue.getKey());
-					
+
 					newBugs.add(bug);
 				}
 			}
-			
+
 			return new BugSynchronizationResult(newBugs, new HashSet<Bug>());
 		} catch (URISyntaxException e) {
-			//TODO
+			// TODO
 			e.printStackTrace();
 		}
-        
-        return null;
+
+		return null;
 	}
 }

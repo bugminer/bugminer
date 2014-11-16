@@ -12,5 +12,6 @@ import org.springframework.stereotype.Component;
 @Component
 public @interface Strategy {
 	Class<?> type();
+
 	String name();
 }

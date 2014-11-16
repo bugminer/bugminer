@@ -11,9 +11,9 @@ import javax.persistence.ManyToOne;
 public class Event {
 	@ManyToOne
 	private Bug bug;
-	
+
 	@ManyToOne
 	private Person actor;
-	
+
 	private Instant time;
 }

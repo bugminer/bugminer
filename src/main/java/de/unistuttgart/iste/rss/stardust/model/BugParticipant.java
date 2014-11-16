@@ -11,9 +11,9 @@ public class BugParticipant {
 
 	@OneToMany
 	private Collection<Bug> bugs;
-	
+
 	@ManyToOne
 	private Person person;
-	
+
 	private ParticipationType type;
 }

@@ -10,7 +10,7 @@ import javax.persistence.ManyToOne;
 public class Label {
 	@ManyToOne
 	private Project projet;
-	
+
 	@ManyToMany
 	private Collection<Bug> issue;
 }

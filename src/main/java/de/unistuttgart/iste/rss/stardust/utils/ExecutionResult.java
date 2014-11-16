@@ -15,9 +15,11 @@ public class ExecutionResult {
 	public int getExitCode() {
 		return exitCode;
 	}
+
 	public String getOutput() {
 		return stdout;
 	}
+
 	public String getErrorOutput() {
 		return stderr;
 	}

@@ -12,35 +12,35 @@ import javax.persistence.OneToMany;
 public class Bug {
 	@ManyToOne
 	private Project project;
-	
+
 	@ManyToMany
 	private Collection<Label> labels;
-	
+
 	@OneToMany
 	private Collection<Event> events;
-	
+
 	@OneToMany
 	private Collection<LineChange> lineChanges;
-	
+
 	@OneToMany
 	private Collection<Classification> classifications;
-	
+
 	@OneToMany
 	private Collection<BugParticipant> participants;
-	
+
 	@ManyToOne
 	private IssueTracker repository;
-	
+
 	private boolean isFixed;
-	
+
 	private String jsonDetails;
-	
+
 	private Instant reportTime;
-	
+
 	private Instant closeTime;
-	
+
 	private String title;
-	
+
 	private String description;
 
 	public Project getProject() {

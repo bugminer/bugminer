@@ -8,7 +8,7 @@ public class StatusChangeEvent extends Event {
 
 	@ManyToOne
 	private BugStatus oldStatus;
-	
+
 	@ManyToOne
 	private BugStatus newStatus;
 }

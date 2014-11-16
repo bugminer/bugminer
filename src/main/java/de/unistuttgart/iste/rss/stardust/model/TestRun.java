@@ -9,8 +9,8 @@ import javax.persistence.ManyToOne;
 public class TestRun {
 	@ManyToOne
 	private Commit commit;
-	
+
 	private Instant date;
-	
+
 	private String jsonBuildInfo;
 }

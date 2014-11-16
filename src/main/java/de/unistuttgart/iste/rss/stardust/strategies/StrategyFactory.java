@@ -19,48 +19,50 @@ public class StrategyFactory {
 
 	@Autowired
 	private ApplicationContext applicationContext;
-	
+
 	private Map<StrategyKey, Object> annotatedStrategies = new HashMap<StrategyKey, Object>();
-	
+
 	@PostConstruct
 	public void init() {
-		Collection<Object> strategies = applicationContext.getBeansWithAnnotation(Strategy.class).values();
-		
+		Collection<Object> strategies =
+				applicationContext.getBeansWithAnnotation(Strategy.class).values();
+
 		for (Object strategy : strategies) {
-			Strategy strategyAnnotation = AnnotationUtils.findAnnotation(strategy.getClass(), Strategy.class);
+			Strategy strategyAnnotation =
+					AnnotationUtils.findAnnotation(strategy.getClass(), Strategy.class);
 			StrategyKey key = new StrategyKey(strategyAnnotation.type(), strategyAnnotation.name());
-			
+
 			if (annotatedStrategies.containsKey(key))
 				throw new RuntimeException();
-			
+
 			annotatedStrategies.put(key, strategy);
 		}
 	}
-	
+
 	public Object getStrategy(Class<?> type, String name) {
 		StrategyKey key = new StrategyKey(type, name);
-		
+
 		if (!annotatedStrategies.containsKey(key))
 			throw new RuntimeException();
-		
+
 		return annotatedStrategies.get(key);
 	}
-	
+
 	private static class StrategyKey {
 		public final Class<?> type;
 		public final String name;
-		
+
 		public StrategyKey(Class<?> type, String name) {
 			this.type = type;
 			this.name = name;
 		}
-		
+
 		@Override
 		public boolean equals(Object obj) {
 			StrategyKey key = (StrategyKey) obj;
 			return this.type == key.type && this.name.equals(key.name);
 		}
-		
+
 		@Override
 		public int hashCode() {
 			return new HashCodeBuilder().append(type).append(name).toHashCode();

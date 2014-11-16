@@ -11,10 +11,10 @@ public class Classification {
 
 	@OneToMany
 	private Collection<LineChangeClassification> lineChangeClassifications;
-	
+
 	@ManyToOne
 	private Bug bug;
-	
+
 	@ManyToOne
 	private User user;
 }

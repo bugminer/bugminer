@@ -8,9 +8,9 @@ public class LineChangeClassification {
 
 	@ManyToOne
 	private LineChange lineChange;
-	
+
 	@ManyToOne
 	private Classification classification;
-	
+
 	private boolean isBugfix;
 }

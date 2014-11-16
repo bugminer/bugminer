@@ -1,6 +1,7 @@
 package de.unistuttgart.iste.rss.stardust.tests;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.net.URI;
@@ -35,36 +36,36 @@ import de.unistuttgart.iste.rss.stardust.model.Project;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/applicationContext-test.xml")
 public class JiraIssueTrackerStrategyTest {
-	
+
 	@InjectMocks
 	JiraIssueTrackerStrategy strategy;
-	
+
 	@Mock
 	JiraRestClientFactory factory;
-	
+
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	JiraRestClient client;
-	
+
 	@Mock
 	Promise<SearchResult> promise;
-	
+
 	@Mock
 	SearchResult searchResult;
-	
+
 	@Mock
 	Iterable<Issue> issues;
-	
+
 	@Mock
 	Iterator<Issue> iterator;
-	
+
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	Issue issue1;
-	
+
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	Issue issue2;
-	
+
 	IssueTracker issueTracker = new IssueTracker();
-	
+
 	@Before
     public void init() {
         MockitoAnnotations.initMocks(this);
@@ -78,7 +79,7 @@ public class JiraIssueTrackerStrategyTest {
 		String projectName = issueTracker.getProject().getName();
 		Set<String> fields = new HashSet<String>();
     	fields.add("*all");
-    	
+
 		when(factory.create(eq(new URI("issues.apache.org/jira")), isA(AnonymousAuthenticationHandler.class))).thenReturn(client);
 		when(client.getSearchClient().searchJql("project=" + projectName, Integer.MAX_VALUE, 0, fields)).thenReturn(promise);
 		when(promise.claim()).thenReturn(searchResult);
@@ -89,9 +90,9 @@ public class JiraIssueTrackerStrategyTest {
 		when(issue1.getIssueType().getName()).thenReturn("Bug");
 		when(issue2.getIssueType().getName()).thenReturn("Feature");
 		when(issue1.getKey()).thenReturn("Bug #1337");
-		
+
 		BugSynchronizationResult result = strategy.synchronize(issueTracker);
-		
+
 		assertEquals(1, result.getNewBugs().size());
 		assertEquals("Bug #1337", result.getNewBugs().iterator().next().getTitle());
 	}

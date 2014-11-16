@@ -6,14 +6,14 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table (uniqueConstraints = @UniqueConstraint (columnNames = {"project", "name"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"project", "name"}))
 public class CodeRepo {
 	@ManyToOne
 	private Project project;
-	
+
 	private String url;
-	
+
 	private String name;
-	
+
 	private String provider;
 }

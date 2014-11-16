@@ -6,9 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import de.unistuttgart.iste.rss.stardust.bugs.IssueTrackerStrategy;
 import de.unistuttgart.iste.rss.stardust.bugs.BugSynchronizationException;
 import de.unistuttgart.iste.rss.stardust.bugs.BugSynchronizationResult;
+import de.unistuttgart.iste.rss.stardust.bugs.IssueTrackerStrategy;
 import de.unistuttgart.iste.rss.stardust.strategies.StrategyFactory;
 
 @Entity
@@ -16,22 +16,23 @@ public class IssueTracker {
 
 	@ManyToOne
 	private Project project;
-	
+
 	@OneToMany
 	private Collection<Bug> bugs;
-	
+
 	private String uri;
-	
+
 	private String provider;
-	
+
 	public BugSynchronizationResult synchronize() throws BugSynchronizationException {
 		this.provider = "jira";
 		this.project = new Project();
 		this.uri = "https://issues.apache.org/jira";
 		StrategyFactory factory = new StrategyFactory();
 		factory.init();
-		
-		return ((IssueTrackerStrategy) factory.getStrategy(IssueTrackerStrategy.class, this.provider)).synchronize(this);
+
+		return ((IssueTrackerStrategy) factory.getStrategy(IssueTrackerStrategy.class,
+				this.provider)).synchronize(this);
 	}
 
 	public Project getProject() {

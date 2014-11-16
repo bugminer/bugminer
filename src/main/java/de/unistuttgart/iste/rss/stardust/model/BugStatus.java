@@ -8,6 +8,6 @@ public class BugStatus {
 
 	@ManyToOne
 	private Project project;
-	
+
 	private String name;
 }
