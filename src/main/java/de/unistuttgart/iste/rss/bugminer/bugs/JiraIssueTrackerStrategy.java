@@ -60,10 +60,7 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 
 			return new BugSynchronizationResult(newBugs, new HashSet<Bug>());
 		} catch (URISyntaxException e) {
-			// TODO
-			e.printStackTrace();
+			throw new BugSynchronizationException(e);
 		}
-
-		return null;
 	}
 }

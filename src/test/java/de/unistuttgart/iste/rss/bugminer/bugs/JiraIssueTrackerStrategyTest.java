@@ -96,5 +96,10 @@ public class JiraIssueTrackerStrategyTest {
 		assertEquals(1, result.getNewBugs().size());
 		assertEquals("Bug #1337", result.getNewBugs().iterator().next().getTitle());
 	}
-
+	
+	@Test(expected = BugSynchronizationException.class)
+	public void testException() throws BugSynchronizationException {
+		issueTracker.setUri("^");
+		strategy.synchronize(issueTracker);
+	}
 }
