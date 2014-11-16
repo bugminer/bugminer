@@ -31,8 +31,7 @@ public class IssueTracker {
 		StrategyFactory factory = new StrategyFactory();
 		factory.init();
 
-		return ((IssueTrackerStrategy) factory.getStrategy(IssueTrackerStrategy.class,
-				this.provider)).synchronize(this);
+		return factory.getStrategy(IssueTrackerStrategy.class, this.provider).synchronize(this);
 	}
 
 	public Project getProject() {

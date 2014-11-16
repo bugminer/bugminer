@@ -39,13 +39,14 @@ public class StrategyFactory {
 		}
 	}
 
-	public Object getStrategy(Class<?> type, String name) {
+	@SuppressWarnings("unchecked")
+	public <T> T getStrategy(Class<T> type, String name) {
 		StrategyKey key = new StrategyKey(type, name);
 
 		if (!annotatedStrategies.containsKey(key))
 			throw new RuntimeException();
 
-		return annotatedStrategies.get(key);
+		return (T) annotatedStrategies.get(key);
 	}
 
 	private static class StrategyKey {
