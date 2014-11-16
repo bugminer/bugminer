@@ -4,6 +4,10 @@ import java.util.Collection;
 
 import de.unistuttgart.iste.rss.bugminer.model.Bug;
 
+/**
+ * this result can be returned to show the diff between the local database and the remote
+ * issue tracker
+ */
 public class BugSynchronizationResult {
 
 	private Collection<Bug> newBugs;

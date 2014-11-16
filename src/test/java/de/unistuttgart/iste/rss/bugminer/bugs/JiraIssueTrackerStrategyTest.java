@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.tests;
+package de.unistuttgart.iste.rss.bugminer.bugs;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
