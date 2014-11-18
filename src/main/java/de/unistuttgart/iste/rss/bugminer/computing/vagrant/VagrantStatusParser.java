@@ -12,12 +12,13 @@ import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
 
 @Component
 public class VagrantStatusParser {
-	private static final String STATUS_LINE_PATTERN = ".*([\\S]+)\\s+([a-zA-Z]+).*";
+	private static final String STATUS_LINE_PATTERN = "\\s*([\\S]+)\\s+([^\\)]+)\\s*\\(.*";
 
 	private static final Map<String, NodeStatus> STATUS_STRINGS =ImmutableMap.of(
 			"poweroff", NodeStatus.OFFLINE,
 			"saved", NodeStatus.OFFLINE,
-			"running", NodeStatus.ONLINE);
+			"running", NodeStatus.ONLINE,
+			"not created", NodeStatus.OFFLINE);
 
 	/**
 	 * Extracts the status of the output of a call to `vagrant status`. Assumes that there is only
@@ -35,7 +36,7 @@ public class VagrantStatusParser {
 			} else if (isStatus) {
 				Matcher matcher = Pattern.compile(STATUS_LINE_PATTERN).matcher(line);
 				if (matcher.matches()) {
-					return parseStatusString(matcher.group(2)); // this is the status group
+					return parseStatusString(matcher.group(2).trim()); // this is the status group
 				}
 			}
 		}
