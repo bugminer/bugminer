@@ -5,6 +5,5 @@ public enum NodeStatus {
 	OFFLINE,
 	STARTING,
 	STOPPING,
-	READY,
-	BUSY
+	ONLINE
 }
