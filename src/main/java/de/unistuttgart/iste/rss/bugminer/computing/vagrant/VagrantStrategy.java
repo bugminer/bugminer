@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -99,7 +100,7 @@ public class VagrantStrategy implements ClusterStrategy {
 		Path nodePath = getPath(node);
 		if (!Files.exists(nodePath))
 			return;
-		executor.execute(nodePath, "vagrant", "destroy");
+		executor.execute(nodePath, "vagrant", "destroy", "-f");
 		FileUtils.deleteDirectory(nodePath.toFile());
 	}
 

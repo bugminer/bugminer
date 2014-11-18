@@ -122,7 +122,7 @@ public class VagrantStrategyTest {
 
 		strategy.destroyNode(prepareNode());
 
-		verify(executor).execute(vagrantPath, "vagrant", "destroy");
+		verify(executor).execute(vagrantPath, "vagrant", "destroy", "-f");
 		assertFalse(vagrantPath + " should have been deleted", Files.exists(vagrantPath));
 	}
 
