@@ -20,12 +20,9 @@ public class ProgramExecutor {
 	 * @return the result containing exit code, stdout and stderr
 	 * @throws IOException Failed to start the program or read the outputs
 	 * @throws ProgramExecutionException the exit code is not zero
-	 * @throws InterruptedException the thread has been interrupted while waiting for the program to
-	 *         end
 	 */
-	public ExecutionResult execute(String[] cmd, Path workingDirectory) throws IOException,
-			InterruptedException {
-		ExecutionResult result = tryExecute(cmd, workingDirectory);
+	public ExecutionResult execute(Path workingDirectory, String... cmd) throws IOException {
+		ExecutionResult result = tryExecute(workingDirectory, cmd);
 		if (result.getExitCode() != 0)
 			throw new ProgramExecutionException(cmd, result);
 		return result;
@@ -40,11 +37,9 @@ public class ProgramExecutor {
 	 * @return the result containing exit code, stdout and stderr
 	 * @throws IOException Failed to start the program or read the outputs
 	 * @throws ProgramExecutionException the exit code is not zero
-	 * @throws InterruptedException the thread has been interrupted while waiting for the program to
-	 *         end
 	 */
-	public ExecutionResult execute(String... cmd) throws IOException, InterruptedException {
-		return execute(cmd, null);
+	public ExecutionResult execute(String... cmd) throws IOException {
+		return execute(null, cmd);
 	}
 
 	/**
@@ -57,8 +52,8 @@ public class ProgramExecutor {
 	 * @throws IOException Failed to start the program or read the outputs
 	 * @throws ProgramExecutionException the exit code is not zero
 	 */
-	public ExecutionResult tryExecute(String... cmd) throws IOException, InterruptedException {
-		return tryExecute(cmd, null);
+	public ExecutionResult tryExecute(String... cmd) throws IOException {
+		return tryExecute(null, cmd);
 	}
 
 	/**
@@ -70,13 +65,17 @@ public class ProgramExecutor {
 	 * @throws IOException Failed to start the program or read the outputs
 	 * @throws ProgramExecutionException the exit code is not zero
 	 */
-	public ExecutionResult tryExecute(String[] cmd, Path workingDirectory) throws IOException,
-			InterruptedException {
+	public ExecutionResult tryExecute(Path workingDirectory, String... cmd) throws IOException {
 		File workdir = workingDirectory == null ? null : workingDirectory.toFile();
 		Process process = Runtime.getRuntime().exec(cmd, null, workdir);
 		String stdout = IOUtils.toString(process.getInputStream());
 		String stderr = IOUtils.toString(process.getErrorStream());
-		process.waitFor();
+		try {
+			process.waitFor();
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
+			throw new IOException("Thread was interrupted before command finished", e);
+		}
 		int exitCode = process.exitValue();
 		return new ExecutionResult(exitCode, stdout, stderr);
 	}
