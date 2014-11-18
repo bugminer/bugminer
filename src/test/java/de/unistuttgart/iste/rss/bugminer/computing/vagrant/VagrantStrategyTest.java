@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.rss.bugminer.computing.vagrant;
 
+import static de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantTestData.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -18,13 +19,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
-import de.unistuttgart.iste.rss.bugminer.computing.MemoryQuantity;
-import de.unistuttgart.iste.rss.bugminer.model.Architecture;
-import de.unistuttgart.iste.rss.bugminer.model.Cluster;
-import de.unistuttgart.iste.rss.bugminer.model.Node;
 import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
-import de.unistuttgart.iste.rss.bugminer.model.OperatingSystem;
-import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
 import de.unistuttgart.iste.rss.bugminer.testutils.TemporaryDirectory;
 import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
 import de.unistuttgart.iste.rss.bugminer.utils.ProgramExecutor;
@@ -46,12 +41,6 @@ public class VagrantStrategyTest {
 	public TemporaryDirectory dataDirectory = new TemporaryDirectory();
 
 	private Path vagrantPath;
-
-	private static final String BOX_NAME = "thebox";
-	private static final String CLUSTER_NAME = "thecluster";
-	private static final int NODE_ID = 123;
-	private static final SystemSpecification SPEC = new SystemSpecification(OperatingSystem.LINUX,
-			Architecture.X86_64, "Ubuntu", "14.04");
 
 	@Before
     public void init() {
@@ -134,17 +123,5 @@ public class VagrantStrategyTest {
 		when(statusParser.parseStatusOutput("status line")).thenReturn(NodeStatus.ONLINE);
 
 		assertEquals(NodeStatus.ONLINE, strategy.getNodeStatus(prepareNode()));
-	}
-
-	private Node prepareNode() {
-		Node node = mock(Node.class);
-		Cluster cluster = mock(Cluster.class);
-		when(node.getCluster()).thenReturn(cluster);
-		when(node.getSystemSpecification()).thenReturn(SPEC);
-		when(cluster.getName()).thenReturn(CLUSTER_NAME);
-		when(node.getId()).thenReturn(NODE_ID);
-		when(node.getMemory()).thenReturn(MemoryQuantity.fromGiB(1));
-		when(node.getCpuCount()).thenReturn(2);
-		return node;
 	}
 }
