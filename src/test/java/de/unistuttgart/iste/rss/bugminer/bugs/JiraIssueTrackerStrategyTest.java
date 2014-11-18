@@ -12,13 +12,10 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.JiraRestClientFactory;
@@ -27,16 +24,10 @@ import com.atlassian.jira.rest.client.api.domain.SearchResult;
 import com.atlassian.jira.rest.client.auth.AnonymousAuthenticationHandler;
 import com.atlassian.util.concurrent.Promise;
 
-import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationException;
-import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationResult;
-import de.unistuttgart.iste.rss.bugminer.bugs.JiraIssueTrackerStrategy;
 import de.unistuttgart.iste.rss.bugminer.model.IssueTracker;
 import de.unistuttgart.iste.rss.bugminer.model.Project;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/applicationContext-test.xml")
 public class JiraIssueTrackerStrategyTest {
-
 	@InjectMocks
 	JiraIssueTrackerStrategy strategy;
 
@@ -96,7 +87,7 @@ public class JiraIssueTrackerStrategyTest {
 		assertEquals(1, result.getNewBugs().size());
 		assertEquals("Bug #1337", result.getNewBugs().iterator().next().getTitle());
 	}
-	
+
 	@Test(expected = BugSynchronizationException.class)
 	public void testException() throws BugSynchronizationException {
 		issueTracker.setUri("^");
