@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProgramExecutor {
+	private Logger logger = Logger.getLogger(ProgramExecutor.class);
+
 	/**
 	 * Executes a command and verifies that it exits with code 0.
 	 *
@@ -66,6 +70,7 @@ public class ProgramExecutor {
 	 * @throws ProgramExecutionException the exit code is not zero
 	 */
 	public ExecutionResult tryExecute(Path workingDirectory, String... cmd) throws IOException {
+		logger.debug("Executing `" + StringUtils.join(cmd, ' ') + " in " + workingDirectory);
 		File workdir = workingDirectory == null ? null : workingDirectory.toFile();
 		Process process = Runtime.getRuntime().exec(cmd, null, workdir);
 		String stdout = IOUtils.toString(process.getInputStream());
