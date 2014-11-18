@@ -12,7 +12,7 @@ import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
 
 @Component
 public class VagrantStatusParser {
-	private static final String STATUS_LINE_PATTERN = "/([\\S]+)\\s+([\\S]+)/";
+	private static final String STATUS_LINE_PATTERN = ".*([\\S]+)\\s+([a-zA-Z]+).*";
 
 	private static final Map<String, NodeStatus> STATUS_STRINGS =ImmutableMap.of(
 			"poweroff", NodeStatus.OFFLINE,
