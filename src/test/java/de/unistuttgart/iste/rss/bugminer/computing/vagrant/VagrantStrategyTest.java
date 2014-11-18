@@ -61,21 +61,23 @@ public class VagrantStrategyTest {
 
 	@Test
 	public void testIsAvailable() throws IOException {
-		when(executor.execute("vagrant")).thenReturn(new ExecutionResult(0, "ok", ""));
+		when(executor.execute("vagrant", "global-status"))
+				.thenReturn(new ExecutionResult(0, "ok", ""));
 		assertThat(strategy.isAvailable(), is(true));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test(expected = UnsupportedOperationException.class)
 	public void testIsAvailableDoesNotSwallowRuntimeExceptions() throws IOException {
-		when(executor.execute("vagrant")).thenThrow(UnsupportedOperationException.class);
+		when(executor.execute("vagrant", "global-status"))
+				.thenThrow(UnsupportedOperationException.class);
 		strategy.isAvailable();
 	}
 
 	@Test
 	@SuppressWarnings("unchecked")
 	public void testIsNotAvailable() throws IOException {
-		when(executor.execute("vagrant")).thenThrow(IOException.class);
+		when(executor.execute("vagrant", "global-status")).thenThrow(IOException.class);
 		assertThat(strategy.isAvailable(), is(false));
 	}
 

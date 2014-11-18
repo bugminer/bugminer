@@ -31,6 +31,7 @@ public class VagrantStrategy implements ClusterStrategy {
 	@Autowired
 	VagrantStatusParser statusParser;
 
+	private Logger logger = Logger.getLogger(VagrantStrategy.class);
 	private static final String VAGRANTFILE_TEMPLATE =
 			"#!/usr/bin/ruby\n" +
 			"Vagrant.configure(\"2\") do |config|\n" +
@@ -44,9 +45,10 @@ public class VagrantStrategy implements ClusterStrategy {
 	@Override
 	public boolean isAvailable() {
 		try {
-			executor.execute("vagrant");
+			executor.execute("vagrant", "global-status");
 			return true;
 		} catch (IOException e) {
+			logger.debug("Vagrant is not available", e);
 			return false;
 		}
 	}
