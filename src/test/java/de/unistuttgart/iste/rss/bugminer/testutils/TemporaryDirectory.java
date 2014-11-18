@@ -187,4 +187,19 @@ public class TemporaryDirectory implements TestRule, Path {
 	public int compareTo(Path other) {
 		return getPath().compareTo(other);
 	}
+
+	@Override
+	public String toString() {
+		return getPath().toString();
+	}
+
+	@Override
+	public int hashCode() {
+		return getPath().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return getPath().equals(obj);
+	}
 }
