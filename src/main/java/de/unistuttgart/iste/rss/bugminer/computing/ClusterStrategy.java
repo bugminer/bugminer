@@ -1,14 +1,17 @@
 package de.unistuttgart.iste.rss.bugminer.computing;
 
+import java.io.IOException;
+
+import de.unistuttgart.iste.rss.bugminer.model.Cluster;
 import de.unistuttgart.iste.rss.bugminer.model.Node;
 import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
-import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
 
 public interface ClusterStrategy {
 	boolean isAvailable();
-	void initializeNode(Node node);
-	NodeStatus getNodestatus(Node node);
-	void startNode(Node node);
-	void stopNode(Node node);
-	void destroyNode(Node node);
+	void initializeCluster(Cluster cluster) throws IOException;
+	void initializeNode(Node node) throws IOException;
+	NodeStatus getNodeStatus(Node node) throws IOException;
+	void startNode(Node node) throws IOException;
+	void stopNode(Node node) throws IOException;
+	void destroyNode(Node node) throws IOException;
 }
