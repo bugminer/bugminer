@@ -33,6 +33,7 @@ public class VagrantStrategy implements ClusterStrategy {
 	VagrantStatusParser statusParser;
 
 	private Logger logger = Logger.getLogger(VagrantStrategy.class);
+
 	private static final String VAGRANTFILE_TEMPLATE =
 			"#!/usr/bin/ruby\n" +
 			"Vagrant.configure(\"2\") do |config|\n" +
@@ -40,6 +41,7 @@ public class VagrantStrategy implements ClusterStrategy {
 			"  config.vm.provider \"virtualbox\" do |v|\n" +
 			"    v.memory = %d\n" +
 			"    v.cpus = %d\n" +
+			"    v.name = \"%s\"\n" +
 			"  end\n" +
 			"end\n";
 
@@ -122,6 +124,6 @@ public class VagrantStrategy implements ClusterStrategy {
 
 		String boxName = boxes.getName(node.getSystemSpecification());
 		return String.format(VAGRANTFILE_TEMPLATE, boxName, node.getMemory().toMiB(),
-				node.getCpuCount());
+				node.getCpuCount(), node.getCluster().getName() + "-" + node.getId());
 	}
 }

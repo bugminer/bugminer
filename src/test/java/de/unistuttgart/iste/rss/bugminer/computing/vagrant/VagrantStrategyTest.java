@@ -85,6 +85,7 @@ public class VagrantStrategyTest {
 		assertThat(content, containsString("config.vm.provider \"virtualbox"));
 		assertThat(content, containsString("v.memory = 1024"));
 		assertThat(content, containsString("v.cpus = 2"));
+		assertThat(content, containsString("v.name = \"" + CLUSTER_NAME + "-" + NODE_ID + "\""));
 	}
 
 	@Test
