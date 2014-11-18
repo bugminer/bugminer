@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
@@ -11,6 +12,7 @@ import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientF
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
 
 @Configuration
+@ComponentScan("de.unistuttgart.iste.rss.bugminer")
 public class AppConfig {
 	@Bean
 	public AsynchronousJiraRestClientFactory getJiraRestClientFactory() {
