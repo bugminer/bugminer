@@ -6,5 +6,5 @@ import javax.persistence.ManyToOne;
 @Entity
 public class CommitEvent extends Event {
 	@ManyToOne
-	private Commit commit;
+	private CodeRevision commit;
 }
