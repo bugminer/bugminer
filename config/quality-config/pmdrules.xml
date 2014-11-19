@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<ruleset name="Custom ruleset" xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+	<description>
+		PMD check configuration for all HPMOM Java projects based
+		on Kiekers pmd config
+	</description>
+
+
+	<!-- We'll use the following rulesets -->
+	<rule ref="rulesets/java/basic.xml">
+		<exclude name="UnnecessaryFinalModifier" />
+	</rule>
+
+	<rule ref="rulesets/java/braces.xml" />
+
+	<rule ref="rulesets/java/clone.xml" />
+
+	<!--<rule ref="rulesets/java/codesize.xml"> -->
+
+	<rule ref="rulesets/java/controversial.xml">
+		<exclude name="AvoidFinalLocalVariable" />
+		<exclude name="AvoidLiteralsInIfCondition" />
+		<exclude name="AvoidUsingVolatile" />
+		<exclude name="CallSuperInConstructor" />
+		<exclude name="DataflowAnomalyAnalysis" />
+		<exclude name="OnlyOneReturn" />
+		<exclude name="UnusedModifier" />
+		<exclude name="UnnecessaryConstructor" />
+		<exclude name="UseConcurrentHashMap" />
+		<exclude name="AssignmentInOperand" />
+		<exclude name="NullAssignment" />
+	</rule>
+
+	<!--<rule ref="rulesets/java/coupling.xml"> -->
+
+	<rule ref="rulesets/java/design.xml">
+		<exclude name="ConfusingTernary" />
+		<exclude name="AvoidSynchronizedAtMethodLevel" />
+		<exclude name="UseVarargs" />
+	</rule>
+
+	<rule ref="rulesets/java/finalizers.xml" />
+
+	<rule ref="rulesets/java/imports.xml" />
+
+	<rule ref="rulesets/java/junit.xml" />
+
+	<rule ref="rulesets/java/naming.xml">
+		<exclude name="LongVariable" />
+		<exclude name="PackageCase" />
+		<exclude name="ShortVariable" />
+	</rule>
+
+	<rule ref="rulesets/java/optimizations.xml">
+		<exclude name="AvoidInstantiatingObjectsInLoops" />
+		<exclude name="UseArrayListInsteadOfVector" />
+		<exclude name="SimplifyStartsWith" />
+		<exclude name="UseStringBufferForStringAppends" />
+		<exclude name="RedundantFieldInitializer" />
+		<exclude name="PrematureDeclaration" />
+	</rule>
+
+	<rule ref="rulesets/java/strictexception.xml">
+		<exclude name="AvoidCatchingNPE" />
+		<exclude name="AvoidThrowingNullPointerException" />
+		<exclude name="SignatureDeclareThrowsException" />
+		<exclude name="AvoidCatchingGenericException" />
+	</rule>
+
+	<rule ref="rulesets/java/strings.xml">
+		<exclude name="AvoidDuplicateLiterals" />
+	</rule>
+
+	<!-- <rule ref="rulesets/java/sunsecure.xml" /> -->
+
+	<rule ref="rulesets/java/typeresolution.xml">
+		<exclude name="SignatureDeclareThrowsException" />
+	</rule>
+
+	<rule ref="rulesets/java/unusedcode.xml" />
+</ruleset>
