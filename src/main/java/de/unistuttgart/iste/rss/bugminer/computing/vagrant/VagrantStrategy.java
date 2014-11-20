@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
 import de.unistuttgart.iste.rss.bugminer.annotations.Strategy;
 import de.unistuttgart.iste.rss.bugminer.computing.ClusterStrategy;
+import de.unistuttgart.iste.rss.bugminer.computing.InvalidSshConfigException;
+import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
+import de.unistuttgart.iste.rss.bugminer.computing.SshConfigParser;
 import de.unistuttgart.iste.rss.bugminer.model.Cluster;
 import de.unistuttgart.iste.rss.bugminer.model.Node;
 import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
@@ -20,7 +23,8 @@ import de.unistuttgart.iste.rss.bugminer.utils.ProgramExecutor;
 @Strategy(type = ClusterStrategy.class, name = "vagrant")
 @Component
 public class VagrantStrategy implements ClusterStrategy {
-	@Autowired @DataDirectory
+	@Autowired
+	@DataDirectory
 	Path dataPath;
 
 	@Autowired
@@ -32,18 +36,21 @@ public class VagrantStrategy implements ClusterStrategy {
 	@Autowired
 	VagrantStatusParser statusParser;
 
+	@Autowired
+	SshConfigParser sshConfigParser;
+
 	private Logger logger = Logger.getLogger(VagrantStrategy.class);
 
 	private static final String VAGRANTFILE_TEMPLATE =
 			"#!/usr/bin/ruby\n" +
-			"Vagrant.configure(\"2\") do |config|\n" +
-			"  config.vm.box = \"%s\"\n" +
-			"  config.vm.provider \"virtualbox\" do |v|\n" +
-			"    v.memory = %d\n" +
-			"    v.cpus = %d\n" +
-			"    v.name = \"%s\"\n" +
-			"  end\n" +
-			"end\n";
+					"Vagrant.configure(\"2\") do |config|\n" +
+					"  config.vm.box = \"%s\"\n" +
+					"  config.vm.provider \"virtualbox\" do |v|\n" +
+					"    v.memory = %d\n" +
+					"    v.cpus = %d\n" +
+					"    v.name = \"%s\"\n" +
+					"  end\n" +
+					"end\n";
 
 	@Override
 	public boolean isAvailable() {
@@ -104,6 +111,16 @@ public class VagrantStrategy implements ClusterStrategy {
 			return;
 		executor.execute(nodePath, "vagrant", "destroy", "-f");
 		FileUtils.deleteDirectory(nodePath.toFile());
+	}
+
+	public SshConfig getSshConfig(Node node) throws IOException {
+		Path nodePath = getPath(node);
+		String sshConfigStr = executor.execute(nodePath, "vagrant", "ssh-config").getOutput();
+		try {
+			return sshConfigParser.parse(sshConfigStr);
+		} catch (InvalidSshConfigException e) {
+			throw new IOException("Vagrant reported invalid ssh config: " + sshConfigStr, e);
+		}
 	}
 
 	private Path getPath(Node node) {

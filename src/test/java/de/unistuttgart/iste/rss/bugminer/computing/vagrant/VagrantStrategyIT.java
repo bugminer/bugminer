@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import de.unistuttgart.iste.rss.bugminer.TestConfig;
+import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 import de.unistuttgart.iste.rss.bugminer.model.Node;
 import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
 
@@ -37,6 +38,10 @@ public class VagrantStrategyIT {
 			assertThat(strategy.getNodeStatus(node), is(NodeStatus.OFFLINE));
 			strategy.startNode(node);
 			assertThat(strategy.getNodeStatus(node), is(NodeStatus.ONLINE));
+
+			SshConfig sshConfig = strategy.getSshConfig(node);
+			assertThat(sshConfig.getHost(), is("127.0.0.1"));
+
 			strategy.stopNode(node);
 			assertThat(strategy.getNodeStatus(node), is(NodeStatus.OFFLINE));
 		} finally {

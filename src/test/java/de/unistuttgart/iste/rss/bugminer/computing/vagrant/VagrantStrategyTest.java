@@ -19,6 +19,8 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
+import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
+import de.unistuttgart.iste.rss.bugminer.computing.SshConfigParser;
 import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
 import de.unistuttgart.iste.rss.bugminer.testutils.TemporaryDirectory;
 import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
@@ -35,17 +37,22 @@ public class VagrantStrategyTest {
 	VagrantStatusParser statusParser;
 
 	@Mock
+	SshConfigParser sshConfigParser;
+
+	@Mock
 	ProgramExecutor executor;
 
-	@Spy @Rule @DataDirectory
+	@Spy
+	@Rule
+	@DataDirectory
 	public TemporaryDirectory dataDirectory = new TemporaryDirectory();
 
 	private Path vagrantPath;
 
 	@Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        vagrantPath = dataDirectory.resolve("vagrant").resolve(CLUSTER_NAME).resolve(NODE_ID + "");
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+		vagrantPath = dataDirectory.resolve("vagrant").resolve(CLUSTER_NAME).resolve(NODE_ID + "");
 	}
 
 	@Test
@@ -124,5 +131,16 @@ public class VagrantStrategyTest {
 		when(statusParser.parseStatusOutput("status line")).thenReturn(NodeStatus.ONLINE);
 
 		assertEquals(NodeStatus.ONLINE, strategy.getNodeStatus(prepareNode()));
+	}
+
+	@Test
+	public void testGetSshConfig() throws IOException {
+		SshConfig config = new SshConfig("localhost", 22, "vagrant");
+		Files.createDirectories(vagrantPath);
+		when(executor.execute(vagrantPath, "vagrant", "ssh-config")).thenReturn(
+				new ExecutionResult(0, "the ssh result", ""));
+		when(sshConfigParser.parse("the ssh result")).thenReturn(config);
+
+		assertThat(strategy.getSshConfig(prepareNode()), is(config));
 	}
 }
