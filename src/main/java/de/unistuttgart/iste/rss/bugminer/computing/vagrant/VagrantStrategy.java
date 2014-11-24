@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
 import de.unistuttgart.iste.rss.bugminer.annotations.Strategy;
 import de.unistuttgart.iste.rss.bugminer.computing.ClusterStrategy;
+import de.unistuttgart.iste.rss.bugminer.computing.CommandExecutor;
 import de.unistuttgart.iste.rss.bugminer.computing.InvalidSshConfigException;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfigParser;
 import de.unistuttgart.iste.rss.bugminer.model.Cluster;
 import de.unistuttgart.iste.rss.bugminer.model.Node;
 import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
-import de.unistuttgart.iste.rss.bugminer.utils.ProgramExecutor;
 
 @Strategy(type = ClusterStrategy.class, name = "vagrant")
 @Component
@@ -28,7 +28,7 @@ public class VagrantStrategy implements ClusterStrategy {
 	Path dataPath;
 
 	@Autowired
-	ProgramExecutor executor;
+	CommandExecutor executor;
 
 	@Autowired
 	VagrantBoxes boxes;

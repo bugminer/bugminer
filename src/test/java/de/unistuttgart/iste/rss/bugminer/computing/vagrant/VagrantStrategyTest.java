@@ -19,12 +19,12 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
+import de.unistuttgart.iste.rss.bugminer.computing.LocalCommandExecutor;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfigParser;
 import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
 import de.unistuttgart.iste.rss.bugminer.testutils.TemporaryDirectory;
 import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
-import de.unistuttgart.iste.rss.bugminer.utils.ProgramExecutor;
 
 public class VagrantStrategyTest {
 	@InjectMocks
@@ -40,7 +40,7 @@ public class VagrantStrategyTest {
 	SshConfigParser sshConfigParser;
 
 	@Mock
-	ProgramExecutor executor;
+	LocalCommandExecutor executor;
 
 	@Spy
 	@Rule
