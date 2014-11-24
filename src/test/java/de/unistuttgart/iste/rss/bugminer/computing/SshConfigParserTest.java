@@ -47,6 +47,7 @@ public class SshConfigParserTest {
 		assertThat(config.getPort(), is(2222));
 		assertThat(config.getKeyFile(), is(Paths.get("/home/jan/.vagrant.d/insecure_private_key")));
 		assertThat(config.getPassword(), is(nullValue()));
+		assertThat(config.getVerifyHostKey(), is(false));
 	}
 
 	@Test
@@ -59,6 +60,12 @@ public class SshConfigParserTest {
 	public void testFallsBackToDefaultPort() {
 		SshConfig config = parser.parse("HostName 127.0.0.1\nUser me");
 		assertThat(config.getPort(), is(22));
+	}
+
+	@Test
+	public void testVerifyHostKeyIsTrueByDefault() {
+		SshConfig config = parser.parse("HostName 127.0.0.1\nUser me");
+		assertThat(config.getVerifyHostKey(), is(true));
 	}
 
 	@Test(expected = InvalidSshConfigException.class)

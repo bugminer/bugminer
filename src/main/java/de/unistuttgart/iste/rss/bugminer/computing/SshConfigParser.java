@@ -36,6 +36,8 @@ public class SshConfigParser {
 			config = config.withPassword(result.password);
 		if (result.keyFile != null)
 			config = config.withKeyFile(result.keyFile);
+		if (result.verifyHostKey != null)
+			config = config.withVerifyHostKey(result.verifyHostKey);
 
 		return config;
 	}
@@ -66,6 +68,15 @@ public class SshConfigParser {
 			case "User":
 				config.user = value;
 				break;
+			case "StrictHostKeyChecking":
+				if (value.equals("no"))
+					config.verifyHostKey = false;
+				else if (value.equals("yes"))
+					config.verifyHostKey = true;
+				else
+					throw new InvalidSshConfigException(String.format(
+							"Invalid value %s for StrictHostKeyChecking option", value));
+				break;
 		}
 	}
 
@@ -75,5 +86,6 @@ public class SshConfigParser {
 		Integer port = null;
 		String password = null;
 		Path keyFile = null;
+		Boolean verifyHostKey = null;
 	}
 }
