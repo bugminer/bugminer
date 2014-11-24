@@ -88,6 +88,12 @@
 			<artifactId>spring-test</artifactId>
 			<version>4.1.2.RELEASE</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>net.schmizz</groupId>
+			<artifactId>sshj</artifactId>
+			<version>0.10.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.hamcrest</groupId>

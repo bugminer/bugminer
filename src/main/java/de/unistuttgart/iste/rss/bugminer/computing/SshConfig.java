@@ -8,6 +8,13 @@ public class SshConfig {
 	private String user;
 	private String password;
 	private Path keyFile;
+	private boolean verifyHostKey = true;
+
+	private static final int DEFAULT_PORT = 22;
+
+	public SshConfig(String host, String user) {
+		this(host, DEFAULT_PORT, user);
+	}
 
 	public SshConfig(String host, int port, String user) {
 		this.host = host;
@@ -19,6 +26,7 @@ public class SshConfig {
 		SshConfig other = new SshConfig(host, port, user);
 		other.keyFile = this.keyFile;
 		other.password = this.password;
+		other.verifyHostKey = this.verifyHostKey;
 		return other;
 	}
 
@@ -31,6 +39,12 @@ public class SshConfig {
 	public SshConfig withKeyFile(Path keyFile) {
 		SshConfig result = copy();
 		result.keyFile = keyFile;
+		return result;
+	}
+
+	public SshConfig withVerifyHostKey(boolean verify) {
+		SshConfig result = copy();
+		result.verifyHostKey = verify;
 		return result;
 	}
 
@@ -52,5 +66,9 @@ public class SshConfig {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public boolean getVerifyHostKey() {
+		return verifyHostKey;
 	}
 }
