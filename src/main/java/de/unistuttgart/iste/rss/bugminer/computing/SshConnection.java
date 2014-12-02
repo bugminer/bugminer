@@ -78,13 +78,27 @@ public class SshConnection implements AutoCloseable, CommandExecutor {
 	public void close() throws IOException {
 		if (client.isConnected())
 			client.close();
+		}
 	}
 
 	@Override
 	public ExecutionResult tryExecute(Path workingDirectory, String... cmd) throws IOException {
+		String workdir = workingDirectory == null ? null : workingDirectory.toString();
+		return tryExecuteIn(workdir, cmd);
+	}
+
+	public ExecutionResult executeIn(String workingDirectory, String... cmd) throws IOException {
+		ExecutionResult result = tryExecuteIn(workingDirectory, cmd);
+		if (result.getExitCode() != 0) {
+			throw new ProgramExecutionException(cmd, result);
+		}
+		return result;
+	}
+
+	public ExecutionResult tryExecuteIn(String workingDirectory, String... cmd) throws IOException {
 		String cmdString = escapeCommand(cmd);
 		if (workingDirectory != null) {
-			cmdString = escapeCommand("cd", workingDirectory.toString()) + " && " + cmdString;
+			cmdString = escapeCommand("cd", workingDirectory) + " && " + cmdString;
 		}
 
 		try (Command command = client.startSession().exec(cmdString)) {
