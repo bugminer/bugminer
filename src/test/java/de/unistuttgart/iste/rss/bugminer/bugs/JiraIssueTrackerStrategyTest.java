@@ -6,10 +6,11 @@ import static org.mockito.Mockito.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Answers;
@@ -28,6 +29,8 @@ import de.unistuttgart.iste.rss.bugminer.model.IssueTracker;
 import de.unistuttgart.iste.rss.bugminer.model.Project;
 
 public class JiraIssueTrackerStrategyTest {
+	private static final String BUG_RESOLUTION_DATE = "2009-12-16T08:50:37.777+0000";
+
 	@InjectMocks
 	JiraIssueTrackerStrategy strategy;
 
@@ -44,10 +47,7 @@ public class JiraIssueTrackerStrategyTest {
 	SearchResult searchResult;
 
 	@Mock
-	Iterable<Issue> issues;
-
-	@Mock
-	Iterator<Issue> iterator;
+	Collection<Issue> issues;
 
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	Issue issue1;
@@ -58,29 +58,46 @@ public class JiraIssueTrackerStrategyTest {
 	IssueTracker issueTracker = new IssueTracker();
 
 	@Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        issueTracker.setUri("issues.apache.org/jira");
-        issueTracker.setProject(new Project());
-        issueTracker.getProject().setName("LANG");
-    }
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+		issueTracker.setUri("issues.apache.org/jira");
+		issueTracker.setProject(new Project());
+		issueTracker.getProject().setName("LANG");
+
+		issues = new HashSet<Issue>();
+		issues.add(issue1);
+		issues.add(issue2);
+	}
 
 	@Test
 	public void testSynchronize() throws BugSynchronizationException, URISyntaxException {
 		String projectName = issueTracker.getProject().getName();
 		Set<String> fields = new HashSet<String>();
-    	fields.add("*all");
+		fields.add("*navigable");
 
-		when(factory.create(eq(new URI("issues.apache.org/jira")), isA(AnonymousAuthenticationHandler.class))).thenReturn(client);
-		when(client.getSearchClient().searchJql("project=" + projectName, Integer.MAX_VALUE, 0, fields)).thenReturn(promise);
+		when(
+				factory.create(eq(new URI("issues.apache.org/jira")),
+						isA(AnonymousAuthenticationHandler.class))).thenReturn(client);
+		when(
+				client.getSearchClient().searchJql(eq("project=" + projectName),
+						isA(Integer.class),
+						isA(Integer.class),
+						eq(fields))).thenReturn(promise);
+
 		when(promise.claim()).thenReturn(searchResult);
-		when(searchResult.getIssues()).thenReturn(issues);
-		when(issues.iterator()).thenReturn(iterator);
-		when(iterator.hasNext()).thenReturn(true, true, false);
-		when(iterator.next()).thenReturn(issue1, issue2);
+		when(searchResult.getIssues()).thenReturn(issues, new HashSet<Issue>());
+
 		when(issue1.getIssueType().getName()).thenReturn("Bug");
 		when(issue2.getIssueType().getName()).thenReturn("Feature");
-		when(issue1.getKey()).thenReturn("Bug #1337");
+		when(issue1.getStatus().getName()).thenReturn("Closed");
+		when(issue2.getStatus().getName()).thenReturn("Closed");
+
+		when(issue1.getSummary()).thenReturn("Bug #1337");
+		when(issue1.getField(eq("resolutiondate")).getValue()).thenReturn(BUG_RESOLUTION_DATE);
+		when(issue1.getCreationDate()).thenReturn(new DateTime(2003, 12, 9, 12, 16, 5, 3));
+		when(issue1.getLabels()).thenReturn(new HashSet<String>()); // TODO
+		when(issue1.getDescription()).thenReturn("Description of Issue 1");
+		when(issue1.getResolution().getName()).thenReturn("Fixed");
 
 		BugSynchronizationResult result = strategy.synchronize(issueTracker);
 
