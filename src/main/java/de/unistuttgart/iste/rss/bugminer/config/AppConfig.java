@@ -3,9 +3,13 @@ package de.unistuttgart.iste.rss.bugminer.config;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import net.schmizz.sshj.SSHClient;
+
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
 
@@ -24,5 +28,11 @@ public class AppConfig {
 	public Path getDataPath() {
 		Path home = Paths.get(System.getProperty("user.home"));
 		return home.resolve(".bugminer");
+	}
+
+	@Bean
+	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+	public SSHClient getSSHClient() {
+		return new SSHClient();
 	}
 }
