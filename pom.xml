@@ -92,7 +92,7 @@
 				</configuration>
 				<executions>
 					<execution>
-						<phase>test</phase>
+						<phase>compile</phase>
 						<goals>
 							<goal>findbugs</goal>
 						</goals>
