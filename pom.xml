@@ -113,9 +113,9 @@
 				</configuration>
 				<executions>
 					<execution>
-						<phase>test</phase>
+						<phase>compile</phase>
 						<goals>
-							<goal>pmd</goal>
+							<goal>check</goal>
 						</goals>
 					</execution>
 				</executions>
