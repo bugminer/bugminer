@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.rss.bugminer.bugs;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -66,7 +67,8 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 
 			} while (Iterables.size(issuePromise.claim().getIssues()) > 0);
 
-		} catch (URISyntaxException e) {
+			restClient.close();
+		} catch (URISyntaxException | IOException e) {
 			throw new BugSynchronizationException(e); // wrap exception
 		}
 
