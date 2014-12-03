@@ -61,6 +61,8 @@
 		<exclude name="UseStringBufferForStringAppends" />
 		<exclude name="RedundantFieldInitializer" />
 		<exclude name="PrematureDeclaration" />
+		<exclude name="LocalVariableCouldBeFinal" />
+		<exclude name="MethodArgumentCouldBeFinal" />
 	</rule>
 
 	<rule ref="rulesets/java/strictexception.xml">
