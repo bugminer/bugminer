@@ -8,10 +8,10 @@ public class MemoryQuantity {
 	public static final long ONE_MB = ONE_KB * ONE_KB;
 	public static final long ONE_GB = ONE_MB * ONE_KB;
 	public static final long ONE_TB = ONE_MB * ONE_MB;
-	public static final long ONE_KiB = 1024;
-	public static final long ONE_MiB = ONE_KiB * ONE_KiB;
-	public static final long ONE_GiB = ONE_MiB * ONE_KiB;
-	public static final long ONE_TiB = ONE_MiB * ONE_MiB;
+	public static final long ONE_KIB = 1024;
+	public static final long ONE_MIB = ONE_KIB * ONE_KIB;
+	public static final long ONE_GIB = ONE_MIB * ONE_KIB;
+	public static final long ONE_TIB = ONE_MIB * ONE_MIB;
 
 	private MemoryQuantity(long bytes) {
 		this.bytes = bytes;
@@ -21,72 +21,72 @@ public class MemoryQuantity {
 		return new MemoryQuantity(value);
 	}
 
-	public static MemoryQuantity fromKB(long value) {
+	public static MemoryQuantity fromKb(long value) {
 		return new MemoryQuantity(value * ONE_KB);
 	}
 
 	public static MemoryQuantity fromKiB(long value) {
-		return new MemoryQuantity(value * ONE_KiB);
+		return new MemoryQuantity(value * ONE_KIB);
 	}
 
-	public static MemoryQuantity fromMB(long value) {
+	public static MemoryQuantity fromMb(long value) {
 		return new MemoryQuantity(value * ONE_MB);
 	}
 
 	public static MemoryQuantity fromMiB(long value) {
-		return new MemoryQuantity(value * ONE_MiB);
+		return new MemoryQuantity(value * ONE_MIB);
 	}
 
-	public static MemoryQuantity fromGB(long value) {
+	public static MemoryQuantity fromGb(long value) {
 		return new MemoryQuantity(value * ONE_GB);
 	}
 
 	public static MemoryQuantity fromGiB(long value) {
-		return new MemoryQuantity(value * ONE_GiB);
+		return new MemoryQuantity(value * ONE_GIB);
 	}
 
-	public static MemoryQuantity fromTB(long value) {
+	public static MemoryQuantity fromTb(long value) {
 		return new MemoryQuantity(value * ONE_TB);
 	}
 
 	public static MemoryQuantity fromTiB(long value) {
-		return new MemoryQuantity(value * ONE_TiB);
+		return new MemoryQuantity(value * ONE_TIB);
 	}
 
 	public long toBytes() {
 		return bytes;
 	}
 
-	public long toKB() {
+	public long toKb() {
 		return bytes / ONE_KB;
 	}
 
 	public long toKiB() {
-		return bytes / ONE_KiB;
+		return bytes / ONE_KIB;
 	}
 
-	public long toMB() {
+	public long toMb() {
 		return bytes / ONE_MB;
 	}
 
 	public long toMiB() {
-		return bytes / ONE_MiB;
+		return bytes / ONE_MIB;
 	}
 
-	public long toGB() {
+	public long toGb() {
 		return bytes / ONE_GB;
 	}
 
 	public long toGiB() {
-		return bytes / ONE_GiB;
+		return bytes / ONE_GIB;
 	}
 
-	public long toTB() {
+	public long toTb() {
 		return bytes / ONE_TB;
 	}
 
 	public long toTiB() {
-		return bytes / ONE_TiB;
+		return bytes / ONE_TIB;
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class MemoryQuantity {
 		if (bytes < 10000) {
 			return bytes + " Byte";
 		}
-		return toKB() + " KB";
+		return toKb() + " KB";
 	}
 
 	@Override
