@@ -27,7 +27,6 @@
 		<exclude name="CallSuperInConstructor" />
 		<exclude name="DataflowAnomalyAnalysis" />
 		<exclude name="OnlyOneReturn" />
-		<exclude name="UnusedModifier" />
 		<exclude name="UnnecessaryConstructor" />
 		<exclude name="UseConcurrentHashMap" />
 		<exclude name="AssignmentInOperand" />
