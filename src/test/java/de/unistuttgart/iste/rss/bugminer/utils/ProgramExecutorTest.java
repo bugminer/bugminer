@@ -44,7 +44,8 @@ public class ProgramExecutorTest {
 	}
 
 	@Test(expected = IOException.class)
-	public void testTryExecuteThrowsOnNonExistantCommand() throws IOException, InterruptedException {
+	public void testTryExecuteThrowsOnNonExistantCommand()
+			throws IOException, InterruptedException {
 		ProgramExecutor executor = new ProgramExecutor();
 		executor.tryExecute("thisdoesnotexist");
 	}

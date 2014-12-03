@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.ImmutableMap;
 
-import de.unistuttgart.iste.rss.bugminer.model.Architecture;
-import de.unistuttgart.iste.rss.bugminer.model.OperatingSystem;
 import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
 import de.unistuttgart.iste.rss.bugminer.utils.MapUtils;
 
@@ -34,7 +32,7 @@ public class VagrantBoxes {
 	public String getName(SystemSpecification spec) {
 		return REVERSE.get(spec);
 	}
-	
+
 	public SystemSpecification getSpecification(String boxName) {
 		return BOXES.get(boxName);
 	}

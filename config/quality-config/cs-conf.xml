@@ -18,6 +18,7 @@
 	<!-- See http://checkstyle.sf.net/config_whitespace.html -->
 
 	<module name="TreeWalker">
+		<property name="tabWidth" value="4"/>
 		<module name="OuterTypeFilename" />
 		<module name="IllegalTokenText">
 			<property name="tokens" value="STRING_LITERAL, CHAR_LITERAL" />
@@ -34,7 +35,9 @@
 			<property name="max" value="100" />
 			<property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://" />
 		</module>
-		<module name="AvoidStarImport" />
+		<module name="AvoidStarImport">
+			<property name="allowStaticMemberImports" value="true" />
+		</module>
 		<module name="OneTopLevelClass" />
 		<module name="NoLineWrap" />
 		<module name="EmptyBlock">
@@ -115,12 +118,12 @@
 			<message key="ws.notPreceded" value="GenericWhitespace ''{0}'' is not preceded with whitespace." />
 		</module>
 		<module name="Indentation">
-			<property name="basicOffset" value="8" />
+			<property name="basicOffset" value="4" />
 			<property name="braceAdjustment" value="0" />
-			<property name="caseIndent" value="8" />
-			<property name="throwsIndent" value="16" />
-			<property name="lineWrappingIndentation" value="16" />
-			<property name="arrayInitIndent" value="8" />
+			<property name="caseIndent" value="1" />
+			<property name="throwsIndent" value="2" />
+			<property name="lineWrappingIndentation" value="2" />
+			<property name="arrayInitIndent" value="2" />
 		</module>
 		<module name="AbbreviationAsWordInName">
 			<property name="ignoreFinal" value="false" />
@@ -130,9 +133,9 @@
 		<module name="VariableDeclarationUsageDistance" />
 
 		<module name="ImportOrder">
-			<property name="option" value="under" />
+			<property name="option" value="top" />
 			<property name="groups"
-				value="java,javax,junit,org,com,de" />
+				value="java,javax,org,com,de" />
 			<property name="ordered" value="true" />
 			<property name="separated" value="true" />
 			<property name="caseSensitive" value="true" />

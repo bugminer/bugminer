@@ -13,7 +13,7 @@ public class SystemSpecification {
 	private String distributionName;
 
 	private String osVersion;
-	
+
 	public static final SystemSpecification UBUNTU_1404 = new SystemSpecification(
 			OperatingSystem.LINUX, Architecture.X86_64, "Ubuntu", "14.04");
 
@@ -53,9 +53,10 @@ public class SystemSpecification {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof SystemSpecification))
+		if (!(obj instanceof SystemSpecification)) {
 			return false;
-		SystemSpecification other = (SystemSpecification)obj;
+		}
+		SystemSpecification other = (SystemSpecification) obj;
 		return other.operatingSystem.equals(operatingSystem)
 				&& other.architecture.equals(architecture)
 				&& other.distributionName.equals(distributionName)

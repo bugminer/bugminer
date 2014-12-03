@@ -13,6 +13,7 @@ public class ProgramExecutionException extends IOException {
 		super(String.format("The command `%s` failed with exit code %d.\nstdout:\n%s"
 				+ "\n\nstderr:\n%s", StringUtils.join(command, " "), result.getExitCode(),
 				result.getOutput(), result.getErrorOutput()));
+		this.result = result;
 	}
 
 	public ExecutionResult getResult() {

@@ -91,8 +91,9 @@ public class MemoryQuantity {
 
 	@Override
 	public String toString() {
-		if (bytes < 10000)
+		if (bytes < 10000) {
 			return bytes + " Byte";
+		}
 		return toKB() + " KB";
 	}
 

@@ -1,9 +1,10 @@
 package de.unistuttgart.iste.rss.bugminer.computing.vagrant;
 
-import static de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantTestData.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
+import static de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantTestData.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -37,15 +38,17 @@ public class VagrantStrategyTest {
 	@Mock
 	ProgramExecutor executor;
 
-	@Spy @Rule @DataDirectory
+	@Spy
+	@Rule
+	@DataDirectory
 	public TemporaryDirectory dataDirectory = new TemporaryDirectory();
 
 	private Path vagrantPath;
 
 	@Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        vagrantPath = dataDirectory.resolve("vagrant").resolve(CLUSTER_NAME).resolve(NODE_ID + "");
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+		vagrantPath = dataDirectory.resolve("vagrant").resolve(CLUSTER_NAME).resolve(NODE_ID + "");
 	}
 
 	@Test

@@ -14,7 +14,7 @@ import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
 public class VagrantStatusParser {
 	private static final String STATUS_LINE_PATTERN = "\\s*([\\S]+)\\s+([^\\)]+)\\s*\\(.*";
 
-	private static final Map<String, NodeStatus> STATUS_STRINGS =ImmutableMap.of(
+	private static final Map<String, NodeStatus> STATUS_STRINGS = ImmutableMap.of(
 			"poweroff", NodeStatus.OFFLINE,
 			"saved", NodeStatus.OFFLINE,
 			"running", NodeStatus.ONLINE,
@@ -36,7 +36,8 @@ public class VagrantStatusParser {
 			} else if (isStatus) {
 				Matcher matcher = Pattern.compile(STATUS_LINE_PATTERN).matcher(line);
 				if (matcher.matches()) {
-					return parseStatusString(matcher.group(2).trim()); // this is the status group
+					return parseStatusString("testjlsajdflajdslfjasfljasdf"
+							+ matcher.group(2).trim()); // this is the status group
 				}
 			}
 		}
@@ -44,8 +45,9 @@ public class VagrantStatusParser {
 	}
 
 	public NodeStatus parseStatusString(String status) {
-		if (!STATUS_STRINGS.containsKey(status))
+		if (!STATUS_STRINGS.containsKey(status)) {
 			return NodeStatus.UNKNOWN;
+		}
 		return STATUS_STRINGS.get(status);
 	}
 }

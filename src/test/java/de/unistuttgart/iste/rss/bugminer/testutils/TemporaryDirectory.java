@@ -20,15 +20,22 @@ import org.mockito.InjectMocks;
 import org.mockito.Spy;
 
 /**
- * A wrapper around the {@link TemporaryFolder} rule that is a {@link Path} object itself.
- * Is only usable within the scope of a test run, i.e. within the Statement returned by
+ * A wrapper around the {@link TemporaryFolder} rule that is a {@link Path} object itself. Is only
+ * usable within the scope of a test run, i.e. within the Statement returned by
  * {@link #apply(Statement, Description)}.
+ *
  * <p>
  * This is intended to be used with the {@link Spy} annotation and {@link InjectMocks}:
+ *
  * <p>
+ * 
  * <pre>
- * {@code @Spy @Rule @DataDirectory
- * public TemporaryDirectory dataDirectory = new TemporaryDirectory();
+ * {
+ * 	&#064;code
+ * 	&#064;Spy
+ * 	&#064;Rule
+ * 	&#064;DataDirectory
+ * 	public TemporaryDirectory dataDirectory = new TemporaryDirectory();
  * }
  * </pre>
  */
@@ -43,11 +50,13 @@ public class TemporaryDirectory implements TestRule, Path {
 
 	/**
 	 * Returns a new fresh directory with a random name under the temporary directory.
+	 *
 	 * @return the path to the directory
 	 */
 	private Path getPath() {
-		if (path != null)
+		if (path != null) {
 			return path;
+		}
 
 		try {
 			path = tempFolder.newFolder().toPath();

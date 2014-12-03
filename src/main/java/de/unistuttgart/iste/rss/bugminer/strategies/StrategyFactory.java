@@ -32,8 +32,9 @@ public class StrategyFactory {
 					AnnotationUtils.findAnnotation(strategy.getClass(), Strategy.class);
 			StrategyKey key = new StrategyKey(strategyAnnotation.type(), strategyAnnotation.name());
 
-			if (annotatedStrategies.containsKey(key))
+			if (annotatedStrategies.containsKey(key)) {
 				throw new RuntimeException();
+			}
 
 			annotatedStrategies.put(key, strategy);
 		}
@@ -43,8 +44,9 @@ public class StrategyFactory {
 	public <T> T getStrategy(Class<T> type, String name) {
 		StrategyKey key = new StrategyKey(type, name);
 
-		if (!annotatedStrategies.containsKey(key))
+		if (!annotatedStrategies.containsKey(key)) {
 			throw new RuntimeException();
+		}
 
 		return (T) annotatedStrategies.get(key);
 	}
@@ -60,6 +62,9 @@ public class StrategyFactory {
 
 		@Override
 		public boolean equals(Object obj) {
+			if (obj == null || !(obj instanceof StrategyKey)) {
+				return false;
+			}
 			StrategyKey key = (StrategyKey) obj;
 			return this.type == key.type && this.name.equals(key.name);
 		}

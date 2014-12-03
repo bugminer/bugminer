@@ -1,6 +1,7 @@
 package de.unistuttgart.iste.rss.bugminer.computing.vagrant;
 
 import static org.mockito.Mockito.*;
+
 import de.unistuttgart.iste.rss.bugminer.computing.MemoryQuantity;
 import de.unistuttgart.iste.rss.bugminer.model.Architecture;
 import de.unistuttgart.iste.rss.bugminer.model.Cluster;
