@@ -14,7 +14,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ProgramExecutor {
-	private Logger logger = Logger.getLogger(ProgramExecutor.class);
+	private final Logger logger = Logger.getLogger(ProgramExecutor.class);
+
+	protected ProgramExecutor() {
+		// managed bean
+	}
 
 	/**
 	 * Executes a command and verifies that it exits with code 0.

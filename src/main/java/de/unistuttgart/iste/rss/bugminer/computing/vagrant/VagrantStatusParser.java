@@ -20,6 +20,10 @@ public class VagrantStatusParser {
 			"running", NodeStatus.ONLINE,
 			"not created", NodeStatus.OFFLINE);
 
+	protected VagrantStatusParser() {
+		// managed bean
+	}
+
 	/**
 	 * Extracts the status of the output of a call to `vagrant status`. Assumes that there is only
 	 * one machine

@@ -22,18 +22,18 @@ import de.unistuttgart.iste.rss.bugminer.utils.ProgramExecutor;
 public class VagrantStrategy implements ClusterStrategy {
 	@Autowired
 	@DataDirectory
-	Path dataPath;
+	private Path dataPath;
 
 	@Autowired
-	ProgramExecutor executor;
+	private ProgramExecutor executor;
 
 	@Autowired
-	VagrantBoxes boxes;
+	private VagrantBoxes boxes;
 
 	@Autowired
-	VagrantStatusParser statusParser;
+	private VagrantStatusParser statusParser;
 
-	private Logger logger = Logger.getLogger(VagrantStrategy.class);
+	private final Logger logger = Logger.getLogger(VagrantStrategy.class);
 
 	private static final String VAGRANTFILE_TEMPLATE = "#!/usr/bin/ruby\n"
 			+ "Vagrant.configure(\"2\") do |config|\n"
@@ -44,6 +44,10 @@ public class VagrantStrategy implements ClusterStrategy {
 			+ "    v.name = \"%s\"\n"
 			+ "  end\n"
 			+ "end\n";
+
+	protected VagrantStrategy() {
+		// managed bean
+	}
 
 	@Override
 	public boolean isAvailable() {
@@ -58,7 +62,7 @@ public class VagrantStrategy implements ClusterStrategy {
 
 	@Override
 	public void initializeCluster(Cluster cluster) {
-
+		// nothing to do
 	}
 
 	@Override

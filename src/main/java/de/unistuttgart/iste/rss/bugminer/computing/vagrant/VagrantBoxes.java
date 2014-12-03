@@ -17,6 +17,10 @@ public class VagrantBoxes {
 
 	private static final Map<SystemSpecification, String> REVERSE = MapUtils.inverse(BOXES);
 
+	protected VagrantBoxes() {
+		// Managed bean
+	}
+
 	public Collection<String> getNames() {
 		return BOXES.keySet();
 	}

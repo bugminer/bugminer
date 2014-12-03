@@ -2,7 +2,7 @@ package de.unistuttgart.iste.rss.bugminer.computing;
 
 
 public final class MemoryQuantity {
-	private long bytes;
+	private final long bytes;
 
 	public static final long ONE_KB = 1000;
 	public static final long ONE_MB = ONE_KB * ONE_KB;
@@ -100,5 +100,14 @@ public final class MemoryQuantity {
 	@Override
 	public int hashCode() {
 		return Long.hashCode(bytes);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof MemoryQuantity)) {
+			return false;
+		}
+		MemoryQuantity other = (MemoryQuantity) obj;
+		return bytes == other.bytes;
 	}
 }
