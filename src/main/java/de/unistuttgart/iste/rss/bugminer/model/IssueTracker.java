@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationException;
 import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationResult;
 import de.unistuttgart.iste.rss.bugminer.bugs.IssueTrackerStrategy;
@@ -13,6 +15,8 @@ import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 
 @Entity
 public class IssueTracker {
+	@Autowired
+	private StrategyFactory strategyFactory;
 
 	@ManyToOne
 	private Project project;
@@ -28,10 +32,8 @@ public class IssueTracker {
 		this.provider = "jira";
 		this.project = new Project();
 		this.uri = "https://issues.apache.org/jira";
-		StrategyFactory factory = new StrategyFactory();
-		factory.init();
 
-		return factory.getStrategy(IssueTrackerStrategy.class, this.provider).synchronize(this);
+		return getStrategy().synchronize(this);
 	}
 
 	public Project getProject() {
@@ -64,5 +66,9 @@ public class IssueTracker {
 
 	public void setProvider(String provider) {
 		this.provider = provider;
+	}
+
+	IssueTrackerStrategy getStrategy() {
+		return strategyFactory.getStrategy(IssueTrackerStrategy.class, getProvider());
 	}
 }

@@ -1,7 +1,7 @@
 package de.unistuttgart.iste.rss.bugminer.computing;
 
 
-public class MemoryQuantity {
+public final class MemoryQuantity {
 	private long bytes;
 
 	public static final long ONE_KB = 1000;
