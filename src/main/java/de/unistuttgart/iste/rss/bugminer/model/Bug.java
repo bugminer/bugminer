@@ -1,6 +1,7 @@
 package de.unistuttgart.iste.rss.bugminer.model;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -8,6 +9,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+/**
+ * A bug report imported from an issue tracker
+ */
 @Entity
 public class Bug {
 	@ManyToOne
@@ -42,6 +46,17 @@ public class Bug {
 	private String title;
 
 	private String description;
+
+	/**
+	 * Creates a new empty {@code Bug}
+	 */
+	public Bug() {
+		labels = new ArrayList<>();
+		events = new ArrayList<>();
+		lineChanges = new ArrayList<>();
+		classifications = new ArrayList<>();
+		participants = new ArrayList<>();
+	}
 
 	public Project getProject() {
 		return project;

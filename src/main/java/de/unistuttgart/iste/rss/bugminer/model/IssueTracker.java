@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.rss.bugminer.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -13,6 +14,9 @@ import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationResult;
 import de.unistuttgart.iste.rss.bugminer.bugs.IssueTrackerStrategy;
 import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 
+/**
+ * The representation of an issue tracker software
+ */
 @Entity
 public class IssueTracker {
 	@Autowired
@@ -27,6 +31,13 @@ public class IssueTracker {
 	private String uri;
 
 	private String provider;
+
+	/**
+	 * Creates an empty {@code IssueTracker}
+	 */
+	public IssueTracker() {
+		bugs = new ArrayList<>();
+	}
 
 	public BugSynchronizationResult synchronize() throws BugSynchronizationException {
 		this.provider = "jira";

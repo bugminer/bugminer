@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.rss.bugminer.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -7,6 +8,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+/**
+ * A cluster of {@link Node}s with a common provider that manages the nodes
+ */
 @Entity
 public class Cluster {
 	@Id
@@ -19,6 +23,13 @@ public class Cluster {
 
 	@OneToMany
 	private Collection<Node> nodes;
+
+	/**
+	 * Creates an empty {@code Cluster}
+	 */
+	public Cluster() {
+		nodes = new ArrayList<>();
+	}
 
 	public Integer getId() {
 		return id;

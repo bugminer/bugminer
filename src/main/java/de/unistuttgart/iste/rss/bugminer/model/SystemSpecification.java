@@ -4,19 +4,30 @@ import javax.persistence.Embeddable;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+/**
+ * The specification of an operating system
+ */
 @Embeddable
 public class SystemSpecification {
-	private OperatingSystem operatingSystem;
+	private final OperatingSystem operatingSystem;
 
-	private Architecture architecture;
+	private final Architecture architecture;
 
-	private String distributionName;
+	private final String distributionName;
 
-	private String osVersion;
+	private final String osVersion;
 
 	public static final SystemSpecification UBUNTU_1404 = new SystemSpecification(
 			OperatingSystem.LINUX, Architecture.X86_64, "Ubuntu", "14.04");
 
+	/**
+	 * Creates a {@code SystemSpecification}
+	 *
+	 * @param operatingSystem the operating system kernel
+	 * @param architecture the processor architecture
+	 * @param distributionName the distribution for {@link OperatingSystem#LINUX}
+	 * @param osVersion the technical version number
+	 */
 	public SystemSpecification(OperatingSystem operatingSystem, Architecture architecture,
 			String distributionName, String osVersion) {
 		this.operatingSystem = operatingSystem;

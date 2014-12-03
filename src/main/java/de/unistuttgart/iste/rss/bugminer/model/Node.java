@@ -6,6 +6,9 @@ import javax.persistence.ManyToOne;
 
 import de.unistuttgart.iste.rss.bugminer.computing.MemoryQuantity;
 
+/**
+ * A computation node in a {@link Cluster} that can be connected to via ssh
+ */
 public class Node {
 	@Id
 	private Integer id;
@@ -21,6 +24,13 @@ public class Node {
 	private MemoryQuantity memory;
 
 	private int cpuCount;
+
+	/**
+	 * Creates an empty {@code Node}
+	 */
+	public Node() {
+		// empty
+	}
 
 	public Integer getId() {
 		return id;

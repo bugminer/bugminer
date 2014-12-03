@@ -31,6 +31,7 @@
 		<exclude name="UseConcurrentHashMap" />
 		<exclude name="AssignmentInOperand" />
 		<exclude name="NullAssignment" />
+		<exclude name="DefaultPackage" />
 	</rule>
 
 	<!--<rule ref="rulesets/java/coupling.xml"> -->
@@ -51,6 +52,8 @@
 		<exclude name="LongVariable" />
 		<exclude name="PackageCase" />
 		<exclude name="ShortVariable" />
+		<exclude name="ShortClassName" />
+		<exclude name="AvoidFieldNameMatchingMethodName" />
 	</rule>
 
 	<rule ref="rulesets/java/optimizations.xml">
