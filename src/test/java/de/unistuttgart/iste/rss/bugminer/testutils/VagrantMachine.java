@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 import de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantStrategy;
+import de.unistuttgart.iste.rss.bugminer.config.EntityFactory;
 import de.unistuttgart.iste.rss.bugminer.model.Cluster;
 import de.unistuttgart.iste.rss.bugminer.model.Node;
 import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
@@ -24,6 +25,9 @@ public class VagrantMachine extends ExternalResource {
 	@Autowired
 	private VagrantStrategy vagrant;
 
+	@Autowired
+	private EntityFactory entityFactory;
+
 	private Node node;
 
 	private static int nodeIndex;
@@ -31,11 +35,11 @@ public class VagrantMachine extends ExternalResource {
 	private static final Logger logger = Logger.getLogger(VagrantMachine.class.getName());
 
 	private Node createNode() {
-		Node node = new Node();
+		Node node = entityFactory.make(Node.class);
 		node.setSystemSpecification(SystemSpecification.UBUNTU_1404);
 		nodeIndex++;
 		node.setId(1);
-		Cluster cluster = new Cluster();
+		Cluster cluster = entityFactory.make(Cluster.class);
 		node.setCluster(cluster);
 		cluster.setName("unittest-" + UUID.randomUUID());
 		cluster.setProvider("vagrant");

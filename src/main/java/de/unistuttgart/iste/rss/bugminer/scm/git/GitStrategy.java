@@ -49,7 +49,9 @@ public class GitStrategy extends Object implements CodeRepoStrategy {
 				.setDestination("refs/commits/" + revision.getCommitId());
 
 		SshConfig sshConfig = node.getSshConfig();
-		URI uri = sshConfig.toURIWithoutPassword().resolve(remotePath);
+		// if remotePath is relative, it should be resolved against the home directory
+		// if it is absolute, the last resolve() call removes the ~/
+		URI uri = sshConfig.toURIWithoutPassword().resolve("~/").resolve(remotePath);
 
 		SshSessionFactory sshSessionFactory = new CustomSshConfigSessionFactory(sshConfig);
 		CredentialsProvider credentialsProvider = null;
@@ -64,6 +66,14 @@ public class GitStrategy extends Object implements CodeRepoStrategy {
 		} catch (GitAPIException e) {
 			throw new IOException(String.format("Unable to push %s at %s to %s",
 					repo, revision, uri), e);
+		}
+	}
+
+	public void checkout(Node node, String remotePath, CodeRevision revision) throws IOException {
+		try (SshConnection connection = sshConnector.connect(node.getSshConfig())) {
+			connection.executeIn(remotePath, "git", "checkout", "-f", revision.getCommitId());
+			connection.executeIn(remotePath, "git", "reset", "--hard");
+			connection.executeIn(remotePath, "git", "clean", "-fd");
 		}
 	}
 
@@ -97,7 +107,7 @@ public class GitStrategy extends Object implements CodeRepoStrategy {
 					"Only ubuntu is supported for git installation at the moment");
 		}
 
-		connection.execute("sudo", "apt-get", "install", "git");
+		connection.execute("sudo", "apt-get", "-y", "install", "git");
 
 		if (!isGitInstalled(connection)) {
 			throw new IOException("Installed git, but it is not callable afterwards");
