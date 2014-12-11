@@ -7,11 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import de.unistuttgart.iste.rss.bugminer.computing.ClusterStrategy;
 import de.unistuttgart.iste.rss.bugminer.computing.MemoryQuantity;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 
 @Entity
+@Component
+@Scope("prototype")
 public class Node {
 	public static final MemoryQuantity DEFAULT_MEMORY = MemoryQuantity.fromMB(500);
 	public static final int DEFAULT_CPU_COUNT = 1;

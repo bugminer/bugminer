@@ -22,4 +22,9 @@ public class CodeRevision {
 	public String getCommitId() {
 		return commitId;
 	}
+
+	@Override
+	public String toString() {
+		return commitId;
+	}
 }

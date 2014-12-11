@@ -5,6 +5,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope("prototype")
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"project", "name"}))
 public class CodeRepo {
