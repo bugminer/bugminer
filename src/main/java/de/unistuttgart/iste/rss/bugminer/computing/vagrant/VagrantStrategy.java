@@ -113,6 +113,7 @@ public class VagrantStrategy implements ClusterStrategy {
 		FileUtils.deleteDirectory(nodePath.toFile());
 	}
 
+	@Override
 	public SshConfig getSshConfig(Node node) throws IOException {
 		Path nodePath = getPath(node);
 		String sshConfigStr = executor.execute(nodePath, "vagrant", "ssh-config").getOutput();
@@ -128,8 +129,6 @@ public class VagrantStrategy implements ClusterStrategy {
 			throw new IllegalArgumentException("The node is not persisted yet");
 		if (node.getCluster() == null)
 			throw new IllegalArgumentException("The node does not have a cluster");
-		if (node.getCluster().getId() == null)
-			throw new IllegalArgumentException("The node's cluster is not yet persisted");
 		return dataPath.resolve("vagrant").resolve(node.getCluster().getName())
 				.resolve(node.getId().toString());
 	}
