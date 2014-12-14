@@ -25,32 +25,35 @@ import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
 public class VagrantStrategy implements ClusterStrategy {
 	@Autowired
 	@DataDirectory
-	Path dataPath;
+	private Path dataPath;
 
 	@Autowired
-	CommandExecutor executor;
+	private CommandExecutor executor;
 
 	@Autowired
-	VagrantBoxes boxes;
+	private VagrantBoxes boxes;
 
 	@Autowired
-	VagrantStatusParser statusParser;
+	private VagrantStatusParser statusParser;
 
 	@Autowired
 	SshConfigParser sshConfigParser;
 
 	private Logger logger = Logger.getLogger(VagrantStrategy.class);
 
-	private static final String VAGRANTFILE_TEMPLATE =
-			"#!/usr/bin/ruby\n" +
-					"Vagrant.configure(\"2\") do |config|\n" +
-					"  config.vm.box = \"%s\"\n" +
-					"  config.vm.provider \"virtualbox\" do |v|\n" +
-					"    v.memory = %d\n" +
-					"    v.cpus = %d\n" +
-					"    v.name = \"%s\"\n" +
-					"  end\n" +
-					"end\n";
+	private static final String VAGRANTFILE_TEMPLATE = "#!/usr/bin/ruby\n"
+			+ "Vagrant.configure(\"2\") do |config|\n"
+			+ "  config.vm.box = \"%s\"\n"
+			+ "  config.vm.provider \"virtualbox\" do |v|\n"
+			+ "    v.memory = %d\n"
+			+ "    v.cpus = %d\n"
+			+ "    v.name = \"%s\"\n"
+			+ "  end\n"
+			+ "end\n";
+
+	protected VagrantStrategy() {
+		// managed bean
+	}
 
 	@Override
 	public boolean isAvailable() {
@@ -65,15 +68,16 @@ public class VagrantStrategy implements ClusterStrategy {
 
 	@Override
 	public void initializeCluster(Cluster cluster) {
-
+		// nothing to do
 	}
 
 	@Override
 	public void initializeNode(Node node) throws IOException {
 		Path nodePath = getPath(node);
-		if (Files.exists(nodePath))
+		if (Files.exists(nodePath)) {
 			throw new IOException("The directory for the node to initialze already exists: "
 					+ nodePath);
+		}
 		Files.createDirectories(nodePath);
 
 		Files.write(nodePath.resolve("Vagrantfile"), getVagrantfileContent(node).getBytes());
@@ -82,8 +86,9 @@ public class VagrantStrategy implements ClusterStrategy {
 	@Override
 	public NodeStatus getNodeStatus(Node node) throws IOException {
 		Path nodePath = getPath(node);
-		if (!Files.exists(nodePath))
+		if (!Files.exists(nodePath)) {
 			return NodeStatus.OFFLINE;
+		}
 		String output = executor.execute(nodePath, "vagrant", "status").getOutput();
 		return statusParser.parseStatusOutput(output);
 	}
@@ -91,24 +96,27 @@ public class VagrantStrategy implements ClusterStrategy {
 	@Override
 	public void startNode(Node node) throws IOException {
 		Path nodePath = getPath(node);
-		if (!Files.exists(nodePath))
+		if (!Files.exists(nodePath)) {
 			initializeNode(node);
+		}
 		executor.execute(nodePath, "vagrant", "up");
 	}
 
 	@Override
 	public void stopNode(Node node) throws IOException {
 		Path nodePath = getPath(node);
-		if (!Files.exists(nodePath))
+		if (!Files.exists(nodePath)) {
 			return;
+		}
 		executor.execute(nodePath, "vagrant", "halt");
 	}
 
 	@Override
 	public void destroyNode(Node node) throws IOException {
 		Path nodePath = getPath(node);
-		if (!Files.exists(nodePath))
+		if (!Files.exists(nodePath)) {
 			return;
+		}
 		executor.execute(nodePath, "vagrant", "destroy", "-f");
 		FileUtils.deleteDirectory(nodePath.toFile());
 	}
@@ -125,18 +133,21 @@ public class VagrantStrategy implements ClusterStrategy {
 	}
 
 	private Path getPath(Node node) {
-		if (node.getId() == null)
+		if (node.getId() == null) {
 			throw new IllegalArgumentException("The node is not persisted yet");
-		if (node.getCluster() == null)
+		}
+		if (node.getCluster() == null) {
 			throw new IllegalArgumentException("The node does not have a cluster");
+		}
 		return dataPath.resolve("vagrant").resolve(node.getCluster().getName())
 				.resolve(node.getId().toString());
 	}
 
 	private String getVagrantfileContent(Node node) {
-		if (!boxes.hasSystem(node.getSystemSpecification()))
+		if (!boxes.hasSystem(node.getSystemSpecification())) {
 			throw new UnsupportedOperationException(
 					"There is no vagrant box for this system specification");
+		}
 
 		String boxName = boxes.getName(node.getSystemSpecification());
 		return String.format(VAGRANTFILE_TEMPLATE, boxName, node.getMemory().toMiB(),

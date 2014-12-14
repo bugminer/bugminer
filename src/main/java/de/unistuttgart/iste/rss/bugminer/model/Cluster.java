@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.rss.bugminer.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Component;
 import de.unistuttgart.iste.rss.bugminer.computing.ClusterStrategy;
 import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 
+/**
+ * A cluster of {@link Node}s with a common provider that manages the nodes
+ */
 @Component
 @Scope("prototype")
 @Entity
@@ -32,6 +36,13 @@ public class Cluster {
 
 	@OneToMany
 	private Collection<Node> nodes;
+
+	/**
+	 * Creates an empty {@code Cluster}
+	 */
+	public Cluster() {
+		nodes = new ArrayList<>();
+	}
 
 	public Integer getId() {
 		return id;

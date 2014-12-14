@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.rss.bugminer.computing;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -21,14 +22,16 @@ public interface CommandExecutor {
 	 */
 	public default ExecutionResult execute(Path workingDirectory, String... cmd) throws IOException {
 		ExecutionResult result = tryExecute(workingDirectory, cmd);
-		if (result.getExitCode() != 0)
+		if (result.getExitCode() != 0) {
 			throw new ProgramExecutionException(cmd, result);
+		}
 		return result;
 	}
 
 	/**
 	 * Executes a command and verifies that it exits with code 0.
 	 *
+	 * <p>
 	 * The working directory will be inherited.
 	 *
 	 * @param cmd the command and its arguments
@@ -43,6 +46,7 @@ public interface CommandExecutor {
 	/**
 	 * Executes a command waits until it has ended
 	 *
+	 * <p>
 	 * The working directory will be inherited.
 	 *
 	 * @param cmd the command and its arguments

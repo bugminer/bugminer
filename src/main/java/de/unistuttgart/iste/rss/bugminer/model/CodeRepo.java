@@ -8,6 +8,9 @@ import javax.persistence.UniqueConstraint;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+/**
+ * A repository in the sense of source code management
+ */
 @Component
 @Scope("prototype")
 @Entity
@@ -21,6 +24,13 @@ public class CodeRepo {
 	private String name;
 
 	private String provider;
+
+	/**
+	 * Creates an empty {@code CodeRepo}
+	 */
+	public CodeRepo() {
+		// empty
+	}
 
 	public Project getProject() {
 		return project;

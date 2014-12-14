@@ -47,7 +47,8 @@ public class LocalCommandExecutorTest {
 	}
 
 	@Test(expected = IOException.class)
-	public void testTryExecuteThrowsOnNonExistantCommand() throws IOException, InterruptedException {
+	public void testTryExecuteThrowsOnNonExistantCommand()
+			throws IOException, InterruptedException {
 		CommandExecutor executor = new LocalCommandExecutor();
 		executor.tryExecute("thisdoesnotexist");
 	}

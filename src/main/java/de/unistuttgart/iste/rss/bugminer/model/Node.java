@@ -14,11 +14,14 @@ import de.unistuttgart.iste.rss.bugminer.computing.ClusterStrategy;
 import de.unistuttgart.iste.rss.bugminer.computing.MemoryQuantity;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 
+/**
+ * A computation node in a {@link Cluster} that can be connected to via ssh
+ */
 @Entity
 @Component
 @Scope("prototype")
 public class Node {
-	public static final MemoryQuantity DEFAULT_MEMORY = MemoryQuantity.fromMB(500);
+	public static final MemoryQuantity DEFAULT_MEMORY = MemoryQuantity.fromMb(500);
 	public static final int DEFAULT_CPU_COUNT = 1;
 
 	@Id
@@ -35,6 +38,13 @@ public class Node {
 	private MemoryQuantity memory = DEFAULT_MEMORY;
 
 	private int cpuCount = DEFAULT_CPU_COUNT;
+
+	/**
+	 * Creates an empty {@code Node}
+	 */
+	public Node() {
+		// empty
+	}
 
 	public Integer getId() {
 		return id;

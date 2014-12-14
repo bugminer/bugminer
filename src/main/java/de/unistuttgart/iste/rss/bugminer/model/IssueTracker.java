@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.rss.bugminer.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -8,16 +9,22 @@ import javax.persistence.OneToMany;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationException;
 import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationResult;
 import de.unistuttgart.iste.rss.bugminer.bugs.IssueTrackerStrategy;
 import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 
+/**
+ * The representation of an issue tracker software
+ */
 @Component
 @Scope("prototype")
 @Entity
 public class IssueTracker {
+	@Autowired
+	private StrategyFactory strategyFactory;
 
 	@ManyToOne
 	private Project project;
@@ -29,14 +36,19 @@ public class IssueTracker {
 
 	private String provider;
 
+	/**
+	 * Creates an empty {@code IssueTracker}
+	 */
+	public IssueTracker() {
+		bugs = new ArrayList<>();
+	}
+
 	public BugSynchronizationResult synchronize() throws BugSynchronizationException {
 		this.provider = "jira";
 		this.project = new Project();
 		this.uri = "https://issues.apache.org/jira";
-		StrategyFactory factory = new StrategyFactory();
-		factory.init();
 
-		return factory.getStrategy(IssueTrackerStrategy.class, this.provider).synchronize(this);
+		return getStrategy().synchronize(this);
 	}
 
 	public Project getProject() {
@@ -69,5 +81,9 @@ public class IssueTracker {
 
 	public void setProvider(String provider) {
 		this.provider = provider;
+	}
+
+	IssueTrackerStrategy getStrategy() {
+		return strategyFactory.getStrategy(IssueTrackerStrategy.class, getProvider());
 	}
 }

@@ -18,6 +18,10 @@ import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
 @Configuration
 @ComponentScan("de.unistuttgart.iste.rss.bugminer")
 public class AppConfig {
+	protected AppConfig() {
+		// managed bean
+	}
+
 	@Bean
 	public AsynchronousJiraRestClientFactory getJiraRestClientFactory() {
 		return new AsynchronousJiraRestClientFactory();

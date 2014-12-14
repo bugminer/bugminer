@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.rss.bugminer.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Column;
@@ -9,6 +10,9 @@ import javax.persistence.OneToMany;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+/**
+ * A software project with code and bugs
+ */
 @Component
 @Scope("prototype")
 @Entity
@@ -30,6 +34,17 @@ public class Project {
 
 	@OneToMany
 	private Collection<BugStatus> bugStatuses;
+
+	/**
+	 * Creates an empty {@code Project}
+	 */
+	public Project() {
+		bugs = new ArrayList<>();
+		labels = new ArrayList<>();
+		issueTrackers = new ArrayList<>();
+		codeRepos = new ArrayList<>();
+		bugStatuses = new ArrayList<>();
+	}
 
 	public Collection<Bug> getBugs() {
 		return bugs;

@@ -7,8 +7,6 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.ImmutableMap;
 
-import de.unistuttgart.iste.rss.bugminer.model.Architecture;
-import de.unistuttgart.iste.rss.bugminer.model.OperatingSystem;
 import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
 import de.unistuttgart.iste.rss.bugminer.utils.MapUtils;
 
@@ -18,6 +16,10 @@ public class VagrantBoxes {
 			"ubuntu/trusty64", SystemSpecification.UBUNTU_1404);
 
 	private static final Map<SystemSpecification, String> REVERSE = MapUtils.inverse(BOXES);
+
+	protected VagrantBoxes() {
+		// Managed bean
+	}
 
 	public Collection<String> getNames() {
 		return BOXES.keySet();
@@ -34,7 +36,7 @@ public class VagrantBoxes {
 	public String getName(SystemSpecification spec) {
 		return REVERSE.get(spec);
 	}
-	
+
 	public SystemSpecification getSpecification(String boxName) {
 		return BOXES.get(boxName);
 	}

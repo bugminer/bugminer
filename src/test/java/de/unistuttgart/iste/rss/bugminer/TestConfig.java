@@ -16,11 +16,13 @@ public class TestConfig extends AppConfig {
 	private Path dataPath;
 
 	@Override
-	@Bean(destroyMethod="destroy") @DataDirectory
+	@Bean(destroyMethod = "destroy")
+	@DataDirectory
 	public Path getDataPath() {
 		try {
-			if (dataPath == null)
+			if (dataPath == null) {
 				dataPath = new SelfDestroyingPathBean(Files.createTempDirectory("it"));
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
