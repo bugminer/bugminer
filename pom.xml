@@ -239,6 +239,13 @@
 			<version>0.1.51</version>
 		</dependency>
 
+		<!-- jira client includes a fork of httpclient, so make sure jgit does not override it -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.1-atlassian-2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
