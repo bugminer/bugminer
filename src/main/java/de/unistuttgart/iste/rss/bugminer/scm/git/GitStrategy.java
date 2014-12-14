@@ -21,10 +21,7 @@ import de.unistuttgart.iste.rss.bugminer.computing.SshConnector;
 import de.unistuttgart.iste.rss.bugminer.model.CodeRepo;
 import de.unistuttgart.iste.rss.bugminer.model.CodeRevision;
 import de.unistuttgart.iste.rss.bugminer.model.Node;
-import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
 import de.unistuttgart.iste.rss.bugminer.scm.CodeRepoStrategy;
-import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
-import de.unistuttgart.iste.rss.bugminer.utils.ProgramExecutionException;
 
 @Strategy(type = CodeRepoStrategy.class, name = "git")
 public class GitStrategy extends Object implements CodeRepoStrategy {
@@ -37,6 +34,9 @@ public class GitStrategy extends Object implements CodeRepoStrategy {
 
 	@Autowired
 	private SshConnector sshConnector;
+
+	@Autowired
+	private RemoteGitHelper remoteGit;
 
 	@Override
 	public void pushTo(CodeRepo repo, Node node, String remotePath, CodeRevision revision)
@@ -73,9 +73,7 @@ public class GitStrategy extends Object implements CodeRepoStrategy {
 
 	private void checkout(Node node, String remotePath, CodeRevision revision) throws IOException {
 		try (SshConnection connection = sshConnector.connect(node.getSshConfig())) {
-			connection.executeIn(remotePath, "git", "checkout", "-f", revision.getCommitId());
-			connection.executeIn(remotePath, "git", "reset", "--hard");
-			connection.executeIn(remotePath, "git", "clean", "-fd");
+			remoteGit.checkoutHard(connection, remotePath, revision.getCommitId());
 		}
 	}
 
@@ -88,42 +86,10 @@ public class GitStrategy extends Object implements CodeRepoStrategy {
 		return dataDir.resolve("scm").resolve(repo.getProject().getName()).resolve(repo.getName());
 	}
 
-	private boolean isGitInstalled(SshConnection connection) throws IOException {
-		ExecutionResult result = connection.tryExecute("which", "git");
-		if (result.getExitCode() == 0) {
-			return true;
-		}
-		if (result.getExitCode() == 1) {
-			return false;
-		}
-		throw new ProgramExecutionException(new String[] {"which", "git"}, result);
-	}
-
-	private void installGit(Node node, SshConnection connection) throws IOException {
-		if (isGitInstalled(connection)) {
-			return;
-		}
-
-		if (!SystemSpecification.UBUNTU.equals(node.getSystemSpecification().getDistributionName())) {
-			throw new UnsupportedOperationException(
-					"Only ubuntu is supported for git installation at the moment");
-		}
-
-		connection.execute("sudo", "apt-get", "-y", "install", "git");
-
-		if (!isGitInstalled(connection)) {
-			throw new IOException("Installed git, but it is not callable afterwards");
-		}
-	}
-
 	private void initRepository(Node node, String remotePath) throws IOException {
-		SshConnection connection = sshConnector.connect(node.getSshConfig());
-		installGit(node, connection);
-
-		// Make the directory if it does not exist. Does not fail if it exists.
-		connection.execute("mkdir", "-p", remotePath);
-
-		// Executing git init in an existing repository is safe (see man git init)
-		connection.executeIn(remotePath, "git", "init");
+		try (SshConnection connection = sshConnector.connect(node.getSshConfig())) {
+			remoteGit.installGit(connection, node.getSystemSpecification());
+			remoteGit.initEmptyRepository(connection, remotePath);
+		}
 	}
 }
