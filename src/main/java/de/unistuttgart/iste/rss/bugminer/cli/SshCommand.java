@@ -24,8 +24,12 @@ public class SshCommand implements CommandMarker {
 		return true;
 	}
 
+	protected SshCommand() {
+		// managed bean
+	}
+
 	@CliCommand(value = "ssh", help = "Connect to a ssh server")
-	public String simple(
+	public String simple( // NOPMD - it suggest to use an object for parameters
 			@CliOption(key = "host", mandatory = true, help = "remote host name") final String host,
 			@CliOption(key = "port", unspecifiedDefaultValue = "22") final int port,
 			@CliOption(key = "user", mandatory = true, help = "remote user name") final String user,

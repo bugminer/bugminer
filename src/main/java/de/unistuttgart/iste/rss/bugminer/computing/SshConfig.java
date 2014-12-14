@@ -138,7 +138,7 @@ public class SshConfig {
 	 *
 	 * @return true to verify the host key, false otherwise
 	 */
-	public boolean getVerifyHostKey() {
+	public boolean getVerifyHostKey() { // NOPMD it suggests isVerifyHostKey which sounds even worse
 		return verifyHostKey;
 	}
 
@@ -156,7 +156,9 @@ public class SshConfig {
 			// Path must not be empty because that would produce invalid uris with resolve()
 			return new URI("ssh", userInfo, getHost(), getPort(), "/", "", "");
 		} catch (URISyntaxException e) {
-			throw new RuntimeException("Failed to build uri for ssh config", e);
+			// This really should not happen, and if it does, there is something wrong with the
+			// properties in this object
+			throw new IllegalStateException("Failed to build uri for ssh config", e);
 		}
 	}
 

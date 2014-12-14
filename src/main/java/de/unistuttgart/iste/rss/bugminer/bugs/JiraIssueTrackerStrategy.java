@@ -35,6 +35,10 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 	@Autowired
 	private JiraRestClientFactory factory;
 
+	protected JiraIssueTrackerStrategy() {
+		// managed bean
+	}
+
 	/**
 	 * Synchronizes with the by issueTracker indicated remote Jira installation
 	 */
@@ -66,9 +70,10 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 			bug.setReportTime(reportTime);
 
 			Collection<Label> labels = new HashSet<Label>();
-			for (String label : issue.getLabels()) {
-				// TODO check if labels exist and assign them
-			}
+			// TODO check if labels exist and assign them
+			/*
+			 * for (String label : issue.getLabels()) { }
+			 */
 			bug.setLabels(labels);
 
 			bug.setTitle(issue.getSummary());

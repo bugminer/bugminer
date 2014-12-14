@@ -8,6 +8,10 @@ import net.schmizz.sshj.SSHClient;
 
 @Component
 public class SshConnector {
+	protected SshConnector() {
+		// managed bean
+	}
+
 	public SshConnection connect(SshConfig config) throws IOException {
 		return new SshConnection(config, new SSHClient());
 	}

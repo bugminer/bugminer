@@ -18,5 +18,5 @@ public interface IssueTrackerStrategy {
 	 * @return BugSynchronizationResult lists all fetched bugs
 	 * @throws BugSynchronizationException
 	 */
-	public Collection<Bug> fetch(IssueTracker repository) throws IOException;
+	Collection<Bug> fetch(IssueTracker repository) throws IOException;
 }
