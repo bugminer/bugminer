@@ -75,7 +75,12 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 			bug.setDescription(issue.getDescription());
 			bug.setProject(issueTracker.getProject());
 			bug.setRepository(issueTracker);
-			bug.setFixed(issue.getResolution().getName().equals("Fixed"));
+
+			if (issue.getResolution() != null) {
+				bug.setFixed(issue.getResolution().getName().equals("Fixed"));
+			} else {
+				bug.setFixed(false); // not resolved yet
+			}
 			// TODO: events, participants, jsonDetails
 
 			fetchedBugs.add(bug);
