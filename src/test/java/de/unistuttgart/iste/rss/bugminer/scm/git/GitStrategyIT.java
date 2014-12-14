@@ -52,8 +52,6 @@ public class GitStrategyIT {
 	@Autowired
 	private SshConnector connector;
 
-	private Path repoPath;
-
 	@Before
 	public void ensureVagrantIsAvailable() {
 		assumeTrue("Vagrant is not installed on this system", vagrantStrategy.isAvailable());
@@ -61,7 +59,7 @@ public class GitStrategyIT {
 
 	@Before
 	public void setUpGitRepo() throws IOException, GitAPIException {
-		repoPath = dataDirectory.resolve("scm").resolve("project").resolve("main");
+		Path repoPath = dataDirectory.resolve("scm").resolve("project").resolve("main");
 		SimpleRepo.bareCloneTo(repoPath);
 	}
 

@@ -24,7 +24,7 @@ import de.unistuttgart.iste.rss.bugminer.model.Node;
 import de.unistuttgart.iste.rss.bugminer.scm.CodeRepoStrategy;
 
 @Strategy(type = CodeRepoStrategy.class, name = "git")
-public class GitStrategy extends Object implements CodeRepoStrategy {
+public class GitStrategy implements CodeRepoStrategy {
 	@Autowired
 	private GitFactory gitFactory;
 
@@ -37,6 +37,10 @@ public class GitStrategy extends Object implements CodeRepoStrategy {
 
 	@Autowired
 	private RemoteGitHelper remoteGit;
+
+	protected GitStrategy() {
+		// managed bean
+	}
 
 	@Override
 	public void pushTo(CodeRepo repo, Node node, String remotePath, CodeRevision revision)

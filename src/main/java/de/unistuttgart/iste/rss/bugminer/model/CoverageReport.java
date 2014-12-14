@@ -17,5 +17,26 @@ public class CoverageReport {
 	@OneToOne(optional = false)
 	private TestRun testRun;
 
+	/**
+	 * Creates an empty {@code CoverageReport}
+	 */
+	public CoverageReport() {
+		// empty
+	}
 
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public TestRun getTestRun() {
+		return testRun;
+	}
+
+	public void setTestRun(TestRun testRun) {
+		this.testRun = testRun;
+	}
 }

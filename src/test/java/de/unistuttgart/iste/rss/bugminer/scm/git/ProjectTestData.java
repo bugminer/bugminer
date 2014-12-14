@@ -8,9 +8,13 @@ import de.unistuttgart.iste.rss.bugminer.model.Project;
 /**
  * Provides test instances of {@link Project} and {@link CodeRepo}
  */
-public class ProjectTestData {
+public final class ProjectTestData {
 	public static final String PROJECT_NAME = "mycoolproject";
 	public static final String CODE_REPO_NAME = "main";
+
+	private ProjectTestData() {
+		// utility class
+	}
 
 	/**
 	 * Creates a project with its name set to the constant in this class

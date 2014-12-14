@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SshConfigParser {
-	private static int DEFAULT_PORT = 22;
+	private static final int DEFAULT_PORT = 22;
 
 	/**
 	 * Parses a single host configuration
@@ -88,9 +88,9 @@ public class SshConfigParser {
 				config.user = value;
 				break;
 			case "StrictHostKeyChecking":
-				if (value.equals("no")) {
+				if ("no".equalsIgnoreCase(value)) {
 					config.verifyHostKey = false;
-				} else if (value.equals("yes")) {
+				} else if ("yes".equalsIgnoreCase(value)) {
 					config.verifyHostKey = true;
 				} else {
 					throw new InvalidSshConfigException(String.format(

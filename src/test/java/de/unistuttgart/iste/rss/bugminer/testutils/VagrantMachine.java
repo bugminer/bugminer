@@ -32,7 +32,7 @@ public class VagrantMachine extends ExternalResource {
 
 	private static int nodeIndex;
 
-	private static final Logger logger = Logger.getLogger(VagrantMachine.class.getName());
+	private final Logger logger = Logger.getLogger(VagrantMachine.class.getName());
 
 	private Node createNode() {
 		Node node = entityFactory.make(Node.class);

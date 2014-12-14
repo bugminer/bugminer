@@ -16,7 +16,7 @@ public class SshConfigParserTest {
 	@InjectMocks
 	SshConfigParser parser;
 
-	private static String VAGRANT_CONFIG = "Host default\n"
+	private static final String VAGRANT_CONFIG = "Host default\n"
 			+ "  HostName 127.0.0.1\n"
 			+ "  User vagrant\n"
 			+ "  Port 2222\n"
@@ -27,7 +27,7 @@ public class SshConfigParserTest {
 			+ "  IdentitiesOnly yes\n"
 			+ "  LogLevel FATAL\n";
 
-	private static String PASSWORD_CONFIG = "HostName 127.0.0.1\n"
+	private static final String PASSWORD_CONFIG = "HostName 127.0.0.1\n"
 			+ "User vagrant\n"
 			+ "Port 2222\n"
 			+ "Password abc";
@@ -41,7 +41,7 @@ public class SshConfigParserTest {
 	public void testVagrantConfig() {
 		assumeTrue("Unix identitfy file path", SystemUtils.IS_OS_UNIX);
 		SshConfig config = parser.parse(VAGRANT_CONFIG);
-		assertThat(config.getHost(), is("127.0.0.1"));
+		assertThat(config.getHost(), is("127.0.0.1")); // NOPMD - hard-coded ip
 		assertThat(config.getUser(), is("vagrant"));
 		assertThat(config.getPort(), is(2222));
 		assertThat(config.getKeyFile(), is(Paths.get("/home/jan/.vagrant.d/insecure_private_key")));

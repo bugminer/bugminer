@@ -51,9 +51,9 @@ public class GitStrategyTest {
 	@Mock
 	private PushCommand pushCommand;
 
-	private CodeRepo repo = ProjectTestData.createCodeRepo();
+	private final CodeRepo repo = ProjectTestData.createCodeRepo();
 
-	private Node node = VagrantTestData.prepareNode();
+	private final Node node = VagrantTestData.prepareNode();
 
 	@Mock
 	private SshConnection sshConnection;
@@ -63,7 +63,7 @@ public class GitStrategyTest {
 	@DataDirectory
 	public TemporaryDirectory dataDirectory = new TemporaryDirectory();
 
-	private CodeRevision revision = new CodeRevision(repo, REVISION);
+	private final CodeRevision revision = new CodeRevision(repo, REVISION);
 
 	private static final String REMOTE_PATH = "remote/path";
 	private static final String REVISION = "the-remote-revision";

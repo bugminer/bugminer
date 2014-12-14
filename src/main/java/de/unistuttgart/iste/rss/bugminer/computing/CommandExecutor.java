@@ -19,7 +19,7 @@ public interface CommandExecutor {
 	 * @throws IOException Failed to start the program or read the outputs
 	 * @throws ProgramExecutionException the exit code is not zero
 	 */
-	public default ExecutionResult execute(Path workingDirectory, String... cmd)
+	default ExecutionResult execute(Path workingDirectory, String... cmd)
 			throws IOException {
 		ExecutionResult result = tryExecute(workingDirectory, cmd);
 		if (result.getExitCode() != 0) {
@@ -39,7 +39,7 @@ public interface CommandExecutor {
 	 * @throws IOException Failed to start the program or read the outputs
 	 * @throws ProgramExecutionException the exit code is not zero
 	 */
-	public default ExecutionResult execute(String... cmd) throws IOException {
+	default ExecutionResult execute(String... cmd) throws IOException {
 		return execute(null, cmd);
 	}
 
@@ -53,7 +53,7 @@ public interface CommandExecutor {
 	 * @return the result containing exit code, stdout and stderr
 	 * @throws IOException Failed to start the program or read the outputs
 	 */
-	public default ExecutionResult tryExecute(String... cmd) throws IOException {
+	default ExecutionResult tryExecute(String... cmd) throws IOException {
 		return tryExecute(null, cmd);
 	}
 
@@ -65,5 +65,5 @@ public interface CommandExecutor {
 	 * @return the result containing exit code, stdout and stderr
 	 * @throws IOException Failed to start the program or read the outputs
 	 */
-	public ExecutionResult tryExecute(Path workingDirectory, String... cmd) throws IOException;
+	ExecutionResult tryExecute(Path workingDirectory, String... cmd) throws IOException;
 }

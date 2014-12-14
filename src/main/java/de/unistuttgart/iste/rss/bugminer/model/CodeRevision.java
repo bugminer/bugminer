@@ -6,9 +6,9 @@ import javax.persistence.ManyToOne;
 @Embeddable
 public class CodeRevision {
 	@ManyToOne
-	private CodeRepo codeRepo;
+	private final CodeRepo codeRepo;
 
-	private String commitId;
+	private final String commitId;
 
 	public CodeRevision(CodeRepo codeRepo, String commitId) {
 		this.codeRepo = codeRepo;

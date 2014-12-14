@@ -10,6 +10,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class GitFactory {
+	protected GitFactory() {
+		// managed bean
+	}
+
 	public Git createGit(Repository repository) {
 		return new Git(repository);
 	}

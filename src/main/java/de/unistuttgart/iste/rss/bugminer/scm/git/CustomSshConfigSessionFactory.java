@@ -14,7 +14,7 @@ import com.jcraft.jsch.UserInfo;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 
 public class CustomSshConfigSessionFactory extends JschConfigSessionFactory {
-	private SshConfig config;
+	private final SshConfig config;
 
 	public CustomSshConfigSessionFactory(SshConfig config) {
 		this.config = config;
@@ -43,17 +43,17 @@ public class CustomSshConfigSessionFactory extends JschConfigSessionFactory {
 
 		@Override
 		public void add(HostKey hostkey, UserInfo ui) {
-
+			// nothing to do
 		}
 
 		@Override
 		public void remove(String host, String type) {
-
+			// nothing to do
 		}
 
 		@Override
 		public void remove(String host, String type, byte[] key) {
-
+			// nothing to do
 		}
 
 		@Override

@@ -14,6 +14,10 @@ import de.unistuttgart.iste.rss.bugminer.utils.ProgramExecutionException;
  */
 @Component
 public class RemoteGitHelper {
+	protected RemoteGitHelper() {
+		// managed bean
+	}
+
 	/**
 	 * Makes sure git is installed on the remote system
 	 *

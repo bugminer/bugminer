@@ -16,7 +16,11 @@ import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
  */
 @Component
 public class LocalCommandExecutor implements CommandExecutor {
-	private Logger logger = Logger.getLogger(LocalCommandExecutor.class);
+	private final Logger logger = Logger.getLogger(LocalCommandExecutor.class);
+
+	protected LocalCommandExecutor() {
+		// managed bean
+	}
 
 	@Override
 	public ExecutionResult tryExecute(Path workingDirectory, String... cmd) throws IOException {

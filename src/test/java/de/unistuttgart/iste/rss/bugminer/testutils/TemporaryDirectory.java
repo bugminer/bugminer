@@ -28,7 +28,7 @@ import org.mockito.Spy;
  * This is intended to be used with the {@link Spy} annotation and {@link InjectMocks}:
  *
  * <p>
- * 
+ *
  * <pre>
  * {
  * 	&#064;code
@@ -40,8 +40,8 @@ import org.mockito.Spy;
  * </pre>
  */
 public class TemporaryDirectory implements TestRule, Path {
-	private TemporaryFolder tempFolder = new TemporaryFolder();
-	private Path path;
+	private final TemporaryFolder tempFolder = new TemporaryFolder();
+	private final Path path;
 
 	@Override
 	public Statement apply(Statement base, Description description) {

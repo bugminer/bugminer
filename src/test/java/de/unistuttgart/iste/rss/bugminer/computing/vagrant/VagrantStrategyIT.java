@@ -47,7 +47,7 @@ public class VagrantStrategyIT {
 			assertThat(strategy.getNodeStatus(node), is(NodeStatus.ONLINE));
 
 			SshConfig sshConfig = strategy.getSshConfig(node);
-			assertThat(sshConfig.getHost(), is("127.0.0.1"));
+			assertThat(sshConfig.getHost(), is("127.0.0.1")); // NOPMD hard-coded ip address
 
 			SshConnection connection = sshConnector.connect(sshConfig);
 			assertThat(connection.execute(Paths.get("/usr/lib"), "pwd").getOutput(),

@@ -8,13 +8,13 @@ import de.unistuttgart.iste.rss.bugminer.model.IssueTracker;
 public interface IssueTrackerStrategy {
 
 	/**
-	 * Synchronizes a remote issue tracker with the local database
-	 * (i.e. fetching the issues from the remote issue tracker)
-	 * 
+	 * Synchronizes a remote issue tracker with the local database (i.e. fetching the issues from
+	 * the remote issue tracker)
+	 *
 	 * @param IssueTracker the issue tracker to synchronize
 	 * @return BugSynchronizationResult lists all updated and new bugs
 	 * @throws BugSynchronizationException
 	 */
-	public BugSynchronizationResult synchronize(IssueTracker repository)
+	BugSynchronizationResult synchronize(IssueTracker repository)
 			throws BugSynchronizationException;
 }

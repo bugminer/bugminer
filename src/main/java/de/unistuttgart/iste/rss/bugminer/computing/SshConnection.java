@@ -22,7 +22,7 @@ import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
  * A connection to a ssh server
  */
 public class SshConnection implements AutoCloseable, CommandExecutor {
-	private SSHClient client;
+	private final SSHClient client;
 
 	/**
 	 * Connects to a ssh server
@@ -64,7 +64,7 @@ public class SshConnection implements AutoCloseable, CommandExecutor {
 	}
 
 	private static class ShellSession implements InteractiveSession {
-		private Shell shell;
+		private final Shell shell;
 
 		public ShellSession(Shell shell) {
 			this.shell = shell;

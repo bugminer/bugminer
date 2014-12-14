@@ -1,6 +1,9 @@
 package de.unistuttgart.iste.rss.bugminer.testutils.matchers;
 
-public class Matchers {
+public final class Matchers {
+	private Matchers() {
+		// utility class
+	}
 
 	public static IsOptional<Object> isPresent() {
 		return IsOptional.isPresent();

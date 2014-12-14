@@ -7,16 +7,13 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-
-
 /**
  * Provides matchers for the {@link Optional} values.
  *
  * @param <T> type of value in optional
  * @see Optional
  */
-public class IsOptional<T> extends TypeSafeMatcher<Optional<? extends T>> {
-
+public final class IsOptional<T> extends TypeSafeMatcher<Optional<? extends T>> {
 	private final boolean someExpected;
 	private final Optional<T> expected;
 	private final Optional<Matcher<T>> matcher;

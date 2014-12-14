@@ -4,7 +4,7 @@ public class InvalidSshConfigException extends RuntimeException {
 	private static final long serialVersionUID = 6795496222100026267L;
 
 	public InvalidSshConfigException() {
-
+		super();
 	}
 
 	public InvalidSshConfigException(String message) {

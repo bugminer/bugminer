@@ -10,8 +10,8 @@ import de.unistuttgart.iste.rss.bugminer.model.Bug;
  */
 public class BugSynchronizationResult {
 
-	private Collection<Bug> newBugs;
-	private Collection<Bug> updatedBugs;
+	private final Collection<Bug> newBugs;
+	private final Collection<Bug> updatedBugs;
 
 	public BugSynchronizationResult(Collection<Bug> newBugs, Collection<Bug> updatedBugs) {
 		this.newBugs = newBugs;

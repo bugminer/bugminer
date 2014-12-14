@@ -4,7 +4,11 @@ import java.io.IOException;
 
 import org.springframework.shell.Bootstrap;
 
-public class CommandLineApplication {
+public final class CommandLineApplication {
+	private CommandLineApplication() {
+		// static class
+	}
+
 	public static void main(String[] args) throws IOException {
 		Bootstrap.main(args);
 	}

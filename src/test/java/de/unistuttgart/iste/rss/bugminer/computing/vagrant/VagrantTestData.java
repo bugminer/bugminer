@@ -12,7 +12,7 @@ import de.unistuttgart.iste.rss.bugminer.model.Node;
 import de.unistuttgart.iste.rss.bugminer.model.OperatingSystem;
 import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
 
-public class VagrantTestData {
+public final class VagrantTestData {
 	public static final String BOX_NAME = "thebox";
 	public static final String CLUSTER_NAME = "thecluster";
 	public static final int NODE_ID = 123;
@@ -22,9 +22,13 @@ public class VagrantTestData {
 	public static final SshConfig SSH_CONFIG =
 			new SshConfig("localhost", "sshuser").withPassword("topsecret");
 
+	private VagrantTestData() {
+		// utility class
+	}
+
 	/**
 	 * Creates a node with properties assigned to the constants in this class
-	 * 
+	 *
 	 * @return the node
 	 */
 	public static Node prepareNode() {

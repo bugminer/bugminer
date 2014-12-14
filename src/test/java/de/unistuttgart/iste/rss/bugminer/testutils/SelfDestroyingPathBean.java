@@ -18,7 +18,7 @@ import org.apache.commons.io.FileUtils;
  * A wrapper around a {@link Path} providing a {@link #destroy()} method that deletes the directory
  */
 public class SelfDestroyingPathBean implements Path {
-	private Path path;
+	private final Path path;
 
 	public SelfDestroyingPathBean(Path path) {
 		this.path = path;

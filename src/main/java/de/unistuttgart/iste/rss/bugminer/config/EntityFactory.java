@@ -9,6 +9,10 @@ public class EntityFactory {
 	@Autowired
 	private ApplicationContext applicationContext;
 
+	protected EntityFactory() {
+		// managed bean
+	}
+
 	public <T> T make(Class<T> entityClass) {
 		return applicationContext.getBean(entityClass);
 	}
