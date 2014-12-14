@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.ExternalResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -49,6 +50,10 @@ public class VagrantMachine extends ExternalResource {
 
 	@Override
 	protected void before() throws Throwable {
+		if (!vagrant.isAvailable()) {
+			throw new AssumptionViolatedException("Vagrant is required, but not installed");
+		}
+
 		try {
 			node = createNode();
 			vagrant.initializeNode(node);
