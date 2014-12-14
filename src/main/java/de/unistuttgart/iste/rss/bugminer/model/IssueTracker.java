@@ -1,11 +1,8 @@
 package de.unistuttgart.iste.rss.bugminer.model;
 
-<<<<<<< HEAD
-import java.util.ArrayList;
-=======
 import java.io.IOException;
 import java.net.URI;
->>>>>>> 915b81beaa206be0eedcb219ff24aa0cf8796116
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.Entity;
@@ -46,11 +43,7 @@ public class IssueTracker {
 		bugs = new ArrayList<>();
 	}
 
-	public BugSynchronizationResult synchronize() throws BugSynchronizationException {
-		this.provider = "jira";
-		this.project = new Project();
-		this.uri = "https://issues.apache.org/jira";
-
+	public Collection<Bug> synchronize() throws IOException {
 		return getStrategy().fetch(this);
 	}
 
