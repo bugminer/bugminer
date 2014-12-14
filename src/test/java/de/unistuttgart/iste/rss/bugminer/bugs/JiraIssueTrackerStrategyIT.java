@@ -1,8 +1,9 @@
 package de.unistuttgart.iste.rss.bugminer.bugs;
 
-import static de.unistuttgart.iste.rss.bugminer.testutils.matchers.Matchers.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+
+import static de.unistuttgart.iste.rss.bugminer.testutils.matchers.Matchers.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -73,8 +74,7 @@ public class JiraIssueTrackerStrategyIT {
 	public void testFetch() throws IOException {
 		Collection<Bug> result = strategy.fetch(issueTracker);
 
-		Optional<Bug> optionalBug =
-				result.stream()
+		Optional<Bug> optionalBug = result.stream()
 				.filter(bug -> bug.getTitle().equals(BUG_SUMMARY))
 				.findFirst();
 
