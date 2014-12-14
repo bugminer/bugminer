@@ -14,9 +14,9 @@ public class VagrantStatusParserTest {
 	@InjectMocks
 	VagrantStatusParser parser;
 
-	private static final String OUTPUT = "Current machine states:\n\n"
-			+ "default                   %s (virtualbox)\n\n"
-			+ "The VM is powered off. To restart the VM, simply run `vagrant up`\n";
+	private static final String OUTPUT = "Current machine states:%n%n"
+			+ "default                   %s (virtualbox)%n%n"
+			+ "The VM is powered off. To restart the VM, simply run `vagrant up`%n";
 
 	@Before
 	public void setUp() {

@@ -19,15 +19,15 @@ public class ProgramExecutionException extends IOException {
 	 * @param result the command's result
 	 */
 	public ProgramExecutionException(String[] command, ExecutionResult result) {
-		super(String.format("The command `%s` failed with exit code %d.\nstdout:\n%s"
-				+ "\n\nstderr:\n%s", StringUtils.join(command, " "), result.getExitCode(),
+		super(String.format("The command `%s` failed with exit code %d.%nstdout:%n%s"
+				+ "%n%nstderr:%n%s", StringUtils.join(command, " "), result.getExitCode(),
 				result.getOutput(), result.getErrorOutput()));
 		this.result = result;
 	}
 
 	/**
 	 * Gets the command's result
-	 * 
+	 *
 	 * @return the result
 	 */
 	public ExecutionResult getResult() {

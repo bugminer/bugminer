@@ -41,15 +41,15 @@ public class VagrantStrategy implements ClusterStrategy {
 
 	private final Logger logger = Logger.getLogger(VagrantStrategy.class);
 
-	private static final String VAGRANTFILE_TEMPLATE = "#!/usr/bin/ruby\n"
-			+ "Vagrant.configure(\"2\") do |config|\n"
-			+ "  config.vm.box = \"%s\"\n"
-			+ "  config.vm.provider \"virtualbox\" do |v|\n"
-			+ "    v.memory = %d\n"
-			+ "    v.cpus = %d\n"
-			+ "    v.name = \"%s\"\n"
-			+ "  end\n"
-			+ "end\n";
+	private static final String VAGRANTFILE_TEMPLATE = "#!/usr/bin/ruby%n"
+			+ "Vagrant.configure(\"2\") do |config|%n"
+			+ "  config.vm.box = \"%s\"%n"
+			+ "  config.vm.provider \"virtualbox\" do |v|%n"
+			+ "    v.memory = %d%n"
+			+ "    v.cpus = %d%n"
+			+ "    v.name = \"%s\"%n"
+			+ "  end%n"
+			+ "end%n";
 
 	protected VagrantStrategy() {
 		// managed bean
