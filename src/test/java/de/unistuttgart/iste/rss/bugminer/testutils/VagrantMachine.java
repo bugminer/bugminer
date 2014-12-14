@@ -38,7 +38,7 @@ public class VagrantMachine extends ExternalResource {
 		Node node = entityFactory.make(Node.class);
 		node.setSystemSpecification(SystemSpecification.UBUNTU_1404);
 		nodeIndex++;
-		node.setId(1);
+		node.setId(nodeIndex);
 		Cluster cluster = entityFactory.make(Cluster.class);
 		node.setCluster(cluster);
 		cluster.setName("unittest-" + UUID.randomUUID());
