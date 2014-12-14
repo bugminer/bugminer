@@ -52,14 +52,15 @@ public class JiraIssueTrackerStrategyTest {
 	@Mock
 	Issue issue1;
 
+	@Mock
+	private Promise<SearchResult> promise;
+
 	IssueTracker issueTracker;
 
 	Collection<Issue> issues;
 
 	/**
 	 * Sets up issue tracker, mocks and issue collection
-	 *
-	 * @throws URISyntaxException
 	 */
 	@Before
 	public void init() throws URISyntaxException {
@@ -79,7 +80,6 @@ public class JiraIssueTrackerStrategyTest {
 
 		JiraRestClient client = mock(JiraRestClient.class);
 		SearchRestClient searchClient = mock(SearchRestClient.class);
-		Promise<SearchResult> promise = mock(Promise.class);
 		SearchResult searchResult = mock(SearchResult.class);
 
 		when(factory.create(eq(issueTracker.getUri()),
@@ -89,7 +89,7 @@ public class JiraIssueTrackerStrategyTest {
 		when(searchClient.searchJql(eq("project=" + issueTracker.getProject().getName()),
 				org.mockito.Matchers.isA(Integer.class),
 				org.mockito.Matchers.isA(Integer.class),
-				anySet())).thenReturn(promise);
+				null)).thenReturn(promise);
 		when(promise.claim()).thenReturn(searchResult);
 		when(searchResult.getIssues()).thenReturn(issues).thenReturn(new HashSet<Issue>());
 
