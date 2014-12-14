@@ -64,7 +64,6 @@ public class GitStrategyIT {
 		CodeRevision revision = new CodeRevision(repo, SimpleRepo.FIRST_COMMIT);
 
 		strategy.pushTo(repo, vagrantMachine.getNode(), "dest", revision);
-		strategy.checkout(vagrantMachine.getNode(), "dest", revision);
 
 		try (SshConnection connection = connector.connect(vagrantMachine.getSshConfig())) {
 			ExecutionResult result = connection.execute("cat", "dest/fileA");

@@ -67,9 +67,11 @@ public class GitStrategy extends Object implements CodeRepoStrategy {
 			throw new IOException(String.format("Unable to push %s at %s to %s",
 					repo, revision, uri), e);
 		}
+
+		checkout(node, remotePath, revision);
 	}
 
-	public void checkout(Node node, String remotePath, CodeRevision revision) throws IOException {
+	private void checkout(Node node, String remotePath, CodeRevision revision) throws IOException {
 		try (SshConnection connection = sshConnector.connect(node.getSshConfig())) {
 			connection.executeIn(remotePath, "git", "checkout", "-f", revision.getCommitId());
 			connection.executeIn(remotePath, "git", "reset", "--hard");
