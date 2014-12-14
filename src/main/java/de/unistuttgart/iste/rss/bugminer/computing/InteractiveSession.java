@@ -15,5 +15,5 @@ public interface InteractiveSession extends AutoCloseable {
 	InputStream getErrorStream();
 
 	@Override
-	public void close() throws IOException;
+	void close() throws IOException;
 }
