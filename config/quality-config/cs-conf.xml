@@ -18,7 +18,7 @@
 	<!-- See http://checkstyle.sf.net/config_whitespace.html -->
 
 	<module name="TreeWalker">
-		<property name="tabWidth" value="4"/>
+		<property name="tabWidth" value="4" />
 		<module name="OuterTypeFilename" />
 		<module name="IllegalTokenText">
 			<property name="tokens" value="STRING_LITERAL, CHAR_LITERAL" />
@@ -135,8 +135,7 @@
 
 		<module name="ImportOrder">
 			<property name="option" value="top" />
-			<property name="groups"
-				value="java,javax,org,com,de" />
+			<property name="groups" value="java,javax,org,com,de" />
 			<property name="ordered" value="true" />
 			<property name="separated" value="true" />
 			<property name="caseSensitive" value="true" />

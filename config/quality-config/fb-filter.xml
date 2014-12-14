@@ -1,11 +1,11 @@
 <FindBugsFilter>
-  <Match>
-      <Class name="kieker.webgui.persistence.impl.util.CloseableURLClassLoader" />
-	  <Bug code="DP, RI" />
-   </Match>
-   
-   <Match>
-	<Class name="kieker.webgui.persistence.impl.DerbyUserDAOImpl" />
-	<Bug code="ODR, OBL" />
-   </Match>
+	<Match>
+		<Class name="kieker.webgui.persistence.impl.util.CloseableURLClassLoader" />
+		<Bug code="DP, RI" />
+	</Match>
+
+	<Match>
+		<Class name="kieker.webgui.persistence.impl.DerbyUserDAOImpl" />
+		<Bug code="ODR, OBL" />
+	</Match>
 </FindBugsFilter>
