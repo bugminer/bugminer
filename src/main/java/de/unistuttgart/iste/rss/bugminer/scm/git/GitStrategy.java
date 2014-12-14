@@ -58,7 +58,7 @@ public class GitStrategy implements CodeRepoStrategy {
 		URI uri = sshConfig.toURIWithoutPassword().resolve("~/").resolve(remotePath);
 
 		SshSessionFactory sshSessionFactory = new CustomSshConfigSessionFactory(sshConfig);
-		CredentialsProvider credentialsProvider = null;
+		CredentialsProvider credentialsProvider = null; // TODO implement password authentication
 		try {
 			git.push()
 					.setRefSpecs(refspec)
