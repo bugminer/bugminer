@@ -7,20 +7,33 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.IOUtils;
+
+import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
+import de.unistuttgart.iste.rss.bugminer.utils.ProgramExecutionException;
+
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;
 import net.schmizz.sshj.connection.channel.direct.Session.Command;
 import net.schmizz.sshj.connection.channel.direct.Session.Shell;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
 
-import org.apache.commons.io.IOUtils;
-
-import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
-import de.unistuttgart.iste.rss.bugminer.utils.ProgramExecutionException;
-
+/**
+ * A connection to a ssh server
+ */
 public class SshConnection implements AutoCloseable, CommandExecutor {
 	private SSHClient client;
 
+	/**
+	 * Connects to a ssh server
+	 *
+	 * <p>
+	 * Do not call this constructor directly, use {@link SshConnector} instead for IoC
+	 *
+	 * @param config the ssh configuration
+	 * @param client an instance of {@link SSHClient} to use
+	 * @throws IOException failed to connect to the server
+	 */
 	public SshConnection(SshConfig config, SSHClient client) throws IOException {
 		// TODO see if the SSHClient can be injected differently
 		this.client = client;
@@ -37,6 +50,12 @@ public class SshConnection implements AutoCloseable, CommandExecutor {
 		}
 	}
 
+	/**
+	 * Starts a new interactive shell
+	 *
+	 * @return the {@link InteractiveSession} with input and output streams
+	 * @throws IOException failed to open the session
+	 */
 	public InteractiveSession startShell() throws IOException {
 		Session session = client.startSession();
 		session.allocateDefaultPTY();
@@ -86,6 +105,15 @@ public class SshConnection implements AutoCloseable, CommandExecutor {
 		return tryExecuteIn(workdir, cmd);
 	}
 
+	/**
+	 * Executes a command and verifies that it exits with code 0.
+	 *
+	 * @param workingDirectory the cwd for the program, or null
+	 * @param cmd the command and its arguments
+	 * @return the result containing exit code, stdout and stderr
+	 * @throws IOException Failed to start the program or read the outputs
+	 * @throws ProgramExecutionException the exit code is not zero
+	 */
 	public ExecutionResult executeIn(String workingDirectory, String... cmd) throws IOException {
 		ExecutionResult result = tryExecuteIn(workingDirectory, cmd);
 		if (result.getExitCode() != 0) {
@@ -94,6 +122,14 @@ public class SshConnection implements AutoCloseable, CommandExecutor {
 		return result;
 	}
 
+	/**
+	 * Executes a command waits until it has ended
+	 *
+	 * @param workingDirectory the cwd for the program, or null
+	 * @param cmd the command and its arguments
+	 * @return the result containing exit code, stdout and stderr
+	 * @throws IOException Failed to start the program or read the outputs
+	 */
 	public ExecutionResult tryExecuteIn(String workingDirectory, String... cmd) throws IOException {
 		String cmdString = escapeCommand(cmd);
 		if (workingDirectory != null) {

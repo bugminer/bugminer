@@ -22,6 +22,11 @@ public class VagrantTestData {
 	public static final SshConfig SSH_CONFIG =
 			new SshConfig("localhost", "sshuser").withPassword("topsecret");
 
+	/**
+	 * Creates a node with properties assigned to the constants in this class
+	 * 
+	 * @return the node
+	 */
 	public static Node prepareNode() {
 		Node node = mock(Node.class);
 		Cluster cluster = mock(Cluster.class);

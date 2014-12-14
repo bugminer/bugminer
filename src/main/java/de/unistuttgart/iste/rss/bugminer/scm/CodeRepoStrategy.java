@@ -9,18 +9,18 @@ import de.unistuttgart.iste.rss.bugminer.model.Node;
 public interface CodeRepoStrategy {
 	/**
 	 * Pushes a revision of a code repository to a computing node.
-	 * <p>
 	 *
+	 * <p>
 	 * The directory at remotePath will contain exactly the code at the specified revision, that
 	 * means if pushTo is executed with different revisions in the same remotePath, only the files
 	 * of the second push will be there. However, there may be files required by the repo strategy
 	 * itself, such as a {@code .git} directory.
-	 * <p>
 	 *
+	 * <p>
 	 * This method may not be called for two different {@code CodeRepo}s but the same
 	 * {@code remotePath}. Otherwise, the behavior is not specified.
-	 * <p>
 	 *
+	 * <p>
 	 * No restrictions are set on how the code will be transfered to the node or whether it will be
 	 * in the same format as the local repository.
 	 *

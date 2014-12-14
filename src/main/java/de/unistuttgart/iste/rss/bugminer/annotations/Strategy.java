@@ -7,11 +7,20 @@ import java.lang.annotation.Target;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * Annotates a named strategy implementation
+ */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Component
 public @interface Strategy {
+	/**
+	 * The interface that specifies the strategy
+	 */
 	Class<?> type();
 
+	/**
+	 * The name of the strategy implementation. Must be unique within {@link #type()}
+	 */
 	String name();
 }

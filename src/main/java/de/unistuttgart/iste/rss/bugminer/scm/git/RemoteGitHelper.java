@@ -59,8 +59,8 @@ public class RemoteGitHelper {
 	/**
 	 * Checks out the given revision in the repository at {@code remotePath} and makes sure the repo
 	 * is clean afterwards.
-	 * <p>
 	 *
+	 * <p>
 	 * Throws an {@link IOException} if git is not installed on the remote machine, of if there is
 	 * no repository at the specified directory, of if the revision does not exist in the
 	 * repository.
@@ -79,8 +79,8 @@ public class RemoteGitHelper {
 
 	/**
 	 * Initializes an empty git repository at the given path.
-	 * <p>
 	 *
+	 * <p>
 	 * Creates the directory if it does not already exist. Does nothing if there is already a git
 	 * repository at the given location. Throws an {@link IOException} if git is not installed on
 	 * the remote machine.
@@ -89,7 +89,8 @@ public class RemoteGitHelper {
 	 * @param remotePath the path where the git repository should be initialized.
 	 * @throws IOException a remote i/o error or a ssh connection error
 	 */
-	public void initEmptyRepository(SshConnection connection, String remotePath) throws IOException {
+	public void initEmptyRepository(SshConnection connection, String remotePath)
+			throws IOException {
 		// Make the directory if it does not exist. Does not fail if it exists.
 		connection.execute("mkdir", "-p", remotePath);
 

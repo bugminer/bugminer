@@ -1,8 +1,9 @@
 package de.unistuttgart.iste.rss.bugminer.bugs;
 
-import static de.unistuttgart.iste.rss.bugminer.testutils.matchers.Matchers.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+
+import static de.unistuttgart.iste.rss.bugminer.testutils.matchers.Matchers.*;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -54,9 +55,9 @@ public class JiraIssueTrackerStrategyIT {
 
 		Optional<Bug> optionalBug =
 				result.getNewBugs()
-				.stream()
-				.filter(bug -> bug.getTitle().equals(BUG_SUMMARY))
-				.findFirst();
+						.stream()
+						.filter(bug -> bug.getTitle().equals(BUG_SUMMARY))
+						.findFirst();
 
 		assertThat(result.getNewBugs(), not(empty()));
 		assertThat(optionalBug, isPresent());

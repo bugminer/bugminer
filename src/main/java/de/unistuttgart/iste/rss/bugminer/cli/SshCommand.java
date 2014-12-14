@@ -30,12 +30,14 @@ public class SshCommand implements CommandMarker {
 			@CliOption(key = "port", unspecifiedDefaultValue = "22") final int port,
 			@CliOption(key = "user", mandatory = true, help = "remote user name") final String user,
 			@CliOption(key = "password") final String password,
-			@CliOption(key = "verify-key", help = "specify to verify host keys",
-					specifiedDefaultValue = "true", unspecifiedDefaultValue = "false") final boolean verifyKey,
+			@CliOption(key = "verify-key",
+					help = "specify to verify host keys", specifiedDefaultValue = "true",
+					unspecifiedDefaultValue = "false") final boolean verifyKey,
 			@CliOption(key = "command", help = "command to run on the host") final String command) {
 		SshConfig config = new SshConfig(host, port, user);
-		if (password != null)
+		if (password != null) {
 			config = config.withPassword(password);
+		}
 		config = config.withVerifyHostKey(verifyKey);
 		try (SshConnection connection = sshConnector.connect(config)) {
 			if (command != null) {

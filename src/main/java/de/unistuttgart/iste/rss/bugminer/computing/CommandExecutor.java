@@ -1,6 +1,5 @@
 package de.unistuttgart.iste.rss.bugminer.computing;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 
@@ -20,7 +19,8 @@ public interface CommandExecutor {
 	 * @throws IOException Failed to start the program or read the outputs
 	 * @throws ProgramExecutionException the exit code is not zero
 	 */
-	public default ExecutionResult execute(Path workingDirectory, String... cmd) throws IOException {
+	public default ExecutionResult execute(Path workingDirectory, String... cmd)
+			throws IOException {
 		ExecutionResult result = tryExecute(workingDirectory, cmd);
 		if (result.getExitCode() != 0) {
 			throw new ProgramExecutionException(cmd, result);
@@ -52,7 +52,6 @@ public interface CommandExecutor {
 	 * @param cmd the command and its arguments
 	 * @return the result containing exit code, stdout and stderr
 	 * @throws IOException Failed to start the program or read the outputs
-	 * @throws ProgramExecutionException the exit code is not zero
 	 */
 	public default ExecutionResult tryExecute(String... cmd) throws IOException {
 		return tryExecute(null, cmd);
@@ -65,7 +64,6 @@ public interface CommandExecutor {
 	 * @param workingDirectory the cwd for the program, or null
 	 * @return the result containing exit code, stdout and stderr
 	 * @throws IOException Failed to start the program or read the outputs
-	 * @throws ProgramExecutionException the exit code is not zero
 	 */
 	public ExecutionResult tryExecute(Path workingDirectory, String... cmd) throws IOException;
 }

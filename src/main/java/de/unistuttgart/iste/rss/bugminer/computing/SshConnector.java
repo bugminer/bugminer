@@ -2,9 +2,9 @@ package de.unistuttgart.iste.rss.bugminer.computing;
 
 import java.io.IOException;
 
-import net.schmizz.sshj.SSHClient;
-
 import org.springframework.stereotype.Component;
+
+import net.schmizz.sshj.SSHClient;
 
 @Component
 public class SshConnector {

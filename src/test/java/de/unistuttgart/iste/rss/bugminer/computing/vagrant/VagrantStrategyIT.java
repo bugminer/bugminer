@@ -1,9 +1,10 @@
 package de.unistuttgart.iste.rss.bugminer.computing.vagrant;
 
-import static de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantTestData.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
+
+import static de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantTestData.*;
 
 import java.io.IOException;
 import java.nio.file.Paths;

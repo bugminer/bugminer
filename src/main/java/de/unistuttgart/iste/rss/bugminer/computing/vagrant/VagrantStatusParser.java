@@ -48,6 +48,12 @@ public class VagrantStatusParser {
 		return NodeStatus.UNKNOWN;
 	}
 
+	/**
+	 * Parses the actual status as "poweroff" or "running" into a {@link NodeStatus}
+	 *
+	 * @param status the status string
+	 * @return the parsed status, or {@link NodeStatus#UNKNOWN} if it could not be parsed
+	 */
 	public NodeStatus parseStatusString(String status) {
 		if (!STATUS_STRINGS.containsKey(status)) {
 			return NodeStatus.UNKNOWN;

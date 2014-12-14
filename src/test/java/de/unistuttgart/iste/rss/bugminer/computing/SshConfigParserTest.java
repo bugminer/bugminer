@@ -16,22 +16,21 @@ public class SshConfigParserTest {
 	@InjectMocks
 	SshConfigParser parser;
 
-	private static String VAGRANT_CONFIG = "Host default\n" +
-			"  HostName 127.0.0.1\n" +
-			"  User vagrant\n" +
-			"  Port 2222\n" +
-			"  UserKnownHostsFile /dev/null\n" +
-			"  StrictHostKeyChecking no\n" +
-			"  PasswordAuthentication no\n" +
-			"  IdentityFile /home/jan/.vagrant.d/insecure_private_key\n" +
-			"  IdentitiesOnly yes\n" +
-			"  LogLevel FATAL\n";
+	private static String VAGRANT_CONFIG = "Host default\n"
+			+ "  HostName 127.0.0.1\n"
+			+ "  User vagrant\n"
+			+ "  Port 2222\n"
+			+ "  UserKnownHostsFile /dev/null\n"
+			+ "  StrictHostKeyChecking no\n"
+			+ "  PasswordAuthentication no\n"
+			+ "  IdentityFile /home/jan/.vagrant.d/insecure_private_key\n"
+			+ "  IdentitiesOnly yes\n"
+			+ "  LogLevel FATAL\n";
 
-	private static String PASSWORD_CONFIG =
-			"HostName 127.0.0.1\n" +
-					"User vagrant\n" +
-					"Port 2222\n" +
-					"Password abc  ";
+	private static String PASSWORD_CONFIG = "HostName 127.0.0.1\n"
+			+ "User vagrant\n"
+			+ "Port 2222\n"
+			+ "Password abc";
 
 	@Before
 	public void init() {
