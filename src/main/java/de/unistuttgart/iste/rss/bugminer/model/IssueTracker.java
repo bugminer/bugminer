@@ -1,13 +1,13 @@
 package de.unistuttgart.iste.rss.bugminer.model;
 
+import java.io.IOException;
+import java.net.URI;
 import java.util.Collection;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationException;
-import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizationResult;
 import de.unistuttgart.iste.rss.bugminer.bugs.IssueTrackerStrategy;
 import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 
@@ -20,18 +20,14 @@ public class IssueTracker {
 	@OneToMany
 	private Collection<Bug> bugs;
 
-	private String uri;
+	private URI uri;
 
 	private String provider;
 
-	public BugSynchronizationResult synchronize() throws BugSynchronizationException {
-		this.provider = "jira";
-		this.project = new Project();
-		this.uri = "https://issues.apache.org/jira";
+	public void synchronize() throws IOException {
 		StrategyFactory factory = new StrategyFactory();
 		factory.init();
-
-		return factory.getStrategy(IssueTrackerStrategy.class, this.provider).synchronize(this);
+		factory.getStrategy(IssueTrackerStrategy.class, this.provider).fetch(this);
 	}
 
 	public Project getProject() {
@@ -50,11 +46,11 @@ public class IssueTracker {
 		this.bugs = bugs;
 	}
 
-	public String getUri() {
+	public URI getUri() {
 		return uri;
 	}
 
-	public void setUri(String uri) {
+	public void setUri(URI uri) {
 		this.uri = uri;
 	}
 

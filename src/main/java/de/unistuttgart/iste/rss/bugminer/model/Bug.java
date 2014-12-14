@@ -31,6 +31,8 @@ public class Bug {
 	@ManyToOne
 	private IssueTracker repository;
 
+	private String key;
+
 	private boolean isFixed;
 
 	private String jsonDetails;
@@ -145,5 +147,13 @@ public class Bug {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getKey() {
+		return key;
+	}
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 }
