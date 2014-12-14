@@ -73,7 +73,7 @@ public class GitStrategyTest {
 		when(gitFactory.createFileRepository(any())).thenReturn(fileRepository);
 		when(gitFactory.createGit(fileRepository)).thenReturn(git);
 		when(git.push()).thenReturn(pushCommand);
-		when(pushCommand.setRefSpecs(any())).thenReturn(pushCommand);
+		when(pushCommand.setRefSpecs(any(RefSpec.class))).thenReturn(pushCommand);
 		when(pushCommand.setTransportConfigCallback(any())).thenReturn(pushCommand);
 		when(pushCommand.setCredentialsProvider(any())).thenReturn(pushCommand);
 		when(pushCommand.setRemote(any())).thenReturn(pushCommand);
