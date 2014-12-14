@@ -1,6 +1,7 @@
 package de.unistuttgart.iste.rss.bugminer.computing.vagrant;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -80,7 +81,8 @@ public class VagrantStrategy implements ClusterStrategy {
 		}
 		Files.createDirectories(nodePath);
 
-		Files.write(nodePath.resolve("Vagrantfile"), getVagrantfileContent(node).getBytes());
+		Files.write(nodePath.resolve("Vagrantfile"),
+				getVagrantfileContent(node).getBytes(StandardCharsets.UTF_8));
 	}
 
 	@Override
