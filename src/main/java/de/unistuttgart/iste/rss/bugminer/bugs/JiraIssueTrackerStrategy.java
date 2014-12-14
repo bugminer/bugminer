@@ -54,8 +54,13 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 
 			String closeTimeString = (String) issue.getField("resolutiondate").getValue();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-			Instant closeTime = OffsetDateTime.parse(closeTimeString, formatter).toInstant();
-			bug.setCloseTime(closeTime);
+			if (closeTimeString != null) {
+				Instant closeTime = OffsetDateTime.parse(closeTimeString, formatter).toInstant();
+				bug.setCloseTime(closeTime);
+			} else {
+				bug.setCloseTime(null);
+			}
+
 
 			Instant reportTime = Instant.ofEpochMilli(issue.getCreationDate().getMillis());
 			bug.setReportTime(reportTime);
