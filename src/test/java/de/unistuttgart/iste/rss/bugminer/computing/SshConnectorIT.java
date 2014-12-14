@@ -6,7 +6,9 @@ import static org.junit.Assert.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +27,9 @@ public class SshConnectorIT {
 	private static final SshConfig TEST_CONFIG = new SshConfig("sdf.org", "new")
 			.withVerifyHostKey(false);
 
+	private static final String WELCOME_MESSAGE =
+			"You will now be connected to NEWUSER mkacct server.";
+
 	@Test
 	public void testConnect() throws IOException {
 		/*
@@ -33,17 +38,20 @@ public class SshConnectorIT {
 		 * which does not require a password.
 		 */
 		SshConnection connection = connector.connect(TEST_CONFIG);
-		InteractiveSession sesion = connection.startShell();
-		BufferedReader reader =
-				new BufferedReader(new InputStreamReader(sesion.getInputStream()));
-		PrintWriter writer = new PrintWriter(sesion.getOutputStream());
-		assertThat(reader.readLine(), is(""));
-		assertThat(reader.readLine(), is("You will now be connected to NEWUSER mkacct server."));
-		reader.readLine();
-		writer.println("");
-		writer.flush();
-		reader.readLine();
-		assertThat(reader.readLine(), containsString("[RETURN]"));
-		assertThat(reader.readLine(), containsString("THIS MAY TAKE A MOMENT"));
+		try (InteractiveSession session = connection.startShell()) {
+			BufferedReader reader =
+					new BufferedReader(new InputStreamReader(session.getInputStream(),
+							StandardCharsets.UTF_8));
+			PrintWriter writer = new PrintWriter(new OutputStreamWriter(session.getOutputStream(),
+					StandardCharsets.UTF_8));
+			assertThat(reader.readLine(), is(""));
+			assertThat(reader.readLine(), is(WELCOME_MESSAGE));
+			reader.readLine();
+			writer.println("");
+			writer.flush();
+			reader.readLine();
+			assertThat(reader.readLine(), containsString("[RETURN]"));
+			assertThat(reader.readLine(), containsString("THIS MAY TAKE A MOMENT"));
+		}
 	}
 }

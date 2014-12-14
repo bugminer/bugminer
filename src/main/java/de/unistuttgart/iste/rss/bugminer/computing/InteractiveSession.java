@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.rss.bugminer.computing;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -12,4 +13,7 @@ public interface InteractiveSession extends AutoCloseable {
 	OutputStream getOutputStream();
 
 	InputStream getErrorStream();
+
+	@Override
+	public void close() throws IOException;
 }
