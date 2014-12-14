@@ -88,6 +88,6 @@ public class JiraIssueTrackerStrategyIT {
 		assertThat(bug.isFixed(), is(true));
 		assertThat(bug.getDescription(), is(BUG_DESCRIPTION));
 		assertThat(bug.getProject().getName(), is(issueTracker.getProject().getName()));
-		assertThat(bug.getRepository().getUri(), is(REPO_URL));
+		assertThat(bug.getRepository().getUri().toString(), is(REPO_URL));
 	}
 }
