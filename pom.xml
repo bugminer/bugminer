@@ -203,11 +203,12 @@
 			<version>0.13.2</version>
 		</dependency>
 		
+		<!-- jira client includes a fork of httpclient, so make sure jgit does not override it -->
 		<dependency>
-        	<groupId>org.apache.httpcomponents</groupId>
-        	<artifactId>httpclient</artifactId>
-        	<version>4.3.6</version>
-    	</dependency>		
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.1-atlassian-2</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -237,13 +238,6 @@
 			<groupId>com.jcraft</groupId>
 			<artifactId>jsch</artifactId>
 			<version>0.1.51</version>
-		</dependency>
-
-		<!-- jira client includes a fork of httpclient, so make sure jgit does not override it -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.2.1-atlassian-2</version>
 		</dependency>
 
 		<dependency>
