@@ -32,7 +32,7 @@ public class VagrantStatusParser {
 	 * @return the status as string
 	 */
 	public NodeStatus parseStatusOutput(String output) {
-		String[] lines = output.split("\n");
+		String[] lines = output.split("\\r?\\n");
 		boolean isStatus = false;
 		for (String line : lines) {
 			if (line.contains("Current machine states:")) {
@@ -40,8 +40,7 @@ public class VagrantStatusParser {
 			} else if (isStatus) {
 				Matcher matcher = Pattern.compile(STATUS_LINE_PATTERN).matcher(line);
 				if (matcher.matches()) {
-					return parseStatusString("testjlsajdflajdslfjasfljasdf"
-							+ matcher.group(2).trim()); // this is the status group
+					return parseStatusString(matcher.group(2).trim()); // this is the status group
 				}
 			}
 		}
