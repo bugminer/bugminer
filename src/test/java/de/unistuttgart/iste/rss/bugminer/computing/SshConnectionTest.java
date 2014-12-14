@@ -156,11 +156,27 @@ public class SshConnectionTest {
 	}
 
 	@SuppressWarnings("resource")
+	@Test
+	public void testTryExecuteIn() throws IOException {
+		SshConfig config = new SshConfig("localhost", "me");
+		Session session = mock(Session.class);
+		when(client.startSession()).thenReturn(session);
+		Command command = mock(Command.class);
+		when(session.exec("\"cd\" \"/test/dir\" && \"test command\" \"param\""))
+				.thenReturn(command);
+		when(command.getExitStatus()).thenReturn(1);
+		when(command.getInputStream()).thenReturn(IOUtils.toInputStream("output\n"));
+		when(command.getErrorStream()).thenReturn(IOUtils.toInputStream("error line\n"));
+
+		new SshConnection(config, client)
+				.tryExecuteIn("/test/dir", "test command", "param");
+	}
+
+	@SuppressWarnings("resource")
 	@Test(expected = IOException.class)
 	public void testTryExecuteThrowsWhenExitCodeNotRetrieved() throws IOException {
 		SshConfig config = new SshConfig("localhost", "me");
 		Session session = mock(Session.class);
-		when(client.startSession()).thenReturn(session);
 		when(client.startSession()).thenReturn(session);
 		Command command = mock(Command.class);
 		when(session.exec("\"test command\" \"param\"")).thenReturn(command);

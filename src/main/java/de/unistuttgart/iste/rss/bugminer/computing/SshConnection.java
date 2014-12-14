@@ -1,10 +1,8 @@
 package de.unistuttgart.iste.rss.bugminer.computing;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.stream.Collectors;
@@ -18,24 +16,25 @@ import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
 import org.apache.commons.io.IOUtils;
 
 import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
+import de.unistuttgart.iste.rss.bugminer.utils.ProgramExecutionException;
 
 public class SshConnection implements AutoCloseable, CommandExecutor {
 	private SSHClient client;
-	private PrintWriter out;
-	private BufferedReader in;
 
 	public SshConnection(SshConfig config, SSHClient client) throws IOException {
 		// TODO see if the SSHClient can be injected differently
 		this.client = client;
-		if (!config.getVerifyHostKey())
+		if (!config.getVerifyHostKey()) {
 			client.addHostKeyVerifier(new PromiscuousVerifier());
+		}
 		client.connect(config.getHost(), config.getPort());
-		if (config.getPassword() != null)
+		if (config.getPassword() != null) {
 			client.authPassword(config.getUser(), config.getPassword());
-		else if (config.getKeyFile() != null)
+		} else if (config.getKeyFile() != null) {
 			client.authPublickey(config.getUser(), config.getKeyFile().toString());
-		else
+		} else {
 			client.authPassword(config.getUser(), "");
+		}
 	}
 
 	public InteractiveSession startShell() throws IOException {
@@ -76,15 +75,29 @@ public class SshConnection implements AutoCloseable, CommandExecutor {
 
 	@Override
 	public void close() throws IOException {
-		if (client.isConnected())
+		if (client.isConnected()) {
 			client.close();
+		}
 	}
 
 	@Override
 	public ExecutionResult tryExecute(Path workingDirectory, String... cmd) throws IOException {
+		String workdir = workingDirectory == null ? null : workingDirectory.toString();
+		return tryExecuteIn(workdir, cmd);
+	}
+
+	public ExecutionResult executeIn(String workingDirectory, String... cmd) throws IOException {
+		ExecutionResult result = tryExecuteIn(workingDirectory, cmd);
+		if (result.getExitCode() != 0) {
+			throw new ProgramExecutionException(cmd, result);
+		}
+		return result;
+	}
+
+	public ExecutionResult tryExecuteIn(String workingDirectory, String... cmd) throws IOException {
 		String cmdString = escapeCommand(cmd);
 		if (workingDirectory != null) {
-			cmdString = escapeCommand("cd", workingDirectory.toString()) + " && " + cmdString;
+			cmdString = escapeCommand("cd", workingDirectory) + " && " + cmdString;
 		}
 
 		try (Command command = client.startSession().exec(cmdString)) {

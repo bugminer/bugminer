@@ -8,9 +8,14 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import de.unistuttgart.iste.rss.bugminer.bugs.IssueTrackerStrategy;
 import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 
+@Component
+@Scope("prototype")
 @Entity
 public class IssueTracker {
 

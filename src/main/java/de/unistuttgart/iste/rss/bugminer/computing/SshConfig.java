@@ -1,6 +1,10 @@
 package de.unistuttgart.iste.rss.bugminer.computing;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class SshConfig {
 	private String host;
@@ -70,5 +74,21 @@ public class SshConfig {
 
 	public boolean getVerifyHostKey() {
 		return verifyHostKey;
+	}
+
+	public URI toURI() {
+		String userInfo = getUser();
+		if (!StringUtils.isEmpty(getPassword()))
+			userInfo += ":" + getPassword();
+		try {
+			// Path must not be empty because that would produce invalid uris with resolve()
+			return new URI("ssh", userInfo, getHost(), getPort(), "/", "", "");
+		} catch (URISyntaxException e) {
+			throw new RuntimeException("Failed to build uri for ssh config", e);
+		}
+	}
+
+	public URI toURIWithoutPassword() {
+		return this.withPassword("").toURI();
 	}
 }
