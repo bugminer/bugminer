@@ -2,6 +2,7 @@ package de.unistuttgart.iste.rss.bugminer.scm.git;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
+import static org.junit.Assume.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -19,6 +20,7 @@ import de.unistuttgart.iste.rss.bugminer.TestConfig;
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnection;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnector;
+import de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantStrategy;
 import de.unistuttgart.iste.rss.bugminer.config.EntityFactory;
 import de.unistuttgart.iste.rss.bugminer.model.CodeRepo;
 import de.unistuttgart.iste.rss.bugminer.model.CodeRevision;
@@ -30,7 +32,11 @@ import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class GitStrategyIT {
 	@Autowired
-	GitStrategy strategy;
+	private GitStrategy strategy;
+
+	// just for assume that vagrant is installed
+	@Autowired
+	private VagrantStrategy vagrantStrategy;
 
 	@Rule
 	@Autowired
@@ -38,15 +44,20 @@ public class GitStrategyIT {
 
 	@Autowired
 	@DataDirectory
-	Path dataDirectory;
+	private Path dataDirectory;
 
 	@Autowired
-	EntityFactory entityFactory;
+	private EntityFactory entityFactory;
 
 	@Autowired
 	private SshConnector connector;
 
 	private Path repoPath;
+
+	@Before
+	public void ensureVagrantIsAvailable() {
+		assumeTrue("Vagrant is not installed on this system", vagrantStrategy.isAvailable());
+	}
 
 	@Before
 	public void setUpGitRepo() throws IOException, GitAPIException {
