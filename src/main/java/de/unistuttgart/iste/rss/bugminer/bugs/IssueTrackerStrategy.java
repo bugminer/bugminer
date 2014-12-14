@@ -1,5 +1,9 @@
 package de.unistuttgart.iste.rss.bugminer.bugs;
 
+import java.io.IOException;
+import java.util.Collection;
+
+import de.unistuttgart.iste.rss.bugminer.model.Bug;
 import de.unistuttgart.iste.rss.bugminer.model.IssueTracker;
 
 /**
@@ -8,13 +12,11 @@ import de.unistuttgart.iste.rss.bugminer.model.IssueTracker;
 public interface IssueTrackerStrategy {
 
 	/**
-	 * Synchronizes a remote issue tracker with the local database (i.e. fetching the issues from
-	 * the remote issue tracker)
+	 * Fetches all issues form a remote issue tracker
 	 *
-	 * @param IssueTracker the issue tracker to synchronize
-	 * @return BugSynchronizationResult lists all updated and new bugs
+	 * @param IssueTracker the issue tracker to fetch from
+	 * @return BugSynchronizationResult lists all fetched bugs
 	 * @throws BugSynchronizationException
 	 */
-	BugSynchronizationResult synchronize(IssueTracker repository)
-			throws BugSynchronizationException;
+	public Collection<Bug> fetch(IssueTracker repository) throws IOException;
 }
