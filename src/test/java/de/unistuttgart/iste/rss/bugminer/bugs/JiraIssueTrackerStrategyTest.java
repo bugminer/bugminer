@@ -89,7 +89,7 @@ public class JiraIssueTrackerStrategyTest {
 		when(searchClient.searchJql(eq("project=" + issueTracker.getProject().getName()),
 				org.mockito.Matchers.isA(Integer.class),
 				org.mockito.Matchers.isA(Integer.class),
-				null)).thenReturn(promise);
+				anySetOf(String.class))).thenReturn(promise);
 		when(promise.claim()).thenReturn(searchResult);
 		when(searchResult.getIssues()).thenReturn(issues).thenReturn(new HashSet<Issue>());
 
