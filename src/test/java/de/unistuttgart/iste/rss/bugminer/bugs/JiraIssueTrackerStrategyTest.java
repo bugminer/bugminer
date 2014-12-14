@@ -56,6 +56,11 @@ public class JiraIssueTrackerStrategyTest {
 
 	Collection<Issue> issues;
 
+	/**
+	 * Sets up issue tracker, mocks and issue collection
+	 *
+	 * @throws URISyntaxException
+	 */
 	@Before
 	public void init() throws URISyntaxException {
 		MockitoAnnotations.initMocks(this);

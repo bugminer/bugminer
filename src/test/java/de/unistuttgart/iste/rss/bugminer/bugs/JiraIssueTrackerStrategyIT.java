@@ -35,11 +35,12 @@ public class JiraIssueTrackerStrategyIT {
 	private static final String BUG_DESCRIPTION =
 			"StringUtils.split ignores empty items (eg. delimiter at the beginning of the "
 					+ "\nstring, 2 delimiters directly after another)\n\nEg.\n\nString[] l = "
-					+ "StringUtils.split(\"X,DE,Germany\", \",\");\nresults in \nl[0] = \"X\"\nl[1] ="
-					+ " \"DE\"\nl[2] = \"Germany\"\n\nString[] l = StringUtils.split(\",DE,Germany\","
-					+ " \",\");\nresults in\nl[0] = \"DE\"\nl[1] = \"Germany\"\nexpected : \nl[0] = \"\""
-					+ " (or null ?)\nl[1] = \"DE\"\nl[2] = \"Germany\"\n\nThe current behaviour makes it"
-					+ " impossible to detect the \"column\" (eg. for \nparsing .csv files).";
+					+ "StringUtils.split(\"X,DE,Germany\", \",\");\nresults in \nl[0] = \"X\"\nl[1]"
+					+ " = \"DE\"\nl[2] = \"Germany\"\n\nString[] l = StringUtils.split(\","
+					+ "DE,Germany\", \",\");\nresults in\nl[0] = \"DE\"\nl[1] ="
+					+ " \"Germany\"\nexpected : \nl[0] = \"\" (or null ?)\nl[1] = \"DE\"\nl[2]"
+					+ " = \"Germany\"\n\nThe current behaviour makes it impossible to detect the"
+					+ " \"column\" (eg. for \nparsing .csv files).";
 	private static final Instant BUG_REPORT_TIME = Instant.parse("2003-08-25T19:16:17Z");
 	private static final Instant BUG_CLOSE_TIME = Instant.parse("2009-12-16T08:50:37Z");
 
@@ -50,6 +51,11 @@ public class JiraIssueTrackerStrategyIT {
 
 	IssueTracker issueTracker;
 
+	/**
+	 * Initializes the issue tracker for the test
+	 *
+	 * @throws URISyntaxException
+	 */
 	@Before
 	public void init() throws URISyntaxException {
 		issueTracker = new IssueTracker();
@@ -58,14 +64,19 @@ public class JiraIssueTrackerStrategyIT {
 		issueTracker.getProject().setName("LANG");
 	}
 
+	/**
+	 * Tests the fetch method of the class under test
+	 *
+	 * @throws IOException
+	 */
 	@Test
 	public void testFetch() throws IOException {
 		Collection<Bug> result = strategy.fetch(issueTracker);
 
 		Optional<Bug> optionalBug =
 				result.stream()
-						.filter(bug -> bug.getTitle().equals(BUG_SUMMARY))
-						.findFirst();
+				.filter(bug -> bug.getTitle().equals(BUG_SUMMARY))
+				.findFirst();
 
 		assertThat(result, not(empty()));
 		assertThat(optionalBug, isPresent());

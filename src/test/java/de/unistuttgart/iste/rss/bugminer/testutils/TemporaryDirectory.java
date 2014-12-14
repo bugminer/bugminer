@@ -41,7 +41,7 @@ import org.mockito.Spy;
  */
 public class TemporaryDirectory implements TestRule, Path {
 	private final TemporaryFolder tempFolder = new TemporaryFolder();
-	private final Path path;
+	private Path path;
 
 	@Override
 	public Statement apply(Statement base, Description description) {

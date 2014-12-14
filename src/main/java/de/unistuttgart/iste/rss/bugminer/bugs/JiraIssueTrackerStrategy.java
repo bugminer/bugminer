@@ -50,25 +50,27 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 		Collection<Bug> fetchedBugs = new HashSet<Bug>();
 
 		for (Issue issue : issues) {
+			Bug bug = new Bug();
+
 			String closeTimeString = (String) issue.getField("resolutiondate").getValue();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 			Instant closeTime = OffsetDateTime.parse(closeTimeString, formatter).toInstant();
+			bug.setCloseTime(closeTime);
+
 			Instant reportTime = Instant.ofEpochMilli(issue.getCreationDate().getMillis());
+			bug.setReportTime(reportTime);
 
 			Collection<Label> labels = new HashSet<Label>();
 			for (String label : issue.getLabels()) {
 				// TODO check if labels exist and assign them
 			}
+			bug.setLabels(labels);
 
-			Bug bug = new Bug();
 			bug.setTitle(issue.getSummary());
 			bug.setDescription(issue.getDescription());
 			bug.setProject(issueTracker.getProject());
 			bug.setRepository(issueTracker);
-			bug.setReportTime(reportTime);
-			bug.setCloseTime(closeTime);
 			bug.setFixed(issue.getResolution().getName().equals("Fixed"));
-			bug.setLabels(labels);
 			// TODO: events, participants, jsonDetails
 
 			fetchedBugs.add(bug);
