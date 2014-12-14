@@ -127,7 +127,8 @@
 		</module>
 		<module name="AbbreviationAsWordInName">
 			<property name="ignoreFinal" value="false" />
-			<property name="allowedAbbreviationLength" value="1" />
+			<property name="allowedAbbreviationLength" value="3" />
+			<!-- e.g. URI or SSH are already given by other libraries, it would be confusing to use Uri there -->
 		</module>
 		<module name="OverloadMethodsDeclarationOrder" />
 		<module name="VariableDeclarationUsageDistance" />
