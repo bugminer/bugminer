@@ -69,5 +69,14 @@ public class GitStrategyIT {
 			ExecutionResult result = connection.execute("cat", "dest/fileA");
 			assertThat(result.getOutput(), is(SimpleRepo.INITIAL_A_CONTENTS));
 		}
+
+		// Make sure subsequent pushes work
+		revision = new CodeRevision(repo, SimpleRepo.THIRD_COMMIT);
+		strategy.pushTo(repo, vagrantMachine.getNode(), "dest", revision);
+
+		try (SshConnection connection = connector.connect(vagrantMachine.getSshConfig())) {
+			ExecutionResult result = connection.execute("cat", "dest/fileA");
+			assertThat(result.getOutput(), is(SimpleRepo.NEW_A_CONTENTS));
+		}
 	}
 }

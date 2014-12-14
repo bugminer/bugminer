@@ -9,8 +9,10 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 
 public class SimpleRepo {
 	public static final String FIRST_COMMIT = "892e9753ab1e1d3fbcd9e75518ae01d6e8144e21";
+	public static final String THIRD_COMMIT = "554068c08d994fee03ecde677725a9e1cc4e6457";
 
 	public static final String INITIAL_A_CONTENTS = "This is the contents of file A\n";
+	public static final String NEW_A_CONTENTS = "This is the new contents of file A\n";
 
 	public static void bareCloneTo(Path path) throws GitAPIException, IOException {
 		cloneTo(path, true);
