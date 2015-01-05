@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.model;
+package de.unistuttgart.iste.rss.bugminer.model.entities;
 
 import java.io.IOException;
 import java.net.URI;

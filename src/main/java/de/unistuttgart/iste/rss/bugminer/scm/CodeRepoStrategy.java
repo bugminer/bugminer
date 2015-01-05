@@ -2,9 +2,9 @@ package de.unistuttgart.iste.rss.bugminer.scm;
 
 import java.io.IOException;
 
-import de.unistuttgart.iste.rss.bugminer.model.CodeRepo;
-import de.unistuttgart.iste.rss.bugminer.model.CodeRevision;
-import de.unistuttgart.iste.rss.bugminer.model.Node;
+import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRepo;
+import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRevision;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
 
 public interface CodeRepoStrategy {
 	/**

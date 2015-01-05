@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.model;
+package de.unistuttgart.iste.rss.bugminer.model.entities;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.model;
+package de.unistuttgart.iste.rss.bugminer.model.entities;
 
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;

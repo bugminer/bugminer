@@ -3,7 +3,6 @@ package de.unistuttgart.iste.rss.bugminer.computing.vagrant;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.junit.Assume.*;
-
 import static de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantTestData.*;
 
 import java.io.IOException;
@@ -20,8 +19,8 @@ import de.unistuttgart.iste.rss.bugminer.TestConfig;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnection;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnector;
-import de.unistuttgart.iste.rss.bugminer.model.Node;
-import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
+import de.unistuttgart.iste.rss.bugminer.model.entities.NodeStatus;
 
 @ContextConfiguration(classes = TestConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)

@@ -2,7 +2,6 @@ package de.unistuttgart.iste.rss.bugminer.bugs;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-
 import static de.unistuttgart.iste.rss.bugminer.testutils.matchers.Matchers.*;
 
 import java.io.IOException;
@@ -20,9 +19,9 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import de.unistuttgart.iste.rss.bugminer.TestConfig;
-import de.unistuttgart.iste.rss.bugminer.model.Bug;
-import de.unistuttgart.iste.rss.bugminer.model.IssueTracker;
-import de.unistuttgart.iste.rss.bugminer.model.Project;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Bug;
+import de.unistuttgart.iste.rss.bugminer.model.entities.IssueTracker;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)

@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
-import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
+import de.unistuttgart.iste.rss.bugminer.model.entities.NodeStatus;
 
 public class VagrantStatusParserTest {
 	@InjectMocks

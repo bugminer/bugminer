@@ -18,9 +18,9 @@ import de.unistuttgart.iste.rss.bugminer.annotations.Strategy;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnection;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnector;
-import de.unistuttgart.iste.rss.bugminer.model.CodeRepo;
-import de.unistuttgart.iste.rss.bugminer.model.CodeRevision;
-import de.unistuttgart.iste.rss.bugminer.model.Node;
+import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRepo;
+import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRevision;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
 import de.unistuttgart.iste.rss.bugminer.scm.CodeRepoStrategy;
 
 @Strategy(type = CodeRepoStrategy.class, name = "git")

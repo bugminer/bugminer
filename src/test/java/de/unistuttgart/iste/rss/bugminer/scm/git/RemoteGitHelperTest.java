@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnection;
-import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
+import de.unistuttgart.iste.rss.bugminer.model.entities.SystemSpecification;
 import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
 
 @RunWith(MockitoJUnitRunner.class)

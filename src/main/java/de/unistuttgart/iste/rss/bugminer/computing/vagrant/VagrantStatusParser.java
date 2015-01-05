@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.ImmutableMap;
 
-import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
+import de.unistuttgart.iste.rss.bugminer.model.entities.NodeStatus;
 
 @Component
 public class VagrantStatusParser {

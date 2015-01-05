@@ -3,7 +3,6 @@ package de.unistuttgart.iste.rss.bugminer.computing.vagrant;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-
 import static de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantTestData.*;
 
 import java.io.IOException;
@@ -23,7 +22,7 @@ import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
 import de.unistuttgart.iste.rss.bugminer.computing.LocalCommandExecutor;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfigParser;
-import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
+import de.unistuttgart.iste.rss.bugminer.model.entities.NodeStatus;
 import de.unistuttgart.iste.rss.bugminer.testutils.TemporaryDirectory;
 import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
 

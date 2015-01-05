@@ -3,8 +3,8 @@ package de.unistuttgart.iste.rss.bugminer.bugs;
 import java.io.IOException;
 import java.util.Collection;
 
-import de.unistuttgart.iste.rss.bugminer.model.Bug;
-import de.unistuttgart.iste.rss.bugminer.model.IssueTracker;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Bug;
+import de.unistuttgart.iste.rss.bugminer.model.entities.IssueTracker;
 
 /**
  * Interface for fetching data from various issue trackers

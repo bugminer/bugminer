@@ -2,9 +2,9 @@ package de.unistuttgart.iste.rss.bugminer.computing;
 
 import java.io.IOException;
 
-import de.unistuttgart.iste.rss.bugminer.model.Cluster;
-import de.unistuttgart.iste.rss.bugminer.model.Node;
-import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Cluster;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
+import de.unistuttgart.iste.rss.bugminer.model.entities.NodeStatus;
 
 public interface ClusterStrategy {
 	boolean isAvailable();

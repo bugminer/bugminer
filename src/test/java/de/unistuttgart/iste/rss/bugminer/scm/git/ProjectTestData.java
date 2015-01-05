@@ -1,9 +1,8 @@
 package de.unistuttgart.iste.rss.bugminer.scm.git;
 
 import static org.mockito.Mockito.*;
-
-import de.unistuttgart.iste.rss.bugminer.model.CodeRepo;
-import de.unistuttgart.iste.rss.bugminer.model.Project;
+import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRepo;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 
 /**
  * Provides test instances of {@link Project} and {@link CodeRepo}
