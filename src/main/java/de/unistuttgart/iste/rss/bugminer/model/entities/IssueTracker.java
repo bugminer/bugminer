@@ -43,7 +43,7 @@ public class IssueTracker {
 		bugs = new ArrayList<>();
 	}
 
-	public Collection<Bug> synchronize() throws IOException {
+	public Collection<Bug> fetchBugs() throws IOException {
 		return getStrategy().fetch(this);
 	}
 
