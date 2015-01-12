@@ -17,9 +17,9 @@ import de.unistuttgart.iste.rss.bugminer.computing.CommandExecutor;
 import de.unistuttgart.iste.rss.bugminer.computing.InvalidSshConfigException;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfigParser;
-import de.unistuttgart.iste.rss.bugminer.model.Cluster;
-import de.unistuttgart.iste.rss.bugminer.model.Node;
-import de.unistuttgart.iste.rss.bugminer.model.NodeStatus;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Cluster;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
+import de.unistuttgart.iste.rss.bugminer.model.entities.NodeStatus;
 
 @Strategy(type = ClusterStrategy.class, name = "vagrant")
 @Component

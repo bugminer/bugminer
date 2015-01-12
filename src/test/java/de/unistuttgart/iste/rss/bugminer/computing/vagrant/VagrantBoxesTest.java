@@ -8,9 +8,9 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 
-import de.unistuttgart.iste.rss.bugminer.model.Architecture;
-import de.unistuttgart.iste.rss.bugminer.model.OperatingSystem;
-import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Architecture;
+import de.unistuttgart.iste.rss.bugminer.model.entities.OperatingSystem;
+import de.unistuttgart.iste.rss.bugminer.model.entities.SystemSpecification;
 
 public class VagrantBoxesTest {
 	@InjectMocks

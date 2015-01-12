@@ -22,9 +22,9 @@ import de.unistuttgart.iste.rss.bugminer.computing.SshConnection;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnector;
 import de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantStrategy;
 import de.unistuttgart.iste.rss.bugminer.config.EntityFactory;
-import de.unistuttgart.iste.rss.bugminer.model.CodeRepo;
-import de.unistuttgart.iste.rss.bugminer.model.CodeRevision;
-import de.unistuttgart.iste.rss.bugminer.model.Project;
+import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRepo;
+import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRevision;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 import de.unistuttgart.iste.rss.bugminer.testutils.VagrantMachine;
 import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
 

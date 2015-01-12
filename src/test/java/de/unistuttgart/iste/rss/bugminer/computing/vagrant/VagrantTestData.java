@@ -6,11 +6,11 @@ import java.io.IOException;
 
 import de.unistuttgart.iste.rss.bugminer.computing.MemoryQuantity;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
-import de.unistuttgart.iste.rss.bugminer.model.Architecture;
-import de.unistuttgart.iste.rss.bugminer.model.Cluster;
-import de.unistuttgart.iste.rss.bugminer.model.Node;
-import de.unistuttgart.iste.rss.bugminer.model.OperatingSystem;
-import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Architecture;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Cluster;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
+import de.unistuttgart.iste.rss.bugminer.model.entities.OperatingSystem;
+import de.unistuttgart.iste.rss.bugminer.model.entities.SystemSpecification;
 
 public final class VagrantTestData {
 	public static final String BOX_NAME = "thebox";

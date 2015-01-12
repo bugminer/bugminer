@@ -14,9 +14,9 @@ import org.springframework.stereotype.Component;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 import de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantStrategy;
 import de.unistuttgart.iste.rss.bugminer.config.EntityFactory;
-import de.unistuttgart.iste.rss.bugminer.model.Cluster;
-import de.unistuttgart.iste.rss.bugminer.model.Node;
-import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Cluster;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
+import de.unistuttgart.iste.rss.bugminer.model.entities.SystemSpecification;
 
 @Component
 @Scope("prototype")

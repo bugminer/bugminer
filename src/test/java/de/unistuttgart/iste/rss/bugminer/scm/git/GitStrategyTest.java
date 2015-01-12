@@ -23,9 +23,9 @@ import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnection;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnector;
 import de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantTestData;
-import de.unistuttgart.iste.rss.bugminer.model.CodeRepo;
-import de.unistuttgart.iste.rss.bugminer.model.CodeRevision;
-import de.unistuttgart.iste.rss.bugminer.model.Node;
+import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRepo;
+import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRevision;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
 import de.unistuttgart.iste.rss.bugminer.testutils.TemporaryDirectory;
 
 @RunWith(MockitoJUnitRunner.class)

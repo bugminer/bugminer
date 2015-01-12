@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.google.common.collect.ImmutableMap;
 
-import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
+import de.unistuttgart.iste.rss.bugminer.model.entities.SystemSpecification;
 import de.unistuttgart.iste.rss.bugminer.utils.MapUtils;
 
 @Component

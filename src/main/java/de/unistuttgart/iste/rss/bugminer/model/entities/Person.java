@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.model;
+package de.unistuttgart.iste.rss.bugminer.model.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -7,21 +7,19 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * A status in the workflow of a bug
+ * A person that has interacted with a project in any way
  */
 @Component
 @Scope("prototype")
 @Entity
-public class BugStatus {
+public class Person {
 	@ManyToOne
 	private Project project;
 
-	private String name;
-
 	/**
-	 * Creates an empty {@code BugStatus}
+	 * Creates an empty {@code Person}
 	 */
-	public BugStatus() {
+	public Person() {
 		// empty
 	}
 
@@ -31,13 +29,5 @@ public class BugStatus {
 
 	public void setProject(Project project) {
 		this.project = project;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 }

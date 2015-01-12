@@ -19,9 +19,9 @@ import com.atlassian.util.concurrent.Promise;
 import com.google.common.collect.Iterables;
 
 import de.unistuttgart.iste.rss.bugminer.annotations.Strategy;
-import de.unistuttgart.iste.rss.bugminer.model.Bug;
-import de.unistuttgart.iste.rss.bugminer.model.IssueTracker;
-import de.unistuttgart.iste.rss.bugminer.model.Label;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Bug;
+import de.unistuttgart.iste.rss.bugminer.model.entities.IssueTracker;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Label;
 
 /**
  * Provides an implementation for the IssueTrackerStrategy interface to use with Jira

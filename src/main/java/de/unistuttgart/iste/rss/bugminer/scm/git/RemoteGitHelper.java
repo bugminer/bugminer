@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.springframework.stereotype.Component;
 
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnection;
-import de.unistuttgart.iste.rss.bugminer.model.SystemSpecification;
+import de.unistuttgart.iste.rss.bugminer.model.entities.SystemSpecification;
 import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
 import de.unistuttgart.iste.rss.bugminer.utils.ProgramExecutionException;
 

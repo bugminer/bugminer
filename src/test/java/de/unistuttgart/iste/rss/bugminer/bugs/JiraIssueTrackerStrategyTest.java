@@ -31,9 +31,9 @@ import com.atlassian.jira.rest.client.api.domain.Status;
 import com.atlassian.jira.rest.client.auth.AnonymousAuthenticationHandler;
 import com.atlassian.util.concurrent.Promise;
 
-import de.unistuttgart.iste.rss.bugminer.model.Bug;
-import de.unistuttgart.iste.rss.bugminer.model.IssueTracker;
-import de.unistuttgart.iste.rss.bugminer.model.Project;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Bug;
+import de.unistuttgart.iste.rss.bugminer.model.entities.IssueTracker;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 
 public class JiraIssueTrackerStrategyTest {
 
