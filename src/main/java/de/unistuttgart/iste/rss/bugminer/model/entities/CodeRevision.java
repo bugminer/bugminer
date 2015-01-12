@@ -1,10 +1,13 @@
 package de.unistuttgart.iste.rss.bugminer.model.entities;
 
+import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
+
 import javax.persistence.Embeddable;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-@Embeddable
-public class CodeRevision {
+@Entity
+public class CodeRevision extends BaseEntity {
 	@ManyToOne
 	private final CodeRepo codeRepo;
 

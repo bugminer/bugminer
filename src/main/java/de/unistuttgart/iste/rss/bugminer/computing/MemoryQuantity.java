@@ -1,6 +1,8 @@
 package de.unistuttgart.iste.rss.bugminer.computing;
 
+import javax.persistence.Embeddable;
 
+@Embeddable
 public final class MemoryQuantity {
 	private final long bytes;
 

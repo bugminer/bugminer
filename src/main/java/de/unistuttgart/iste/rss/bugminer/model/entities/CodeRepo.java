@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope("prototype")
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"project", "name"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"project_id", "name"}))
 public class CodeRepo extends BaseEntity {
 	@ManyToOne
 	private Project project;

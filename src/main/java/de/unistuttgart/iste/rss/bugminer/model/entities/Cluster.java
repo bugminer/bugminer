@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +26,7 @@ import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 @Entity
 public class Cluster extends BaseEntity {
 	@Autowired
+	@Transient
 	private StrategyFactory strategyFactory;
 
 	private String provider;

@@ -8,6 +8,7 @@ import java.util.Collection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 @Entity
 public class IssueTracker extends BaseEntity {
 	@Autowired
+	@Transient
 	private StrategyFactory strategyFactory;
 
 	@ManyToOne
