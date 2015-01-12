@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import net.schmizz.sshj.SSHClient;
 
 @Configuration
 @ComponentScan("de.unistuttgart.iste.rss.bugminer")
+@EnableAutoConfiguration
 public class AppConfig {
 	protected AppConfig() {
 		// managed bean

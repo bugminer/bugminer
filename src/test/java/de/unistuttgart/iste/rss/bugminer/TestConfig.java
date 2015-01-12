@@ -10,8 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
 import de.unistuttgart.iste.rss.bugminer.config.AppConfig;
 import de.unistuttgart.iste.rss.bugminer.testutils.SelfDestroyingPathBean;
+import org.springframework.context.annotation.PropertySource;
 
 @Configuration
+@PropertySource("META-INF/test.properties")
 public class TestConfig extends AppConfig {
 	private Path dataPath;
 
