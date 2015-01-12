@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.ManyToOne;
 
+import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Entity
 @Inheritance
-public class Event {
+public class Event extends BaseEntity {
 	@ManyToOne
 	private Bug bug;
 

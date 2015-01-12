@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -22,12 +23,9 @@ import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 @Component
 @Scope("prototype")
 @Entity
-public class Cluster {
+public class Cluster extends BaseEntity {
 	@Autowired
 	private StrategyFactory strategyFactory;
-
-	@Id
-	private Integer id;
 
 	private String provider;
 
@@ -42,14 +40,6 @@ public class Cluster {
 	 */
 	public Cluster() {
 		nodes = new ArrayList<>();
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getProvider() {

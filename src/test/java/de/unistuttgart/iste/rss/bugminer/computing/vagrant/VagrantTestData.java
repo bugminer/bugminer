@@ -15,7 +15,7 @@ import de.unistuttgart.iste.rss.bugminer.model.entities.SystemSpecification;
 public final class VagrantTestData {
 	public static final String BOX_NAME = "thebox";
 	public static final String CLUSTER_NAME = "thecluster";
-	public static final int NODE_ID = 123;
+	public static final String NODE_ID = "123";
 	public static final SystemSpecification SPEC = new SystemSpecification(OperatingSystem.LINUX,
 			Architecture.X86_64, "Ubuntu", "14.04");
 

@@ -52,8 +52,7 @@ public class VagrantStrategyTest {
 	@Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
-		vagrantPath = dataDirectory.resolve("vagrant").resolve(CLUSTER_NAME)
-				.resolve(Integer.toString(NODE_ID));
+		vagrantPath = dataDirectory.resolve("vagrant").resolve(CLUSTER_NAME).resolve(NODE_ID);
 	}
 
 	@Test

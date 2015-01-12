@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -22,7 +23,7 @@ import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 @Component
 @Scope("prototype")
 @Entity
-public class IssueTracker {
+public class IssueTracker extends BaseEntity {
 	@Autowired
 	private StrategyFactory strategyFactory;
 

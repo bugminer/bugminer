@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -20,12 +21,9 @@ import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 @Entity
 @Component
 @Scope("prototype")
-public class Node {
+public class Node extends BaseEntity {
 	public static final MemoryQuantity DEFAULT_MEMORY = MemoryQuantity.fromMb(500);
 	public static final int DEFAULT_CPU_COUNT = 1;
-
-	@Id
-	private Integer id;
 
 	@ManyToOne
 	private Cluster cluster;
@@ -44,14 +42,6 @@ public class Node {
 	 */
 	public Node() {
 		// empty
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public Cluster getCluster() {

@@ -5,6 +5,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"project", "name"}))
-public class CodeRepo {
+public class CodeRepo extends BaseEntity {
 	@ManyToOne
 	private Project project;
 

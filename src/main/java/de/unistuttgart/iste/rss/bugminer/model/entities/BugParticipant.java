@@ -1,5 +1,7 @@
 package de.unistuttgart.iste.rss.bugminer.model.entities;
 
+import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -11,7 +13,7 @@ import javax.persistence.OneToMany;
  * A relation between a {@link Bug} and a {@link Person} that participates in the bug
  */
 @Entity
-public class BugParticipant {
+public class BugParticipant extends BaseEntity {
 	@OneToMany
 	private Collection<Bug> bugs;
 

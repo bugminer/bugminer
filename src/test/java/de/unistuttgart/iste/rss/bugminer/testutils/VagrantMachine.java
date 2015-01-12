@@ -31,15 +31,11 @@ public class VagrantMachine extends ExternalResource {
 
 	private Node node;
 
-	private static int nodeIndex;
-
 	private final Logger logger = Logger.getLogger(VagrantMachine.class.getName());
 
 	private Node createNode() {
 		Node node = entityFactory.make(Node.class);
 		node.setSystemSpecification(SystemSpecification.UBUNTU_1404);
-		nodeIndex++;
-		node.setId(nodeIndex);
 		Cluster cluster = entityFactory.make(Cluster.class);
 		node.setCluster(cluster);
 		cluster.setName("unittest-" + UUID.randomUUID());

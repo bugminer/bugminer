@@ -1,6 +1,7 @@
 package de.unistuttgart.iste.rss.bugminer.model;
 
 import de.unistuttgart.iste.rss.bugminer.TestConfig;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
