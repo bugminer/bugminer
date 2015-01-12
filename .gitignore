@@ -61,3 +61,7 @@ hs_err_pid*
 
 .pmd
 .ruleset
+
+# intellij idea
+.idea
+*.iml
