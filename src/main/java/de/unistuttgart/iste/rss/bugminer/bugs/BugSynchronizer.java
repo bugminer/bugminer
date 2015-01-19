@@ -3,10 +3,12 @@ package de.unistuttgart.iste.rss.bugminer.bugs;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import de.unistuttgart.iste.rss.bugminer.model.entities.Bug;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.BugRepository;
 
+@Component
 public class BugSynchronizer {
 
 	@Autowired
@@ -23,7 +25,7 @@ public class BugSynchronizer {
 	 */
 	public void synchronize(Collection<Bug> bugs) {
 		for (Bug fetchedBug : bugs) {
-			Bug bugInRepo = bugRepo.findByKey(fetchedBug.getKey());
+			Bug bugInRepo = bugRepo.findByKey(fetchedBug.getKey()).orElse(new Bug());
 
 			// don't synchronize bugs that already have classifications
 			if (!bugInRepo.getClassifications().isEmpty()) {
