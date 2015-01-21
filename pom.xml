@@ -165,7 +165,20 @@
 		</plugins>
 	</reporting>
 
-	<dependencies>
+	<dependencies>	
+		<dependency>
+    		<groupId>org.apache.httpcomponents</groupId>
+    		<artifactId>httpasyncclient</artifactId>
+   			<version>4.0-beta3-atlassian-1</version>
+		</dependency>
+
+		<!-- jira client includes a fork of httpclient, so make sure jgit does not override it -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.1-atlassian-2</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -212,13 +225,6 @@
 			<groupId>com.atlassian.httpclient</groupId>
 			<artifactId>atlassian-httpclient-api</artifactId>
 			<version>0.13.2</version>
-		</dependency>
-		
-		<!-- jira client includes a fork of httpclient, so make sure jgit does not override it -->
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.2.1-atlassian-2</version>
 		</dependency>
 
 		<dependency>
