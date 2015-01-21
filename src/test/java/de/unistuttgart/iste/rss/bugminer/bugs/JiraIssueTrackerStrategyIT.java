@@ -1,13 +1,15 @@
 package de.unistuttgart.iste.rss.bugminer.bugs;
 
+import static de.unistuttgart.iste.rss.bugminer.testutils.matchers.Matchers.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
-import static de.unistuttgart.iste.rss.bugminer.testutils.matchers.Matchers.*;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -31,20 +33,18 @@ public class JiraIssueTrackerStrategyIT {
 	/**
 	 * Properties for an example bug from Apache Commons LANG
 	 */
-	private static final String BUG_SUMMARY = "StringUtils.split ignores empty items";
+	private static final String BUG_SUMMARY =
+			"Byteman fails with when using JDK 6 with an ASM error about the EXPAND_FRAMES option";
 	private static final String BUG_DESCRIPTION =
-			"StringUtils.split ignores empty items (eg. delimiter at the beginning of the "
-					+ "\nstring, 2 delimiters directly after another)\n\nEg.\n\nString[] l = "
-					+ "StringUtils.split(\"X,DE,Germany\", \",\");\nresults in \nl[0] = \"X\"\nl[1]"
-					+ " = \"DE\"\nl[2] = \"Germany\"\n\nString[] l = StringUtils.split(\","
-					+ "DE,Germany\", \",\");\nresults in\nl[0] = \"DE\"\nl[1] ="
-					+ " \"Germany\"\nexpected : \nl[0] = \"\" (or null ?)\nl[1] = \"DE\"\nl[2]"
-					+ " = \"Germany\"\n\nThe current behaviour makes it impossible to detect the"
-					+ " \"column\" (eg. for \nparsing .csv files).";
-	private static final Instant BUG_REPORT_TIME = Instant.parse("2003-08-25T19:16:17Z");
-	private static final Instant BUG_CLOSE_TIME = Instant.parse("2009-12-16T08:50:37Z");
+			"Byteman fails with when using JDK 6 with an ASM error about the EXPAND_FRAMES option\n";
+	private static final Instant BUG_REPORT_TIME =
+			OffsetDateTime.parse("2009-07-08T06:38:24.000-0400",
+					DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")).toInstant();
+	private static final Instant BUG_CLOSE_TIME =
+			OffsetDateTime.parse("2009-07-08T06:49:30.000-0400",
+					DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")).toInstant();
 
-	private static final String REPO_URL = "https://issues.apache.org/jira";
+	private static final String REPO_URL = "https://issues.jboss.org";
 
 	@Autowired
 	JiraIssueTrackerStrategy strategy;
@@ -61,7 +61,7 @@ public class JiraIssueTrackerStrategyIT {
 		issueTracker = new IssueTracker();
 		issueTracker.setUri(new URI(REPO_URL));
 		issueTracker.setProject(new Project());
-		issueTracker.getProject().setName("LANG");
+		issueTracker.getProject().setName("Byteman");
 	}
 
 	/**

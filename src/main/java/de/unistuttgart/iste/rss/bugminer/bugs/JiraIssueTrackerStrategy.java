@@ -56,6 +56,7 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 		for (Issue issue : issues) {
 			Bug bug = new Bug();
 
+
 			String closeTimeString = (String) issue.getField("resolutiondate").getValue();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 			if (closeTimeString != null) {
@@ -82,7 +83,7 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 			bug.setRepository(issueTracker);
 
 			if (issue.getResolution() != null) {
-				bug.setFixed(issue.getResolution().getName().equals("Fixed"));
+				bug.setFixed(issue.getResolution().getName().equals("Done")); // TODO
 			} else {
 				bug.setFixed(false); // not resolved yet
 			}
@@ -100,12 +101,13 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 		final URI jiraServerUri = issueTracker.getUri();
 		final JiraRestClient restClient = factory.create(jiraServerUri,
 				new AnonymousAuthenticationHandler());
+		final String projectName = issueTracker.getProject().getName();
+		final String jqlSearchString = "project=" + projectName;
 
 		Promise<SearchResult> issuePromise = null;
-		String projectName = issueTracker.getProject().getName();
 
 		do {
-			issuePromise = restClient.getSearchClient().searchJql("project=" + projectName,
+			issuePromise = restClient.getSearchClient().searchJql(jqlSearchString,
 					50, issues.size(), null);
 
 			Iterables.addAll(issues, issuePromise.claim().getIssues());

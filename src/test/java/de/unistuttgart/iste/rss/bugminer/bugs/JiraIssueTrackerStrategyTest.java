@@ -113,7 +113,7 @@ public class JiraIssueTrackerStrategyTest {
 
 		Resolution resolution = mock(Resolution.class);
 		when(issue1.getResolution()).thenReturn(resolution);
-		when(resolution.getName()).thenReturn("Fixed");
+		when(resolution.getName()).thenReturn("Done");
 
 		Collection<Bug> result = strategy.fetch(issueTracker);
 
