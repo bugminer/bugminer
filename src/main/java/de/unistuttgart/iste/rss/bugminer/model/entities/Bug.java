@@ -4,14 +4,16 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 
 /**
  * A bug report imported from an issue tracker
@@ -32,7 +34,7 @@ public class Bug extends BaseEntity {
 	@OneToMany
 	private Collection<LineChange> lineChanges;
 
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	private Collection<Classification> classifications;
 
 	@OneToMany
