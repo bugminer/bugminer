@@ -103,14 +103,27 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 				new AnonymousAuthenticationHandler());
 		final String projectName = issueTracker.getProject().getName();
 		final String jqlSearchString = "project=" + projectName;
+		boolean exceptionOccured = false;
 
 		Promise<SearchResult> issuePromise = null;
 
 		do {
-			issuePromise = restClient.getSearchClient().searchJql(jqlSearchString,
-					50, issues.size(), null);
+			try {
+				issuePromise = restClient.getSearchClient().searchJql(jqlSearchString,
+						50, issues.size(), null);
 
-			Iterables.addAll(issues, issuePromise.claim().getIssues());
+				Iterables.addAll(issues, issuePromise.claim().getIssues());
+
+			} catch (Exception e) {
+				if (exceptionOccured) {
+					throw e;
+				} else {
+					exceptionOccured = true;
+					continue;
+				}
+			}
+
+			exceptionOccured = false;
 
 		} while (Iterables.size(issuePromise.claim().getIssues()) > 0);
 
