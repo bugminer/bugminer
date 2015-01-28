@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Bug;
 
 @Repository
-public interface BugRepository extends JpaRepository<Bug, Long> {
+public interface BugRepository extends JpaRepository<Bug, String> {
 
 	Optional<Bug> findByKey(String key);
 }
