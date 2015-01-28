@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.model;
+package de.unistuttgart.iste.rss.bugminer.model.repositories;
 
 import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
