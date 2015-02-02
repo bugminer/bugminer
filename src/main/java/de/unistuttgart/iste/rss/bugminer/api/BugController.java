@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.rest;
+package de.unistuttgart.iste.rss.bugminer.api;
 
 import java.util.Collection;
 
@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.unistuttgart.iste.rss.bugminer.api.exceptions.NotFoundException;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Bug;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.BugRepository;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
-import de.unistuttgart.iste.rss.bugminer.rest.exceptions.NotFoundException;
 
 @RestController
 public class BugController {

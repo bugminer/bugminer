@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.rest.exceptions;
+package de.unistuttgart.iste.rss.bugminer.api.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
