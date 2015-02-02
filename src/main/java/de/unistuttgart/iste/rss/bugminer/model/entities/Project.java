@@ -1,22 +1,24 @@
 package de.unistuttgart.iste.rss.bugminer.model.entities;
 
-import de.unistuttgart.iste.rss.bugminer.build.BuildResult;
-import de.unistuttgart.iste.rss.bugminer.build.BuildStrategy;
-import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
-import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import de.unistuttgart.iste.rss.bugminer.build.BuildResult;
+import de.unistuttgart.iste.rss.bugminer.build.BuildStrategy;
+import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
+import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 
 /**
  * A software project with code and bugs
@@ -114,6 +116,7 @@ public class Project extends BaseEntity {
 
 	/**
 	 * Gets the main repository. Is currently used as the single build repository
+	 *
 	 * @return the main repo, or null if none defined
 	 */
 	public CodeRepo getMainRepo() {
@@ -122,6 +125,7 @@ public class Project extends BaseEntity {
 
 	/**
 	 * Sets the main repository. Is currently used as the single build repository
+	 *
 	 * @param mainRepo the main repo, or null if none defined
 	 */
 	public void setMainRepo(CodeRepo mainRepo) {
@@ -143,7 +147,8 @@ public class Project extends BaseEntity {
 
 		BuildStrategy strategy = strategyFactory.getStrategy(BuildStrategy.class, buildProvider);
 		if (strategy == null) {
-			throw new IllegalStateException("There is no strategy for the provider " + buildProvider);
+			throw new IllegalStateException("There is no strategy for the provider "
+					+ buildProvider);
 		}
 
 		return strategy;
@@ -151,6 +156,7 @@ public class Project extends BaseEntity {
 
 	/**
 	 * Builds this project in a specific revision on a given node
+	 *
 	 * @param node the node, assumed to be free
 	 * @return the result of the build
 	 * @throws java.io.IOException local or in node

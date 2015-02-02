@@ -126,6 +126,6 @@ public class JiraIssueTrackerStrategyTest {
 		assertThat(bug.isFixed(), is(true));
 		assertThat(bug.getDescription(), is(BUG_DESCRIPTION));
 		assertThat(bug.getProject().getName(), is(issueTracker.getProject().getName()));
-		assertThat(bug.getRepository().getUri(), is(issueTracker.getUri()));
+		assertThat(bug.getIssueTracker().getUri(), is(issueTracker.getUri()));
 	}
 }

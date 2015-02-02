@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,7 @@ import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 @Component
 @Scope("prototype")
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"issue_tracker_id", "key"}))
 public class Bug extends BaseEntity {
 	@ManyToOne
 	private Project project;
@@ -41,7 +44,7 @@ public class Bug extends BaseEntity {
 	private Collection<BugParticipant> participants;
 
 	@ManyToOne
-	private IssueTracker repository;
+	private IssueTracker issueTracker;
 
 	private String key;
 
@@ -116,12 +119,12 @@ public class Bug extends BaseEntity {
 		this.participants = participants;
 	}
 
-	public IssueTracker getRepository() {
-		return repository;
+	public IssueTracker getIssueTracker() {
+		return issueTracker;
 	}
 
-	public void setRepository(IssueTracker repository) {
-		this.repository = repository;
+	public void setIssueTracker(IssueTracker issueTracker) {
+		this.issueTracker = issueTracker;
 	}
 
 	public boolean isFixed() {
