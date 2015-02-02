@@ -23,10 +23,6 @@ public class BugController {
 	@Autowired
 	private ProjectRepository projectRepo;
 
-	@RequestMapping(value = "/bug/{key}", method = RequestMethod.GET)
-	public Bug bug(@PathVariable(value = "key") String key) {
-		return bugRepo.findByKey(key).orElseThrow(() -> new NotFoundException());
-	}
 
 	@RequestMapping(value = "/project/{projectId}/bugs", method = RequestMethod.GET)
 	public Collection<Bug> bugsForProject(@PathVariable(value = "projectId") String projectId) {
