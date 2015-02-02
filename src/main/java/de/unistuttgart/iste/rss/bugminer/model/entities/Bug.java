@@ -15,6 +15,8 @@ import javax.persistence.UniqueConstraint;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 
 /**
@@ -26,6 +28,7 @@ import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"issue_tracker_id", "key"}))
 public class Bug extends BaseEntity {
 	@ManyToOne
+	@JsonIgnore
 	private Project project;
 
 	@ManyToMany

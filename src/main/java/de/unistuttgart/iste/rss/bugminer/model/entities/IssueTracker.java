@@ -10,12 +10,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import de.unistuttgart.iste.rss.bugminer.bugs.IssueTrackerStrategy;
+import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 
 /**
@@ -30,6 +32,7 @@ public class IssueTracker extends BaseEntity {
 	private StrategyFactory strategyFactory;
 
 	@ManyToOne
+	@JsonIgnore
 	private Project project;
 
 	@OneToMany
@@ -38,6 +41,16 @@ public class IssueTracker extends BaseEntity {
 	private URI uri;
 
 	private String provider;
+
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	/**
 	 * Creates an empty {@code IssueTracker}
