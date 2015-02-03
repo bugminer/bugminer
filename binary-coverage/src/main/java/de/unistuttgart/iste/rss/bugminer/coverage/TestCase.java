@@ -5,16 +5,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TestCase {
 	private String name;
+	private boolean passed;
 
 	@JsonCreator
-	public TestCase(@JsonProperty("name") String name) {
+	public TestCase(
+			@JsonProperty("name") String name,
+			@JsonProperty("passed") boolean passed) {
 		this.name = name;
+		this.passed = passed;
 	}
-	
+
+	/**
+	 * Gets the fully qualified name of the test class and method
+	 */
 	public String getName() {
 		return name;
 	}
-	
+
+	/**
+	 * Indicates whether this test case is passed or failed
+	 */
+	public boolean isPassed() {
+		return passed;
+	}
+
 	@Override
 	public String toString() {
 		return name;

@@ -33,16 +33,22 @@ public class CoberturaImporter {
 	public CoverageReport read(List<Path> coverageFiles) throws SAXException, IOException {
 		if (coverageFiles.isEmpty())
 			return new CoverageReport(ImmutableList.of(), ImmutableList.of());
-		
+
 		Path firstFile = coverageFiles.get(0);
 		files = parseForSourceCodeFiles(firstFile);
 		filesForNames = files.stream().collect(Collectors.toMap(f -> f.getFileName(), f -> f));
-		
+
 		Map<Path, TestCase> testCaseMap = coverageFiles.stream()
-				.collect(Collectors.toMap(p -> p, p -> new TestCase(p.getFileName().toString())));
-		
+				.collect(Collectors.toMap(p -> p, p -> {
+					String fileName = p.getFileName().toString();
+					assert fileName.startsWith("p_") || fileName.startsWith("f_");
+					boolean passed = fileName.startsWith("p_");
+					// test case name is file name without prefix
+					return new TestCase(fileName.substring(2), passed);
+				}));
+
 		CoverageReport report = new CoverageReport(files, testCaseMap.values());
-		
+
 		testCaseMap
 			.entrySet()
 			.stream()
