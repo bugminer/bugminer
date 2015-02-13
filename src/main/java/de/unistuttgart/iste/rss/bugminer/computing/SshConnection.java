@@ -1,22 +1,27 @@
 package de.unistuttgart.iste.rss.bugminer.computing;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
-import org.apache.commons.io.IOUtils;
-
 import de.unistuttgart.iste.rss.bugminer.utils.ExecutionResult;
 import de.unistuttgart.iste.rss.bugminer.utils.ProgramExecutionException;
-
 import net.schmizz.sshj.SSHClient;
 import net.schmizz.sshj.connection.channel.direct.Session;
 import net.schmizz.sshj.connection.channel.direct.Session.Command;
 import net.schmizz.sshj.connection.channel.direct.Session.Shell;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
+import net.schmizz.sshj.xfer.InMemoryDestFile;
+import net.schmizz.sshj.xfer.InMemorySourceFile;
+import org.apache.commons.io.IOUtils;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URI;
+import java.nio.charset.Charset;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * A connection to a ssh server
@@ -163,6 +168,49 @@ public class SshConnection implements AutoCloseable, CommandExecutor {
 	 */
 	public void uploadFile(Path localFile, String targetPath) throws IOException {
 		client.newSCPFileTransfer().upload(localFile.toAbsolutePath().toString(), targetPath);
+	}
+
+	/**
+	 * Creates over overwrites a text file with given content, in utf-8 encoding
+	 * @param targetPath the full path to the file on the host
+	 * @param contents the desired contents of the file
+	 */
+	public void writeTextFile(String targetPath, String contents) throws IOException {
+		byte[] data = contents.getBytes(Charset.forName("UTF-8"));
+
+		InMemorySourceFile source = new InMemorySourceFile() {
+			@Override public String getName() {
+				return "file";
+			}
+
+			@Override public long getLength() {
+				return data.length;
+			}
+
+			@Override public InputStream getInputStream() throws IOException {
+				return new ByteArrayInputStream(data);
+			}
+		};
+		client.newSCPFileTransfer().upload(source, targetPath);
+	}
+
+	/**
+	 * Reads the contents of a file on the remote node, assuming UTF-8 encoding
+	 * @param targetPath the full path to the file on the host
+	 * @return the contents of the file
+	 */
+	public String readTextFile(String remotePath) throws IOException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+		InMemoryDestFile dest = new InMemoryDestFile() {
+			@Override public OutputStream getOutputStream() throws IOException {
+				return out;
+			}
+		};
+
+		client.newSCPFileTransfer().download(remotePath, dest);
+
+		return new String(out.toByteArray(), Charset.forName("UTF-8"));
 	}
 
 	/**
