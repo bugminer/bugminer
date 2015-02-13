@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Provides utility methods to install and run sonar in a node
@@ -103,6 +105,29 @@ public class RemoteSonarHelper {
 
 		// this exits with zero if not started
 		connection.execute(START_SCRIPT_PATH, "stop");
+	}
+
+	/**
+	 * Makes sure that running maven will invoke the sonar standalone analysis.
+	 * Sonar should be installed before running maven.
+	 * @param connection the ssh connection
+	 * @param os the operating system specification
+	 * @throws IOException Failed to create the settings file
+	 */
+	public void configureMavenForSonar(SshConnection connection, SystemSpecification os)
+			throws IOException {
+		Path source = null;
+		try {
+			URL url = RemoteSonarHelper.class.getResource("settings.xml");
+			if (url == null) {
+				throw new IOException("settings.xml resource is missing");
+			}
+			source = Paths.get(url.toURI());
+		} catch (URISyntaxException e) {
+			throw new IOException(e);
+		}
+		connection.execute("mkdir", "-p", ".m2");
+		connection.uploadFile(source, ".m2/settings.xml");
 	}
 
 	/**

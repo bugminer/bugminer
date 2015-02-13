@@ -33,6 +33,7 @@ public class MavenStrategy implements BuildStrategy {
 
 			remoteSonar.installSonar(connection, node.getSystemSpecification());
 			remoteSonar.startSonar(connection, node.getSystemSpecification());
+			remoteSonar.configureMavenForSonar(connection, node.getSystemSpecification());
 			remoteMaven.installMaven(connection, node.getSystemSpecification());
 			ExecutionResult result = connection.tryExecuteIn(rootPath, "mvn", "clean", "verify");
 			if (result.getExitCode() != 1) {
