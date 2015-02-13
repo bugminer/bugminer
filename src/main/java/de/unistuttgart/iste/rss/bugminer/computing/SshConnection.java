@@ -154,4 +154,24 @@ public class SshConnection implements AutoCloseable, CommandExecutor {
 				.map(c -> "\"" + c + "\"") // TODO escape c
 				.collect(Collectors.joining(" "));
 	}
+
+	/**
+	 * Upload a file on the local file system to the node
+	 * @param localFile the path to the local file system
+	 * @param targetPath the desired path of the file in the node
+	 * @throws IOException
+	 */
+	public void uploadFile(Path localFile, String targetPath) throws IOException {
+		client.newSCPFileTransfer().upload(localFile.toAbsolutePath().toString(), targetPath);
+	}
+
+	/**
+	 * Upload a file on the local file system to the node
+	 * @param remotePath the path to the file on the remote host
+	 * @param localPath the desired path of the on the local host
+	 * @throws IOException
+	 */
+	public void downloadFile(String remotePath, Path localPath) throws IOException {
+		client.newSCPFileTransfer().download(remotePath, localPath.toAbsolutePath().toString());
+	}
 }

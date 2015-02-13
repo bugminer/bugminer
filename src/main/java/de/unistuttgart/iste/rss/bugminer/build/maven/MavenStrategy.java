@@ -3,6 +3,7 @@ package de.unistuttgart.iste.rss.bugminer.build.maven;
 import de.unistuttgart.iste.rss.bugminer.annotations.Strategy;
 import de.unistuttgart.iste.rss.bugminer.build.BuildResult;
 import de.unistuttgart.iste.rss.bugminer.build.BuildStrategy;
+import de.unistuttgart.iste.rss.bugminer.build.sonar.RemoteSonarHelper;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnection;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnector;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
@@ -23,9 +24,15 @@ public class MavenStrategy implements BuildStrategy {
 	@Autowired
 	private RemoteMavenHelper remoteMaven;
 
+	@Autowired
+	private RemoteSonarHelper remoteSonar;
+
 	@Override public BuildResult build(Project project, Node node, String rootPath) throws
 			IOException {
 		try (SshConnection connection = sshConnector.connect(node.getSshConfig())) {
+
+			remoteSonar.installSonar(connection, node.getSystemSpecification());
+			remoteSonar.startSonar(connection, node.getSystemSpecification());
 			remoteMaven.installMaven(connection, node.getSystemSpecification());
 			ExecutionResult result = connection.tryExecuteIn(rootPath, "mvn", "clean", "verify");
 			if (result.getExitCode() != 1) {
