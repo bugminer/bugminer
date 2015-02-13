@@ -1,0 +1,9 @@
+language: java
+jdk:
+ - oraclejdk8
+ - openjdk8
+
+sudo: true
+before_install: apt-get update
+install: apt-get install -y virtualbox 
+script: mvn verify
