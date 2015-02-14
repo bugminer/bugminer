@@ -10,7 +10,7 @@ import java.nio.file.Path;
 
 public final class MavenRepo {
 	public static final String COMMIT_WITH_SIMPLE_SUCCESSFUL_TEST =
-			"5409dae467ccc9c0ae006bfa0f7aa22b875a19f9";
+			"91a168a9438a209c76537a6748a715e690e5ced8";
 
 	private MavenRepo() {
 		// utility class
