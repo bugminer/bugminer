@@ -45,7 +45,7 @@ public class RemoteSonarHelper {
 		connection.execute("bash", "-c", "echo '" + APT_SOURCE_LINE + "' | sudo tee /etc/apt/sources.list.d/sonar.list");
 		connection.execute("sudo", "apt-get", "update");
 		// force-yes because we do not have a key for the sonar package
-		connection.execute("sudo", "apt-get", "-y", "--force-yes", "install", "sonar");
+		connection.execute("sudo", "apt-get", "-y", "--force-yes", "install", "openjdk-7-jdk", "sonar");
 
 		if (!isSonarInstalled(connection)) {
 			throw new IOException("Installed sonar, but it is not callable afterwards");

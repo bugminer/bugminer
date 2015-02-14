@@ -36,7 +36,7 @@ public class RemoteMavenHelper {
 		}
 
 		connection.execute("sudo", "apt-get", "update");
-		connection.execute("sudo", "apt-get", "-y", "install", "maven");
+		connection.execute("sudo", "apt-get", "-y", "install", "openjdk-7-jdk" ,"maven");
 
 		if (!isMavenInstalled(connection)) {
 			throw new IOException("Installed maven, but it is not callable afterwards");
