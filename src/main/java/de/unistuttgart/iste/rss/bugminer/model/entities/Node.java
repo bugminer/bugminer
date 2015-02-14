@@ -22,7 +22,7 @@ import de.unistuttgart.iste.rss.bugminer.computing.SshConfig;
 @Component
 @Scope("prototype")
 public class Node extends BaseEntity {
-	public static final MemoryQuantity DEFAULT_MEMORY = MemoryQuantity.fromMb(500);
+	public static final MemoryQuantity DEFAULT_MEMORY = MemoryQuantity.fromMiB(1500);
 	public static final int DEFAULT_CPU_COUNT = 1;
 
 	@ManyToOne
