@@ -1,0 +1,6 @@
+# frontend
+src/main/resources/public
+src/main/frontend/node
+src/main/frontend/node_modules
+src/main/frontend/app/bower_components
+
