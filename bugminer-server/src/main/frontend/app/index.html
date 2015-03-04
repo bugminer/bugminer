@@ -1,11 +1,18 @@
-<html>
+<html ng-app="bugminerApp">
 	<head>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
 		<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css">
 	</head>
 
 	<body>
-		Hallo Welt
+		<h1>Projects</h1>
+		
+		<ul ng-controller="ProjectsCtrl">
+			<li ng-repeat="project in projects">
+				<div>{{project.name}}</div>
+				<div>{{project.bugs.length}}</div>
+			</li>
+		</ul>
 
 		<script src="js/jquery.js"></script>
 		<script src="js/bootstrap.js"></script>
