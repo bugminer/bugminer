@@ -12,5 +12,6 @@
     <modules>
         <module>bugminer-server</module>
         <module>binary-coverage</module>
+        <module>bugminer-coverage-maven-plugin</module>
     </modules>
 </project>
