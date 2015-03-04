@@ -11,5 +11,6 @@
 
     <modules>
         <module>bugminer-server</module>
+        <module>binary-coverage</module>
     </modules>
 </project>

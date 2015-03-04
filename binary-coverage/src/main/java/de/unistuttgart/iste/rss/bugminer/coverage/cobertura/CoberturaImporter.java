@@ -1,12 +1,12 @@
-package de.unistuttgart.iste.rss.bugminer.build.coverage.cobertura;
+package de.unistuttgart.iste.rss.bugminer.coverage.cobertura;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
-import de.unistuttgart.iste.rss.bugminer.build.coverage.CoverageReport;
-import de.unistuttgart.iste.rss.bugminer.build.coverage.FileCoverage;
-import de.unistuttgart.iste.rss.bugminer.build.coverage.SourceCodeFile;
-import de.unistuttgart.iste.rss.bugminer.build.coverage.TestCase;
+import de.unistuttgart.iste.rss.bugminer.coverage.CoverageReport;
+import de.unistuttgart.iste.rss.bugminer.coverage.FileCoverage;
+import de.unistuttgart.iste.rss.bugminer.coverage.SourceCodeFile;
+import de.unistuttgart.iste.rss.bugminer.coverage.TestCase;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;

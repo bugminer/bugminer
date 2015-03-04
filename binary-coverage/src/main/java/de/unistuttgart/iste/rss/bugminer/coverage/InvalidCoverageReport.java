@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.build.coverage;
+package de.unistuttgart.iste.rss.bugminer.coverage;
 
 public class InvalidCoverageReport extends Exception {
 	private static final long serialVersionUID = 4416281368384493962L;

@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.build.coverage;
+package de.unistuttgart.iste.rss.bugminer.coverage;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.primitives.Ints;

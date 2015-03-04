@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.build.coverage;
+package de.unistuttgart.iste.rss.bugminer.coverage;
 
 public class TestCase {
 	private String name;

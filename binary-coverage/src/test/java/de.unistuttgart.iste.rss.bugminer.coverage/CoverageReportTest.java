@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.build.coverage;
+package de.unistuttgart.iste.rss.bugminer.coverage;
 
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;

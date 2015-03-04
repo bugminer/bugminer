@@ -35,6 +35,9 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+                    <excludes>
+                        <exclude>src/main/resources</exclude>
+                    </excludes>
 				</configuration>
 			</plugin>
 
@@ -119,7 +122,7 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>2.13</version>
 				<configuration>
-					<configLocation>config/quality-config/cs-conf.xml</configLocation>
+					<configLocation>../config/quality-config/cs-conf.xml</configLocation>
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -165,7 +168,7 @@
 				<version>3.2</version>
 				<configuration>
 					<rulesets>
-						<ruleset>config/quality-config/pmdrules.xml</ruleset>
+						<ruleset>../config/quality-config/pmdrules.xml</ruleset>
 					</rulesets>
 					<targetJdk>1.8</targetJdk>
 					<failOnViolation>false</failOnViolation>
@@ -381,5 +384,11 @@
 			<artifactId>hsqldb</artifactId>
 			<version>2.3.2</version>
 		</dependency>
+
+        <dependency>
+            <groupId>de.unistuttgart.iste.rss.bugminer</groupId>
+            <artifactId>binary-coverage</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 	</dependencies>
 </project>

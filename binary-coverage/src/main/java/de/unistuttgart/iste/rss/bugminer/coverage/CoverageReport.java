@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.build.coverage;
+package de.unistuttgart.iste.rss.bugminer.coverage;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
@@ -84,11 +84,11 @@ public class CoverageReport {
 	private int getOffset(TestCase testCase, SourceCodeFile file) {
 		int testCaseIndex = testCases.indexOf(testCase);
 		if (testCaseIndex < 0)
-			throw new IllegalArgumentException("The given TestCase is not present in this report");
+			throw new IllegalArgumentException("The given de.unistuttgart.iste.rss.bugminer.coverage.TestCase is not present in this report");
 		
 		int fileIndex = files.indexOf(file);
 		if (fileIndex < 0)
-			throw new IllegalArgumentException("The given SourceCodeFile is not present in this report");
+			throw new IllegalArgumentException("The given de.unistuttgart.iste.rss.bugminer.coverage.SourceCodeFile is not present in this report");
 		
 		return testCaseIndex * testCaseDataSize + fileOffsets[fileIndex];
 	}

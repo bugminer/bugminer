@@ -19,7 +19,7 @@ public class CoverageReport extends BaseEntity {
 	private TestRun testRun;
 
 	/**
-	 * Creates an empty {@code CoverageReport}
+	 * Creates an empty {@code de.unistuttgart.iste.rss.bugminer.coverage.CoverageReport}
 	 */
 	public CoverageReport() {
 		// empty
