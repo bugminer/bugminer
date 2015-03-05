@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -61,6 +62,7 @@ public class Bug extends BaseEntity {
 
 	private String title;
 
+	@Column(length = 10000)
 	private String description;
 
 	/**
