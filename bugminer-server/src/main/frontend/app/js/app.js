@@ -30,8 +30,8 @@
 		});
 	});
 	
-	app.controller('ProjectBugsCtrl', function($scope, Bug) {
-		Bug.query({name: 'Bugminer'}, function(data) {
+	app.controller('ProjectBugsCtrl', function($scope, $routeParams, Bug) {
+		Bug.query({name: $routeParams.name}, function(data) {
 			$scope.bugs = data;
 			console.log(data);
 		});
