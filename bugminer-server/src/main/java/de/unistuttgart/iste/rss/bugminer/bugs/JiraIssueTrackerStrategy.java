@@ -77,6 +77,7 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 			 */
 			bug.setLabels(labels);
 
+			bug.setKey(issue.getKey());
 			bug.setTitle(issue.getSummary());
 			bug.setDescription(issue.getDescription());
 			bug.setProject(issueTracker.getProject());
