@@ -1,7 +1,15 @@
 (function(angular) {
 	'use strict';
 	
-	var app = angular.module('bugminerApp', ['ngResource']);
+	var app = angular.module('bugminerApp', ['ngResource', 'ngRoute']);
+	
+	app.config(['$routeProvider', function($routeProvider) {
+		$routeProvider
+			.when('/', {
+				templateUrl: 'partials/projects/index.html',
+				controller: 'ProjectsCtrl'
+			});
+	}]);
 	
 	app.factory('Project', function($resource) {
 		  return $resource("/projects/:name");
