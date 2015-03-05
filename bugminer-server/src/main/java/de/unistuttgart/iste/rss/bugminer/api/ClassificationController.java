@@ -20,6 +20,7 @@ import de.unistuttgart.iste.rss.bugminer.model.repositories.IssueTrackerReposito
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
 
 @RestController
+@RequestMapping(value = "/api")
 public class ClassificationController {
 
 	@Autowired
@@ -97,7 +98,7 @@ public class ClassificationController {
 				.orElseThrow(() -> new NotFoundException());
 		IssueTracker issueTracker =
 				issueTrackerRepo.findByProjectAndName(project, issueTrackerName)
-						.orElseThrow(() -> new NotFoundException());
+				.orElseThrow(() -> new NotFoundException());
 		return bugRepo.findByProjectAndIssueTrackerAndKey(project, issueTracker, key)
 				.orElseThrow(() -> new NotFoundException());
 	}

@@ -18,6 +18,7 @@ import de.unistuttgart.iste.rss.bugminer.model.repositories.IssueTrackerReposito
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
 
 @RestController
+@RequestMapping(value = "/api")
 public class BugController {
 
 	@Autowired
@@ -63,7 +64,7 @@ public class BugController {
 		Project project = projectRepo.findByName(name).orElseThrow(() -> new NotFoundException());
 		IssueTracker issueTracker =
 				issueTrackerRepo.findByProjectAndName(project, issueTrackerName)
-						.orElseThrow(() -> new NotFoundException());
+				.orElseThrow(() -> new NotFoundException());
 
 		return bugRepo.findByProjectAndIssueTrackerAndKey(project, issueTracker, key)
 				.orElseThrow(() -> new NotFoundException());

@@ -13,6 +13,7 @@ import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
 
 @RestController
+@RequestMapping(value = "/api")
 public class ProjectController {
 
 	@Autowired

@@ -12,7 +12,7 @@
 	}]);
 	
 	app.factory('Project', function($resource) {
-		  return $resource("/projects/:name");
+		  return $resource("/api/projects/:name");
 	});
 	
 	app.controller('ProjectsCtrl', function($scope, Project) {
