@@ -27,17 +27,21 @@ public class MavenStrategy implements BuildStrategy {
 	@Autowired
 	private RemoteSonarHelper remoteSonar;
 
+	@Autowired
+	PomPatcher pomPatcher;
+
 	@Override public BuildResult build(Project project, Node node, String rootPath) throws
 			IOException {
 		try (SshConnection connection = sshConnector.connect(node.getSshConfig())) {
 
-			remoteSonar.installSonar(connection, node.getSystemSpecification());
-			remoteSonar.startSonar(connection, node.getSystemSpecification());
-			remoteSonar.configureMavenForSonar(connection, node.getSystemSpecification());
+			String pomPath = rootPath + "/pom.xml";
+			String pom = connection.readTextFile(pomPath);
+			connection.writeTextFile(pomPath, pomPatcher.addCoveragePerTestProfile(pom));
+
 			remoteMaven.installMaven(connection, node.getSystemSpecification());
 			ExecutionResult result = connection.tryExecuteIn(rootPath,
 					"mvn", "clean", "org.jacoco:jacoco-maven-plugin:prepare-agent", "install",
-					"-Dmaven.test.failure.ignore=true");
+					"-Dmaven.test.failure.ignore=true", "-P", pomPatcher.getProfileName());
 			if (result.getExitCode() != 0) {
 				return new BuildResult(false);
 			}
