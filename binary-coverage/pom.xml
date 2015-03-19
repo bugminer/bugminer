@@ -5,6 +5,12 @@
 	<artifactId>binary-coverage</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
+	<parent>
+		<groupId>de.unistuttgart.iste.rss.bugminer</groupId>
+		<artifactId>bugminer</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
