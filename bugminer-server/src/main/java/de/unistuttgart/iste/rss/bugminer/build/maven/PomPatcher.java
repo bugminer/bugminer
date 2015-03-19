@@ -21,7 +21,7 @@ import java.io.StringWriter;
 
 @Component
 public class PomPatcher {
-	private static final String PROFILE_NAME = "coverage-per-test";
+	private static final String PROFILE_NAME = "bugminer-coverage-profile";
 
 	public String addCoveragePerTestProfile(String xml) throws IOException {
 		Document doc = readXMLFromString(xml);

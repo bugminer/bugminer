@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <profile>
-    <id>coverage-per-test</id>
+    <id>bugminer-coverage-profile</id>
     <build>
         <plugins>
             <plugin>
@@ -27,4 +27,16 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+	<!-- for bugminer-coverage-maven-plugin -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>bugminer-mvn-repo</id>
+			<url>https://raw.github.com/Yogu/bugminer-repo/mvn-repo/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 </profile>
