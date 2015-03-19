@@ -14,13 +14,13 @@ public class PomPatcherTest extends TestCase {
 		String source = IOUtils.toString(PomPatcherTest.class.getResourceAsStream("pom.xml"));
 		PomPatcher patcher = new PomPatcher();
 		String result = patcher.addCoveragePerTestProfile(source);
-		assertThat(result, containsPattern("<profiles>\\s*<profile>\\s*<id>coverage-per-test</id>"));
+		assertThat(result, containsPattern("<profiles>\\s*<profile>\\s*<id>bugminer-coverage-profile</id>"));
 	}
 
 	public void testAddCoveragePerTestProfileWhenProfilesAlreadyExists() throws Exception {
 		String source = IOUtils.toString(PomPatcherTest.class.getResourceAsStream("pom-with-profile.xml"));
 		PomPatcher patcher = new PomPatcher();
 		String result = patcher.addCoveragePerTestProfile(source);
-		assertThat(result, containsPattern(".*</profile>\\s*<profile>\\s*<id>coverage-per-test</id>.*"));
+		assertThat(result, containsPattern(".*</profile>\\s*<profile>\\s*<id>bugminer-coverage-profile</id>.*"));
 	}
 }
