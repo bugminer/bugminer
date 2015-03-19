@@ -49,6 +49,13 @@ public class JacocoImporter {
 		report = analyze();
 	}
 
+	public CoverageReport getReport() {
+		if (report == null) {
+			throw new IllegalStateException("Call run() first");
+		}
+		return report;
+	}
+
 	private void startSession(SessionInfo sessionInfo) {
 		if (currentSession != null) {
 			finishSession();
