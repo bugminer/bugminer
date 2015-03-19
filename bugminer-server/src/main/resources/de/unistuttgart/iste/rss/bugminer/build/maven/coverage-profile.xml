@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<profile>
+    <id>bugminer-coverage-profile</id>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <!-- Minimal supported version is 2.4 -->
+                <version>2.18</version>
+                <configuration>
+                    <properties>
+                        <property>
+                            <name>listener</name>
+                            <value>org.sonar.java.jacoco.JUnitListener</value>
+                        </property>
+                    </properties>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.codehaus.sonar-plugins.java</groupId>
+            <artifactId>sonar-jacoco-listeners</artifactId>
+            <version>1.2</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+	<!-- for bugminer-coverage-maven-plugin -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>bugminer-mvn-repo</id>
+			<url>https://raw.github.com/Yogu/bugminer-repo/mvn-repo/</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+</profile>
