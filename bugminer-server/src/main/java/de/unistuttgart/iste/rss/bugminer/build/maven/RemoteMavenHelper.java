@@ -35,8 +35,9 @@ public class RemoteMavenHelper {
 					"Only ubuntu is supported for maven installation at the moment");
 		}
 
+		connection.execute("sudo", "add-apt-repository", "-y", "ppa:openjdk-r/ppa");
 		connection.execute("sudo", "apt-get", "update");
-		connection.execute("sudo", "apt-get", "-y", "install", "openjdk-7-jdk" ,"maven");
+		connection.execute("sudo", "apt-get", "-y", "install", "openjdk-8-jdk" ,"maven");
 
 		if (!isMavenInstalled(connection)) {
 			throw new IOException("Installed maven, but it is not callable afterwards");
