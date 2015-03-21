@@ -1,31 +1,39 @@
 package de.unistuttgart.iste.rss.bugminer.coverage;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.primitives.Bytes;
 import sun.misc.IOUtils;
 
-import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.Path;
-import java.util.Arrays;
-import java.util.stream.StreamSupport;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
+/**
+ * Parses zip files created by {@link CoverageReportDeserializer} into {@link CoverageReport}
+ * objects
+ */
 public class CoverageReportDeserializer {
+	/**
+	 * Reads the given zip file as as coverage report
+	 * @param file the path to the zip file
+	 * @return the coverage report
+	 * @throws IOException error reading or invalid format
+	 */
 	public CoverageReport deserialize(Path file) throws IOException {
 		try (FileInputStream in = new FileInputStream(file.toFile())) {
 			return deserialize(in);
 		}
 	}
 
+	/**
+	 * Reads the given stream as coverage report
+	 * @param in the input stream to read from
+	 * @return the coverage report
+	 * @throws IOException error reading or invalid format
+	 */
 	public CoverageReport deserialize(InputStream in) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
