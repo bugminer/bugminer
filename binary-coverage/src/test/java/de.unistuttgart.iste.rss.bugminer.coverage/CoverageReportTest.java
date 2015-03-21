@@ -1,33 +1,14 @@
 package de.unistuttgart.iste.rss.bugminer.coverage;
 
-import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Map;
 
+import static de.unistuttgart.iste.rss.bugminer.coverage.CoverageTestData.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 public class CoverageReportTest {
-	private static final SourceCodeFile[] FILES = {
-		new SourceCodeFile("first.java", new int[] { 2, 3, 7, 8, 10 }),
-		new SourceCodeFile("second.java", new int[] { 1, 5, 8, 13 })};
-	
-	private static final TestCase[] TESTS = { new TestCase("one"), new TestCase("two") };
-	
-	@SuppressWarnings("rawtypes")
-	private static final Map[][] COVERAGE = {
-		{
-			ImmutableMap.of(2, true, 3, true, 7, false, 8, false, 10, true),
-			ImmutableMap.of(1, true, 5, false, 8, false, 13, false)
-		},
-		{
-			ImmutableMap.of(2, false, 3, false, 7, true, 8, false, 10, true),
-			ImmutableMap.of(1, true, 5, true, 8, false, 13, true)
-		}
-	};
-	
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testPutAndGetCoverageReports() {
