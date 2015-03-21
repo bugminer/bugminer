@@ -89,4 +89,28 @@ public class SourceCodeFile {
 	public String toString() {
 		return fileName;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		SourceCodeFile that = (SourceCodeFile) o;
+
+		if (fileName != null ? !fileName.equals(that.fileName) : that.fileName != null)
+			return false;
+		if (!Arrays.equals(lineNumbers, that.lineNumbers))
+			return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = fileName != null ? fileName.hashCode() : 0;
+		result = 31 * result + (lineNumbers != null ? Arrays.hashCode(lineNumbers) : 0);
+		return result;
+	}
 }
