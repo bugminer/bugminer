@@ -1,6 +1,8 @@
 package de.unistuttgart.iste.rss.bugminer.coverage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
 
 import java.util.Collections;
@@ -28,7 +30,9 @@ public class CoverageReport {
 	 * Initializes a report for each file and test case
 	 * @param files
 	 */
-	public CoverageReport(Iterable<SourceCodeFile> files, Iterable<TestCase> testCases) {
+	@JsonCreator
+	public CoverageReport(@JsonProperty("files") Iterable<SourceCodeFile> files,
+			@JsonProperty("testCases") Iterable<TestCase> testCases) {
 		this.files = Lists.newArrayList(files);
 		this.testCases = Lists.newArrayList(testCases);
 		

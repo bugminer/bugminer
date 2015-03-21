@@ -1,8 +1,11 @@
 package de.unistuttgart.iste.rss.bugminer.coverage;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.primitives.Ints;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +25,10 @@ public class SourceCodeFile {
 	 * @param fileName
 	 * @param sourceCodeLineNumbers
 	 */
-	public SourceCodeFile(String fileName, int[] sourceCodeLineNumbers) {
+	@JsonCreator
+	public SourceCodeFile(
+			@JsonProperty("fileName") String fileName,
+			@JsonProperty("lineNumbers") int[] sourceCodeLineNumbers) {
 		this.fileName = fileName;
 		setSourceCodeLineNumbers(sourceCodeLineNumbers);
 	}
@@ -69,7 +75,8 @@ public class SourceCodeFile {
 	public List<Integer> getLineNumbers() {
 		return Collections.unmodifiableList(Ints.asList(lineNumbers));
 	}
-	
+
+	@JsonIgnore
 	public int getSourceCodeLineNumberCount() {
 		return lineNumbers.length;
 	}
