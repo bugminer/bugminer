@@ -101,4 +101,14 @@ public class CoverageReport {
 	public boolean[] getData() {
 		return coverageData;
 	}
+
+	public void setData(boolean[] data) {
+		int expectedSize = testCaseDataSize * this.testCases.size();
+		if (data.length != expectedSize) {
+			throw new IllegalArgumentException(String.format(
+					"Array must be of size %d, but is of size %d", expectedSize, data.length));
+		}
+
+		this.coverageData = data;
+	}
 }

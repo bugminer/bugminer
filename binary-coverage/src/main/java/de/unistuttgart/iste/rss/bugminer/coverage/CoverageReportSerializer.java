@@ -13,19 +13,23 @@ import java.util.zip.ZipOutputStream;
 
 public class CoverageReportSerializer {
 	public void serialize(CoverageReport report, Path target) throws IOException {
+		try (OutputStream out = new BufferedOutputStream(new FileOutputStream(target.toFile()))) {
+			serialize(report, out);
+		}
+	}
+
+	public void serialize(CoverageReport report, OutputStream out) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-		
-		try (OutputStream out = new BufferedOutputStream(new FileOutputStream(target.toFile()))) {
-			try (ZipOutputStream zip = new ZipOutputStream(out)) {
-				zip.putNextEntry(new ZipEntry("metadata.json"));
-				mapper.writeValue(zip, report);
-				
-				zip.putNextEntry(new ZipEntry("data.bin"));
-				boolean[] data = report.getData();
-				for (boolean val : data) {
-					zip.write(val ? 1 : 0);
-				}
+
+		try (ZipOutputStream zip = new ZipOutputStream(out)) {
+			zip.putNextEntry(new ZipEntry("metadata.json"));
+			mapper.writeValue(zip, report);
+
+			zip.putNextEntry(new ZipEntry("data.bin"));
+			boolean[] data = report.getData();
+			for (boolean val : data) {
+				zip.write(val ? 1 : 0);
 			}
 		}
 	}
