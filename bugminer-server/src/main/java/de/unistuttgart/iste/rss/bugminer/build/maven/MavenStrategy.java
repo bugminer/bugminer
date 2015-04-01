@@ -41,16 +41,12 @@ public class MavenStrategy implements BuildStrategy {
 			remoteMaven.installMaven(connection, node.getSystemSpecification());
 			ExecutionResult result = connection.tryExecuteIn(rootPath,
 					"mvn", "clean", "org.jacoco:jacoco-maven-plugin:prepare-agent", "install",
+					"de.unistuttgart.iste.rss.bugminer:bugminer-coverage-maven-plugin:analyze-coverage",
 					"-Dmaven.test.failure.ignore=true", "-P", pomPatcher.getProfileName());
 			if (result.getExitCode() != 0) {
 				return new BuildResult(false);
 			}
 
-			// sonar must be run in a dedicated mvn command
-			result = connection.tryExecuteIn(rootPath, "mvn", "sonar:sonar");
-			if (result.getExitCode() != 0) {
-				return new BuildResult(false);
-			}
 
 			return new BuildResult(true);
 		}
