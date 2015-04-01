@@ -14,6 +14,6 @@ public class Application {
 		String[] arguments = new String[1];
 		arguments[0] = "--server.port=8181";
 		ApplicationContext ctx = SpringApplication.run(Application.class, arguments);
-		ctx.getBean(TestDataCreator.class).createTestDataIfNotExists();
+		ctx.getBean(TestDataCreator.class).createTestData();
 	}
 }
