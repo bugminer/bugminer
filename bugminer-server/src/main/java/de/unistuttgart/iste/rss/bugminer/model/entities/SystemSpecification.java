@@ -39,6 +39,14 @@ public class SystemSpecification {
 		this.osVersion = osVersion;
 	}
 
+	protected SystemSpecification() {
+		// for JPA
+		this.operatingSystem = OperatingSystem.LINUX;
+		this.architecture = Architecture.X86_64;
+		this.distributionName = "";
+		this.osVersion = "";
+	}
+
 	public OperatingSystem getOperatingSystem() {
 		return operatingSystem;
 	}

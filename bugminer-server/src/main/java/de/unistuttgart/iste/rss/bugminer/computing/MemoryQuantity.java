@@ -19,6 +19,11 @@ public final class MemoryQuantity {
 		this.bytes = bytes;
 	}
 
+	protected MemoryQuantity() {
+		bytes = 0;
+		// for JPA
+	}
+
 	public static MemoryQuantity fromBytes(long value) {
 		return new MemoryQuantity(value);
 	}
