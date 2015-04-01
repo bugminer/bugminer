@@ -3,6 +3,7 @@ package de.unistuttgart.iste.rss.bugminer.scm.git;
 import java.io.File;
 import java.io.IOException;
 
+import org.eclipse.jgit.api.CloneCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.Repository;
@@ -20,5 +21,9 @@ public class GitFactory {
 
 	public FileRepository createFileRepository(File gitDir) throws IOException {
 		return new FileRepository(gitDir);
+	}
+
+	public CloneCommand createCloneCommand() {
+		return Git.cloneRepository();
 	}
 }

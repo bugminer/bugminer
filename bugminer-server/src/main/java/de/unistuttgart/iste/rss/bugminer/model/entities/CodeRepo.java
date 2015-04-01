@@ -123,6 +123,7 @@ public class CodeRepo extends BaseEntity {
 	 * @throws java.io.IOException Either a local or a remote i/o error occurred
 	 */
 	void pushTo(Node node, String remotePath, CodeRevision revision) throws IOException {
+		getStrategy().download(this);
 		getStrategy().pushTo(this, node, remotePath, revision);
 	}
 }

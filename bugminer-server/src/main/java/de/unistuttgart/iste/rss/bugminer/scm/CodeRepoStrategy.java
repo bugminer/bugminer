@@ -32,4 +32,10 @@ public interface CodeRepoStrategy {
 	 */
 	void pushTo(CodeRepo repo, Node node, String remotePath, CodeRevision revision)
 			throws IOException;
+
+	/**
+	 * Makes sure that the repository is completely available and ready for pushTo
+	 * @param repo the repo to download
+	 */
+	public void download(CodeRepo repo) throws IOException;
 }
