@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
@@ -18,6 +19,7 @@ import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
 
 @Configuration
 @ComponentScan("de.unistuttgart.iste.rss.bugminer")
+@PropertySource("META-INF/default.properties")
 @EnableAutoConfiguration
 public class AppConfig {
 	protected AppConfig() {
