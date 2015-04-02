@@ -29,5 +29,7 @@ public class CoverageSerializationTest {
 		assertThat(deserializedReport.getFiles(), is(report.getFiles()));
 		assertThat(deserializedReport.getTestCases(), is(report.getTestCases()));
 		assertThat(deserializedReport.getData(), is(report.getData()));
+		assertThat(deserializedReport.getTestCases().get(0).isPassed(), is(true));
+		assertThat(deserializedReport.getTestCases().get(1).isPassed(), is(false));
 	}
 }

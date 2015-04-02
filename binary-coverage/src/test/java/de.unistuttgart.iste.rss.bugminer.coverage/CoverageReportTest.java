@@ -23,7 +23,7 @@ public class CoverageReportTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testNonExistantTestCaseThrows() {
 		CoverageReport report = new CoverageReport(Arrays.asList(FILES), Arrays.asList(TESTS));
-		report.getCoverage(new TestCase("new"), FILES[0]);
+		report.getCoverage(new TestCase("new", true), FILES[0]);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)

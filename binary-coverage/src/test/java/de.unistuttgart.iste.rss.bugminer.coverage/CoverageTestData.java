@@ -10,7 +10,7 @@ public class CoverageTestData {
 			new SourceCodeFile("first.java", new int[] { 2, 3, 7, 8, 10 }),
 			new SourceCodeFile("second.java", new int[] { 1, 5, 8, 13 })};
 
-	public static final TestCase[] TESTS = { new TestCase("one"), new TestCase("two") };
+	public static final TestCase[] TESTS = { new TestCase("one", true), new TestCase("two", false) };
 
 	@SuppressWarnings("rawtypes")
 	public static final Map[][] COVERAGE = {
