@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 
+import de.unistuttgart.iste.rss.bugminer.computing.NodeConnection;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -55,6 +56,8 @@ public class GitStrategyTest {
 
 	private final Node node = VagrantTestData.prepareNode();
 
+	private NodeConnection nodeConnection;
+
 	@Mock
 	private SshConnection sshConnection;
 
@@ -70,6 +73,7 @@ public class GitStrategyTest {
 
 	@Before
 	public void setUp() throws IOException {
+		nodeConnection = new NodeConnection(node, sshConnection);
 		when(gitFactory.createFileRepository(any())).thenReturn(fileRepository);
 		when(gitFactory.createGit(fileRepository)).thenReturn(git);
 		when(git.push()).thenReturn(pushCommand);
@@ -79,17 +83,18 @@ public class GitStrategyTest {
 		when(pushCommand.setRemote(any())).thenReturn(pushCommand);
 
 		when(sshConnector.connect(VagrantTestData.SSH_CONFIG)).thenReturn(sshConnection);
+		when(sshConnection.getConfig()).thenReturn(VagrantTestData.SSH_CONFIG);
 	}
 
 	@Test
 	public void testPushToInstallsGit() throws IOException {
-		strategy.pushTo(repo, node, REMOTE_PATH, revision);
+		strategy.pushTo(repo, nodeConnection, REMOTE_PATH, revision);
 		verify(remoteGitHelper).installGit(sshConnection, VagrantTestData.SPEC);
 	}
 
 	@Test
 	public void testPushToPushesRevision() throws IOException, GitAPIException {
-		strategy.pushTo(repo, node, REMOTE_PATH, revision);
+		strategy.pushTo(repo, nodeConnection, REMOTE_PATH, revision);
 		verify(pushCommand).setRefSpecs(new RefSpec()
 				.setSource(REVISION)
 				.setDestination("refs/commits/" + REVISION));
@@ -99,7 +104,7 @@ public class GitStrategyTest {
 
 	@Test
 	public void testPushToWithAbsolutePath() throws IOException, GitAPIException {
-		strategy.pushTo(repo, node, "/absolute/path", revision);
+		strategy.pushTo(repo, nodeConnection, "/absolute/path", revision);
 		verify(pushCommand).setRemote("ssh://sshuser@localhost:22/absolute/path");
 	}
 }

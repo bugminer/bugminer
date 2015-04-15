@@ -2,6 +2,7 @@ package de.unistuttgart.iste.rss.bugminer.scm;
 
 import java.io.IOException;
 
+import de.unistuttgart.iste.rss.bugminer.computing.NodeConnection;
 import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRepo;
 import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRevision;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
@@ -25,12 +26,12 @@ public interface CodeRepoStrategy {
 	 * in the same format as the local repository.
 	 *
 	 * @param repo the repository to push. Must be managed by this strategy
-	 * @param node the node to push to
+	 * @param nodeConnection the node to push to
 	 * @param remotePath either absolute or relative to the home directory
 	 * @param revision the code revision to push
 	 * @throws IOException Either a local or a remote i/o error occurred
 	 */
-	void pushTo(CodeRepo repo, Node node, String remotePath, CodeRevision revision)
+	void pushTo(CodeRepo repo, NodeConnection nodeConnection, String remotePath, CodeRevision revision)
 			throws IOException;
 
 	/**

@@ -5,6 +5,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.unistuttgart.iste.rss.bugminer.computing.NodeConnection;
+import de.unistuttgart.iste.rss.bugminer.computing.vagrant.NodeConnectionFactory;
 import org.junit.internal.AssumptionViolatedException;
 import org.junit.rules.ExternalResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +24,16 @@ import de.unistuttgart.iste.rss.bugminer.model.entities.SystemSpecification;
 @Scope("prototype")
 public class VagrantMachine extends ExternalResource {
 	private SshConfig sshConfig;
+	private NodeConnection nodeConnection;
 
 	@Autowired
 	private VagrantStrategy vagrant;
 
 	@Autowired
 	private EntityFactory entityFactory;
+
+	@Autowired
+	private NodeConnectionFactory nodeConnectionFactory;
 
 	private Node node;
 
@@ -55,6 +61,7 @@ public class VagrantMachine extends ExternalResource {
 			vagrant.initializeNode(node);
 			vagrant.startNode(node);
 			sshConfig = vagrant.getSshConfig(node);
+			nodeConnection = nodeConnectionFactory.connectTo(node);
 		} catch (Exception e) {
 			throw new RuntimeException("Unable to prepare vagrant node for VagrantMachine rule", e);
 		}
@@ -68,10 +75,15 @@ public class VagrantMachine extends ExternalResource {
 		return node;
 	}
 
+	public NodeConnection getNodeConnection() {
+		return nodeConnection;
+	}
+
 	@Override
 	protected void after() {
 		try {
 			vagrant.destroyNode(node);
+			nodeConnection.close();
 		} catch (IOException e) {
 			logger.log(Level.WARNING, "Unable to destroy vagrant node for Vagrantmachine rule", e);
 		}

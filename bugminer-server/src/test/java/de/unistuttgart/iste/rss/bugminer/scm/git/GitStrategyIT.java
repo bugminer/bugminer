@@ -72,7 +72,7 @@ public class GitStrategyIT {
 		repo.setName("main");
 		CodeRevision revision = new CodeRevision(repo, SimpleRepo.FIRST_COMMIT);
 
-		strategy.pushTo(repo, vagrantMachine.getNode(), "dest", revision);
+		strategy.pushTo(repo, vagrantMachine.getNodeConnection(), "dest", revision);
 
 		try (SshConnection connection = connector.connect(vagrantMachine.getSshConfig())) {
 			ExecutionResult result = connection.execute("cat", "dest/fileA");
@@ -81,7 +81,7 @@ public class GitStrategyIT {
 
 		// Make sure subsequent pushes work
 		revision = new CodeRevision(repo, SimpleRepo.THIRD_COMMIT);
-		strategy.pushTo(repo, vagrantMachine.getNode(), "dest", revision);
+		strategy.pushTo(repo, vagrantMachine.getNodeConnection(), "dest", revision);
 
 		try (SshConnection connection = connector.connect(vagrantMachine.getSshConfig())) {
 			ExecutionResult result = connection.execute("cat", "dest/fileA");

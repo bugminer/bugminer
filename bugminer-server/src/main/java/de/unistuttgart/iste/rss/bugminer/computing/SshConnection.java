@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
  */
 public class SshConnection implements AutoCloseable, CommandExecutor {
 	private final SSHClient client;
+	private final SshConfig config;
 
 	/**
 	 * Connects to a ssh server
@@ -42,6 +43,7 @@ public class SshConnection implements AutoCloseable, CommandExecutor {
 	public SshConnection(SshConfig config, SSHClient client) throws IOException {
 		// TODO see if the SSHClient can be injected differently
 		this.client = client;
+		this.config = config;
 		if (!config.getVerifyHostKey()) {
 			client.addHostKeyVerifier(new PromiscuousVerifier());
 		}
@@ -53,6 +55,14 @@ public class SshConnection implements AutoCloseable, CommandExecutor {
 		} else {
 			client.authPassword(config.getUser(), "");
 		}
+	}
+
+	/**
+	 * Gets the config used to start this ssh connection
+	 * @return the ssh config
+	 */
+	public SshConfig getConfig() {
+		return config;
 	}
 
 	/**

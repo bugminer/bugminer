@@ -86,44 +86,4 @@ public class CodeRepo extends BaseEntity {
 		}
 	}
 
-	CodeRepoStrategy getStrategy() {
-		if (StringUtils.isEmpty(provider)) {
-			throw new IllegalStateException("The repo does not have a provider set");
-		}
-
-		CodeRepoStrategy strategy = strategyFactory.getStrategy(CodeRepoStrategy.class, provider);
-		if (strategy == null) {
-			throw new IllegalStateException("There is no strategy for the provider " + provider);
-		}
-
-		return strategy;
-	}
-
-
-	/**
-	 * Pushes a revision to a computing node.
-	 *
-	 * <p>
-	 * The directory at remotePath will contain exactly the code at the specified revision, that
-	 * means if pushTo is executed with different revisions in the same remotePath, only the files
-	 * of the second push will be there. However, there may be files required by the repo strategy
-	 * itself, such as a {@code .git} directory.
-	 *
-	 * <p>
-	 * This method may not be called for two different {@code CodeRepo}s but the same
-	 * {@code remotePath}. Otherwise, the behavior is not specified.
-	 *
-	 * <p>
-	 * No restrictions are set on how the code will be transfered to the node or whether it will be
-	 * in the same format as the local repository.
-	 *
-	 * @param node the node to push to
-	 * @param remotePath either absolute or relative to the home directory
-	 * @param revision the code revision to push
-	 * @throws java.io.IOException Either a local or a remote i/o error occurred
-	 */
-	void pushTo(Node node, String remotePath, CodeRevision revision) throws IOException {
-		getStrategy().download(this);
-		getStrategy().pushTo(this, node, remotePath, revision);
-	}
 }

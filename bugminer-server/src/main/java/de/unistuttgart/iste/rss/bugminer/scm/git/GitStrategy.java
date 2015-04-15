@@ -5,6 +5,7 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import de.unistuttgart.iste.rss.bugminer.computing.NodeConnection;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
@@ -45,7 +46,7 @@ public class GitStrategy implements CodeRepoStrategy {
 	}
 
 	@Override
-	public void pushTo(CodeRepo repo, Node node, String remotePath, CodeRevision revision)
+	public void pushTo(CodeRepo repo, NodeConnection node, String remotePath, CodeRevision revision)
 			throws IOException {
 		initRepository(node, remotePath);
 
@@ -54,7 +55,7 @@ public class GitStrategy implements CodeRepoStrategy {
 				.setSource(revision.getCommitId())
 				.setDestination("refs/commits/" + revision.getCommitId());
 
-		SshConfig sshConfig = node.getSshConfig();
+		SshConfig sshConfig = node.getConnection().getConfig();
 		// if remotePath is relative, it should be resolved against the home directory
 		// if it is absolute, the last resolve() call removes the ~/
 		URI uri = sshConfig.toURIWithoutPassword().resolve("~/").resolve(remotePath);
@@ -77,8 +78,8 @@ public class GitStrategy implements CodeRepoStrategy {
 		checkout(node, remotePath, revision);
 	}
 
-	private void checkout(Node node, String remotePath, CodeRevision revision) throws IOException {
-		try (SshConnection connection = sshConnector.connect(node.getSshConfig())) {
+	private void checkout(NodeConnection node, String remotePath, CodeRevision revision) throws IOException {
+		try (SshConnection connection = sshConnector.connect(node.getConnection().getConfig())) {
 			remoteGit.checkoutHard(connection, remotePath, revision.getCommitId());
 		}
 	}
@@ -112,9 +113,9 @@ public class GitStrategy implements CodeRepoStrategy {
 		}
 	}
 
-	private void initRepository(Node node, String remotePath) throws IOException {
-		try (SshConnection connection = sshConnector.connect(node.getSshConfig())) {
-			remoteGit.installGit(connection, node.getSystemSpecification());
+	private void initRepository(NodeConnection node, String remotePath) throws IOException {
+		try (SshConnection connection = sshConnector.connect(node.getConnection().getConfig())) {
+			remoteGit.installGit(connection, node.getNode().getSystemSpecification());
 			remoteGit.initEmptyRepository(connection, remotePath);
 		}
 	}

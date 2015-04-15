@@ -25,10 +25,6 @@ import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 @Scope("prototype")
 @Entity
 public class Cluster extends BaseEntity {
-	@Autowired
-	@Transient
-	private StrategyFactory strategyFactory;
-
 	private String provider;
 
 	@Column(unique = true)
@@ -66,18 +62,5 @@ public class Cluster extends BaseEntity {
 
 	public void setNodes(Collection<Node> nodes) {
 		this.nodes = nodes;
-	}
-
-	ClusterStrategy getStrategy() {
-		if (StringUtils.isEmpty(provider)) {
-			throw new IllegalStateException("The cluster does not have a provider set");
-		}
-
-		ClusterStrategy strategy = strategyFactory.getStrategy(ClusterStrategy.class, provider);
-		if (strategy == null) {
-			throw new IllegalStateException("There is no strategy for the provider ");
-		}
-
-		return strategy;
 	}
 }

@@ -70,8 +70,8 @@ public class MavenStrategyIT {
 		repo.setName("main");
 		CodeRevision revision = new CodeRevision(repo, MavenRepo.COMMIT_WITH_SIMPLE_SUCCESSFUL_TEST);
 
-		gitStrategy.pushTo(repo, vagrantMachine.getNode(), "dest", revision);
+		gitStrategy.pushTo(repo, vagrantMachine.getNodeConnection(), "dest", revision);
 
-		strategy.build(project, vagrantMachine.getNode(), "dest");
+		strategy.build(project, vagrantMachine.getNodeConnection(), "dest");
 	}
 }

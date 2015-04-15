@@ -83,16 +83,4 @@ public class Node extends BaseEntity {
 	public void setCpuCount(int cpuCount) {
 		this.cpuCount = cpuCount;
 	}
-
-	public SshConfig getSshConfig() throws IOException {
-		return getStrategy().getSshConfig(this);
-	}
-
-	ClusterStrategy getStrategy() {
-		if (cluster == null) {
-			throw new IllegalStateException("The node does not have a cluster set");
-		}
-
-		return cluster.getStrategy();
-	}
 }

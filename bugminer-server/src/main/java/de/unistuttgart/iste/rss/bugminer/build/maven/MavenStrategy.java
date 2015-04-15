@@ -4,6 +4,7 @@ import de.unistuttgart.iste.rss.bugminer.annotations.Strategy;
 import de.unistuttgart.iste.rss.bugminer.build.BuildResult;
 import de.unistuttgart.iste.rss.bugminer.build.BuildStrategy;
 import de.unistuttgart.iste.rss.bugminer.build.sonar.RemoteSonarHelper;
+import de.unistuttgart.iste.rss.bugminer.computing.NodeConnection;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnection;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnector;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
@@ -30,25 +31,25 @@ public class MavenStrategy implements BuildStrategy {
 	@Autowired
 	PomPatcher pomPatcher;
 
-	@Override public BuildResult build(Project project, Node node, String rootPath) throws
+	@Override public BuildResult build(Project project, NodeConnection nodeConnection, String rootPath) throws
 			IOException {
-		try (SshConnection connection = sshConnector.connect(node.getSshConfig())) {
+		SshConnection connection = nodeConnection.getConnection();
+		Node node = nodeConnection.getNode();
 
-			String pomPath = rootPath + "/pom.xml";
-			String pom = connection.readTextFile(pomPath);
-			connection.writeTextFile(pomPath, pomPatcher.addCoveragePerTestProfile(pom));
+		String pomPath = rootPath + "/pom.xml";
+		String pom = connection.readTextFile(pomPath);
+		connection.writeTextFile(pomPath, pomPatcher.addCoveragePerTestProfile(pom));
 
-			remoteMaven.installMaven(connection, node.getSystemSpecification());
-			ExecutionResult result = connection.tryExecuteIn(rootPath,
-					"mvn", "clean", "org.jacoco:jacoco-maven-plugin:prepare-agent", "install",
-					"de.unistuttgart.iste.rss.bugminer:bugminer-coverage-maven-plugin:analyze-coverage",
-					"-Dmaven.test.failure.ignore=true", "-P", pomPatcher.getProfileName());
-			if (result.getExitCode() != 0) {
-				return new BuildResult(false);
-			}
-
-
-			return new BuildResult(true);
+		remoteMaven.installMaven(connection, node.getSystemSpecification());
+		ExecutionResult result = connection.tryExecuteIn(rootPath,
+				"mvn", "clean", "org.jacoco:jacoco-maven-plugin:prepare-agent", "install",
+				"de.unistuttgart.iste.rss.bugminer:bugminer-coverage-maven-plugin:analyze-coverage",
+				"-Dmaven.test.failure.ignore=true", "-P", pomPatcher.getProfileName());
+		if (result.getExitCode() != 0) {
+			return new BuildResult(false);
 		}
+
+
+		return new BuildResult(true);
 	}
 }

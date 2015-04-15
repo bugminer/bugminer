@@ -153,23 +153,4 @@ public class Project extends BaseEntity {
 
 		return strategy;
 	}
-
-	/**
-	 * Builds this project in a specific revision on a given node
-	 *
-	 * @param node the node, assumed to be free
-	 * @return the result of the build
-	 * @throws java.io.IOException local or in node
-	 */
-	public BuildResult build(CodeRevision revision, Node node) throws IOException {
-		if (getMainRepo() == null) {
-			throw new IllegalStateException("A main repo must be defined");
-		}
-
-		CodeRepo repo = getMainRepo();
-		String path = getName() + "/" + repo.getName();
-		repo.pushTo(node, path, revision);
-		BuildStrategy buildStrategy = getBuildStratety();
-		return buildStrategy.build(this, node, path);
-	}
 }

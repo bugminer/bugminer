@@ -40,11 +40,6 @@ public final class VagrantTestData {
 		when(node.getId()).thenReturn(NODE_ID);
 		when(node.getMemory()).thenReturn(MemoryQuantity.fromGiB(1));
 		when(node.getCpuCount()).thenReturn(2);
-		try {
-			when(node.getSshConfig()).thenReturn(SSH_CONFIG);
-		} catch (IOException e) {
-			// does not happen
-		}
 		return node;
 	}
 }
