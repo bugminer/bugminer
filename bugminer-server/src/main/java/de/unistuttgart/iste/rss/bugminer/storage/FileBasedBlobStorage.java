@@ -2,6 +2,7 @@ package de.unistuttgart.iste.rss.bugminer.storage;
 
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,6 +12,7 @@ import java.util.UUID;
 /**
  * An Implementation of @{link BlobStorage} that saves the blob in the local file system
  */
+@Component
 public class FileBasedBlobStorage implements BlobStorage {
 	@Autowired
 	@DataDirectory
