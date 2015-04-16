@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.rss.bugminer.cli;
 
+import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizer;
 import de.unistuttgart.iste.rss.bugminer.computing.SshConnector;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
@@ -11,6 +12,7 @@ import org.springframework.shell.core.annotation.CliCommand;
 import org.springframework.shell.core.annotation.CliOption;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Component
@@ -24,6 +26,9 @@ public class BugsCommand implements CommandMarker {
 	@Autowired
 	private ProjectRepository projectRepository;
 
+    @Autowired
+    private BugSynchronizer bugSynchronizer;
+
 	protected BugsCommand() {
 		// managed bean
 	}
@@ -34,6 +39,12 @@ public class BugsCommand implements CommandMarker {
 		Project project = projectRepository.findByName(projectName)
 				.orElseThrow(() -> new IllegalArgumentException("There is no such project"));
 
-		throw new NotImplementedException();
-	}
+        try {
+            bugSynchronizer.synchronize(project);
+        } catch (IOException e) {
+            return String.format("Failed to synchronize Project %s.", project.getName());
+        }
+
+        return String.format("Project %s successfully synchronized.", project.getName());
+    }
 }
