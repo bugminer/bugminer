@@ -32,6 +32,9 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 
     Logger logger = Logger.getLogger(JiraIssueTrackerStrategy.class);
 
+    private int numberOfIssuesFetchedAtOnce = 25;
+    private int maximumNumberOfExceptionsBeforeTermination = 10;
+
 	/**
 	 * Factory to create JiraRestClient
 	 */
@@ -121,14 +124,14 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 
 			try {
 				issuePromise = restClient.getSearchClient().searchJql(jqlSearchString,
-						25, issues.size(), null);
+                        numberOfIssuesFetchedAtOnce, issues.size(), null);
 
                 logger.debug("About to fetch issues");
 				Iterables.addAll(issues, issuePromise.claim().getIssues());
                 logger.debug("Sucessfully fetched " + issues.size() + " issues in total");
 
 			} catch (Exception e) {
-				if (exceptionsOccurred > 10) {
+				if (exceptionsOccurred > maximumNumberOfExceptionsBeforeTermination) {
                     logger.debug("Exception occurred multiple times");
 					throw e;
 				} else {
@@ -146,4 +149,20 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 
 		return issues;
 	}
+
+    public int getNumberOfIssuesFetchedAtOnce() {
+        return numberOfIssuesFetchedAtOnce;
+    }
+
+    public void setNumberOfIssuesFetchedAtOnce(int numberOfIssuesFetchedAtOnce) {
+        this.numberOfIssuesFetchedAtOnce = numberOfIssuesFetchedAtOnce;
+    }
+
+    public int getMaximumNumberOfExceptionsBeforeTermination() {
+        return maximumNumberOfExceptionsBeforeTermination;
+    }
+
+    public void setMaximumNumberOfExceptionsBeforeTermination(int maximumNumberOfExceptionsBeforeTermination) {
+        this.maximumNumberOfExceptionsBeforeTermination = maximumNumberOfExceptionsBeforeTermination;
+    }
 }
