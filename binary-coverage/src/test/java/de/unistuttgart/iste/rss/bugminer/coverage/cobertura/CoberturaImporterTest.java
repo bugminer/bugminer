@@ -29,10 +29,10 @@ public class CoberturaImporterTest {
 	
 	@Test
 	public void testImport() throws URISyntaxException, SAXException, IOException {
-		Path file = Paths.get(getClass().getResource("cobertura.xml").toURI());
+		Path file = Paths.get(getClass().getResource("p_cobertura.xml").toURI());
 		CoberturaImporter importer = new CoberturaImporter();
 		CoverageReport report = importer.read(ImmutableList.of(file));
-		
+
 		assertThat(report.getFiles()
 				.stream()
 				.map(f -> f.getFileName())
