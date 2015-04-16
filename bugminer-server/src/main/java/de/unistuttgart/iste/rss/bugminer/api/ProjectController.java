@@ -1,12 +1,12 @@
 package de.unistuttgart.iste.rss.bugminer.api;
 
+import java.io.IOException;
 import java.util.Collection;
 
+import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizer;
+import de.unistuttgart.iste.rss.bugminer.cli.ProjectsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import de.unistuttgart.iste.rss.bugminer.api.exceptions.NotFoundException;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
@@ -18,6 +18,12 @@ public class ProjectController {
 
 	@Autowired
 	private ProjectRepository projectRepo;
+
+    @Autowired
+    private ProjectsService projectsService;
+
+    @Autowired
+    private BugSynchronizer bugSynchronizer;
 
 	protected ProjectController() {
 		// managed bean
@@ -43,4 +49,31 @@ public class ProjectController {
 	public Project project(@PathVariable(value = "name") String name) {
 		return projectRepo.findByName(name).orElseThrow(() -> new NotFoundException());
 	}
+
+    /**
+     * Adds a new project
+     *
+     * @param name the projects name
+     * @param git the url of the git repo
+     * @param jira the url of the jira instance
+     */
+    @RequestMapping(value = "/projects/add", method = RequestMethod.POST)
+    public void addProject(@RequestParam(value = "name", required = true) final String name,
+                           @RequestParam(value = "git", required = true) final String git,
+                           @RequestParam(value = "jira", required = false) final String jira) {
+
+        Project project = projectsService.createProject(name);
+        projectsService.configureMainGitRepo(project, git);
+        if (jira != null) {
+            projectsService.configureJira(project, jira);
+        }
+    }
+
+    @RequestMapping(value = "/projects/{name}/synchronize", method = RequestMethod.POST)
+    public void synchronize(@PathVariable(value = "name") String name) throws IOException {
+        Project project = projectRepo.findByName(name)
+                .orElseThrow(() -> new IllegalArgumentException("There is no such project"));
+
+        bugSynchronizer.synchronize(project);
+    }
 }
