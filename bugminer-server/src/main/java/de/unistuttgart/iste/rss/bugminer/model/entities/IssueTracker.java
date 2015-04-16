@@ -59,10 +59,6 @@ public class IssueTracker extends BaseEntity {
 		bugs = new ArrayList<>();
 	}
 
-	public Collection<Bug> fetchBugs() throws IOException {
-		return getStrategy().fetch(this);
-	}
-
 	public Project getProject() {
 		return project;
 	}
@@ -93,9 +89,5 @@ public class IssueTracker extends BaseEntity {
 
 	public void setProvider(String provider) {
 		this.provider = provider;
-	}
-
-	IssueTrackerStrategy getStrategy() {
-		return strategyFactory.getStrategy(IssueTrackerStrategy.class, getProvider());
 	}
 }

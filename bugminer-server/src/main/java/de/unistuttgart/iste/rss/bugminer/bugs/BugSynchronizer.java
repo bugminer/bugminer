@@ -1,7 +1,11 @@
 package de.unistuttgart.iste.rss.bugminer.bugs;
 
+import java.io.IOException;
 import java.util.Collection;
 
+import de.unistuttgart.iste.rss.bugminer.model.entities.IssueTracker;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
+import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +18,36 @@ public class BugSynchronizer {
 	@Autowired
 	BugRepository bugRepo;
 
+    @Autowired
+    StrategyFactory strategyFactory;
+
 	protected BugSynchronizer() {
 		// managed bean
 	}
+
+    /**
+     * Synchronizes the given project's issue tracker with the local database
+     *
+     * @param project the project to synchronize
+     * @throws IOException
+     */
+    public void synchronize(Project project) throws IOException {
+        for (IssueTracker issueTracker : project.getBugRepositories()) {
+            this.synchronize(issueTracker);
+        }
+    }
+
+    /**
+     * Synchronizes the given issue tracker with the local database
+     *
+     * @param issueTracker the issue tracker to synchronize
+     * @throws IOException
+     */
+    public void synchronize(IssueTracker issueTracker) throws IOException {
+        IssueTrackerStrategy strategy = strategyFactory.getStrategy(IssueTrackerStrategy.class,
+                issueTracker.getProvider());
+        this.synchronize(strategy.fetch(issueTracker));
+    }
 
 	/**
 	 * Synchronizes the given bugs with the data in the JPA bug repository
