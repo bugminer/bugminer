@@ -62,7 +62,7 @@ public class Bug extends BaseEntity {
 
 	private String title;
 
-	@Column(length = 10000)
+	@Column(length = 1000000)
 	private String description;
 
 	/**
