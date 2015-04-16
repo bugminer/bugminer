@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.sun.istack.internal.logging.Logger;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.atlassian.jira.rest.client.api.JiraRestClient;
@@ -114,7 +114,7 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 
 		do {
             if (exceptionsOccurred > 0) {
-                logger.warning("Restarted after " + exceptionsOccurred + " exceptions");
+                logger.debug("Restarted after " + exceptionsOccurred + " exceptions");
             }
 
             sizeBefore = issues.size();
@@ -123,16 +123,16 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 				issuePromise = restClient.getSearchClient().searchJql(jqlSearchString,
 						25, issues.size(), null);
 
-                logger.warning("About to fetch issues");
+                logger.debug("About to fetch issues");
 				Iterables.addAll(issues, issuePromise.claim().getIssues());
-                logger.warning("Sucessfully fetched " + issues.size() + " issues in total");
+                logger.debug("Sucessfully fetched " + issues.size() + " issues in total");
 
 			} catch (Exception e) {
 				if (exceptionsOccurred > 10) {
-                    logger.warning("Exception occurred multiple times");
+                    logger.debug("Exception occurred multiple times");
 					throw e;
 				} else {
-                    logger.warning("Exception occurred for the " + (exceptionsOccurred + 1) + " time");
+                    logger.debug("Exception occurred for the " + (exceptionsOccurred + 1) + " time");
 					exceptionsOccurred++;
 					continue;
 				}
