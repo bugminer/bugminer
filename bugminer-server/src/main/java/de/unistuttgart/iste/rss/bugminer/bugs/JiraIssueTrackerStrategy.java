@@ -8,6 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.sun.istack.internal.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.atlassian.jira.rest.client.api.JiraRestClient;
@@ -28,6 +29,8 @@ import de.unistuttgart.iste.rss.bugminer.model.entities.Label;
  */
 @Strategy(name = "jira", type = IssueTrackerStrategy.class)
 public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
+
+    Logger logger = Logger.getLogger(JiraIssueTrackerStrategy.class);
 
 	/**
 	 * Factory to create JiraRestClient
@@ -104,29 +107,40 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 				new AnonymousAuthenticationHandler());
 		final String projectName = issueTracker.getProject().getName();
 		final String jqlSearchString = "project=" + projectName;
-		boolean exceptionOccured = false;
+		int exceptionsOccurred = 0;
 
 		Promise<SearchResult> issuePromise = null;
+        int sizeBefore;
 
 		do {
+            if (exceptionsOccurred > 0) {
+                logger.warning("Restarted after " + exceptionsOccurred + " exceptions");
+            }
+
+            sizeBefore = issues.size();
+
 			try {
 				issuePromise = restClient.getSearchClient().searchJql(jqlSearchString,
-						50, issues.size(), null);
+						25, issues.size(), null);
 
+                logger.warning("About to fetch issues");
 				Iterables.addAll(issues, issuePromise.claim().getIssues());
+                logger.warning("Sucessfully fetched " + issues.size() + " issues in total");
 
 			} catch (Exception e) {
-				if (exceptionOccured) {
+				if (exceptionsOccurred > 10) {
+                    logger.warning("Exception occurred multiple times");
 					throw e;
 				} else {
-					exceptionOccured = true;
+                    logger.warning("Exception occurred for the " + (exceptionsOccurred + 1) + " time");
+					exceptionsOccurred++;
 					continue;
 				}
 			}
 
-			exceptionOccured = false;
+			exceptionsOccurred = 0;
 
-		} while (Iterables.size(issuePromise.claim().getIssues()) > 0);
+		} while (issues.size() > sizeBefore || exceptionsOccurred > 0);
 
 		restClient.close();
 
