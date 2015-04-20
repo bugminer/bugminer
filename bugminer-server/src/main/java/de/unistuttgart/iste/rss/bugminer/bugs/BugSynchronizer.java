@@ -46,7 +46,7 @@ public class BugSynchronizer {
     public void synchronize(IssueTracker issueTracker) throws IOException {
         IssueTrackerStrategy strategy = strategyFactory.getStrategy(IssueTrackerStrategy.class,
                 issueTracker.getProvider());
-        this.synchronize(strategy.fetch(issueTracker));
+        this.synchronize(strategy.fetch(issueTracker), issueTracker);
     }
 
 	/**
@@ -54,9 +54,10 @@ public class BugSynchronizer {
 	 *
 	 * @param bugs
 	 */
-	public void synchronize(Collection<Bug> bugs) {
+	public void synchronize(Collection<Bug> bugs, IssueTracker issueTracker) {
 		for (Bug fetchedBug : bugs) {
-			Bug bugInRepo = bugRepo.findByKey(fetchedBug.getKey()).orElse(new Bug());
+			Bug bugInRepo = bugRepo.findByProjectAndIssueTrackerAndKey(issueTracker.getProject(),
+                    issueTracker, fetchedBug.getKey()).orElse(new Bug());
 
 			// don't synchronize bugs that already have classifications
 			if (!bugInRepo.getClassifications().isEmpty()) {
@@ -64,6 +65,8 @@ public class BugSynchronizer {
 			}
 
 			// update data
+            bugInRepo.setProject(issueTracker.getProject());
+            bugInRepo.setIssueTracker(issueTracker);
 			bugInRepo.setLabels(fetchedBug.getLabels());
 			bugInRepo.setEvents(fetchedBug.getEvents());
 			bugInRepo.setParticipants(fetchedBug.getParticipants());

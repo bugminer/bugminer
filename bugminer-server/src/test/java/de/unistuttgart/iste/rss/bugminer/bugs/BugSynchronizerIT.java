@@ -6,6 +6,11 @@ import static org.junit.Assert.*;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.atlassian.jira.rest.client.api.domain.Issue;
+import de.unistuttgart.iste.rss.bugminer.model.entities.IssueTracker;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
+import de.unistuttgart.iste.rss.bugminer.model.repositories.IssueTrackerRepository;
+import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,14 +45,29 @@ public class BugSynchronizerIT extends AbstractTransactionalJUnit4SpringContextT
 	@Autowired
 	BugSynchronizer synchronizer;
 
+    @Autowired
+    ProjectRepository projectRepo;
+
+    @Autowired
+    IssueTrackerRepository issueTrackerRepo;
+
 	@Autowired
 	EntityFactory factory;
 
 	Collection<Bug> bugsToSynchronize;
 
+    IssueTracker issueTracker;
+
 
 	@Before
 	public void init() {
+		Project project = factory.make(Project.class);
+		issueTracker = factory.make(IssueTracker.class);
+		issueTracker.setProject(project);
+
+		projectRepo.save(project);
+		issueTrackerRepo.save(issueTracker);
+
 		Bug bugToSynchronize = factory.make(Bug.class);
 		bugToSynchronize.setDescription(BUG_NEW_DESCR);
 		bugToSynchronize.setKey(BUG_KEY);
@@ -63,10 +83,14 @@ public class BugSynchronizerIT extends AbstractTransactionalJUnit4SpringContextT
 		Bug existingBug = new Bug();
 		existingBug.setDescription(BUG_OLD_DESCR);
 		existingBug.setKey(BUG_KEY);
+		existingBug.setProject(project);
+		existingBug.setIssueTracker(issueTracker);
 
 		Bug existingBug2 = new Bug();
 		existingBug2.setDescription(BUG_OLD_DESCR);
 		existingBug2.setKey(BUG_KEY_2);
+		existingBug2.setProject(project);
+		existingBug2.setIssueTracker(issueTracker);
 
 		Classification classification = factory.make(Classification.class);
 		classification.setBug(existingBug2);
@@ -78,9 +102,11 @@ public class BugSynchronizerIT extends AbstractTransactionalJUnit4SpringContextT
 
 	@Test
 	public void testSynchronize() {
-		synchronizer.synchronize(bugsToSynchronize);
+        synchronizer.synchronize(bugsToSynchronize, issueTracker);
 
-		assertThat(bugRepo.findByKey(BUG_KEY).get().getDescription(), is(BUG_NEW_DESCR));
-		assertThat(bugRepo.findByKey(BUG_KEY_2).get().getDescription(), is(BUG_OLD_DESCR));
+		assertThat(bugRepo.findByProjectAndIssueTrackerAndKey(issueTracker.getProject(), issueTracker,
+				BUG_KEY).get().getDescription(), is(BUG_NEW_DESCR));
+		assertThat(bugRepo.findByProjectAndIssueTrackerAndKey(issueTracker.getProject(), issueTracker,
+				BUG_KEY_2).get().getDescription(), is(BUG_OLD_DESCR));
 	}
 }
