@@ -6,6 +6,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import de.unistuttgart.iste.rss.bugminer.computing.ClusterStrategy;
 import de.unistuttgart.iste.rss.bugminer.scm.CodeRepoStrategy;
@@ -26,6 +27,7 @@ import java.io.IOException;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"project_id", "name"}))
 public class CodeRepo extends BaseEntity {
 	@ManyToOne
+    @JsonIgnore
 	private Project project;
 
 	private String url;
