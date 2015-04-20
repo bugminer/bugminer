@@ -30,11 +30,22 @@
 		});
 	});
 	
-	app.controller('ProjectBugsCtrl', function($scope, $routeParams, Bug) {
-		Bug.query({name: $routeParams.name, page: 0}, function(data) {
+	app.controller('ProjectBugsCtrl', function($scope, $routeParams, $location, Bug) {
+		if ($routeParams.page) {
+			var page = $routeParams.page;
+		} else {
+			var page = 0;
+		}
+
+		Bug.query({name: $routeParams.name, page: page}, function(data) {
 			$scope.bugs = data;
 			console.log(data);
 		});
+
+		$scope.switchPage = function(page) {
+			var url = $location.path() + "?page=" + page;
+			$location.url(url);
+		};
 	});
 
 })(angular);

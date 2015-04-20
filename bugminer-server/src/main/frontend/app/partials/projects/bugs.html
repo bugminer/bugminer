@@ -4,6 +4,12 @@
 			<div>{{bug.key}}</div>
 		</li>
 	</ul>
+
+	<ul class="pagination">
+		<li ng-repeat="page in [1, 2, 3, 4, 5]">
+			<a href="javascript:void(0);" ng-click="switchPage(page)">{{page}}</a>
+		</li>
+	</ul>
 </div>
 <div class="col-lg-6"></div>
 <div class="col-lg-3"></div>
