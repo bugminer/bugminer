@@ -1,12 +1,11 @@
 package de.unistuttgart.iste.rss.bugminer.api;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.web.bind.annotation.*;
 
 import de.unistuttgart.iste.rss.bugminer.api.exceptions.NotFoundException;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Bug;
@@ -21,7 +20,8 @@ import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
 @RequestMapping(value = "/api")
 public class BugController {
 
-	@Autowired
+    public static final int BUG_LIST_PAGE_SIZE = 10;
+    @Autowired
 	private BugRepository bugRepo;
 
 	@Autowired
@@ -41,10 +41,11 @@ public class BugController {
 	 * @return a collection of all bugs for the given project
 	 */
 	@RequestMapping(value = "/projects/{name}/bugs", method = RequestMethod.GET)
-	public Collection<Bug> bugsForProject(@PathVariable(value = "name") String name) {
+	public List<Bug> bugsForProject(@PathVariable(value = "name") String name, @RequestParam(value = "page") int page) {
 		Project project = projectRepo.findByName(name).orElseThrow(() -> new NotFoundException());
+        PageRequest request = new PageRequest(page, BUG_LIST_PAGE_SIZE);
 
-		return bugRepo.findByProject(project);
+		return bugRepo.findByProject(project, request).getContent();
 	}
 
 	/**

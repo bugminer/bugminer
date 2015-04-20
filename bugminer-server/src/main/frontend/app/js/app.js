@@ -31,7 +31,7 @@
 	});
 	
 	app.controller('ProjectBugsCtrl', function($scope, $routeParams, Bug) {
-		Bug.query({name: $routeParams.name}, function(data) {
+		Bug.query({name: $routeParams.name, page: 0}, function(data) {
 			$scope.bugs = data;
 			console.log(data);
 		});
