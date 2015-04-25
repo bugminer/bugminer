@@ -16,11 +16,13 @@ import org.springframework.context.annotation.Scope;
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
 
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
 
 @Configuration
 @ComponentScan("de.unistuttgart.iste.rss.bugminer")
 @PropertySource("META-INF/default.properties")
 @EnableAutoConfiguration
+@EnableSpringDataWebSupport
 public class AppConfig {
 	protected AppConfig() {
 		// managed bean

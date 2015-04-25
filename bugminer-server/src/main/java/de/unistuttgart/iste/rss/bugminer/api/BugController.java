@@ -4,7 +4,10 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
 
 import de.unistuttgart.iste.rss.bugminer.api.exceptions.NotFoundException;
@@ -41,11 +44,11 @@ public class BugController {
 	 * @return a collection of all bugs for the given project
 	 */
 	@RequestMapping(value = "/projects/{name}/bugs", method = RequestMethod.GET)
-	public List<Bug> bugsForProject(@PathVariable(value = "name") String name, @RequestParam(value = "page") int page) {
+	public Page<Bug> bugsForProject(@PathVariable(value = "name") String name, Pageable pageable) {
 		Project project = projectRepo.findByName(name).orElseThrow(() -> new NotFoundException());
-        PageRequest request = new PageRequest(page, BUG_LIST_PAGE_SIZE);
+        PageRequest request = new PageRequest(pageable.getPageNumber(), BUG_LIST_PAGE_SIZE);
 
-		return bugRepo.findByProject(project, request).getContent();
+		return bugRepo.findByProject(project, request);
 	}
 
 	/**

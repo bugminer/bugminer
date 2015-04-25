@@ -19,7 +19,7 @@
 		  return $resource("/api/projects/:name");
 	});
 	
-	app.factory('Bug', function($resource) {
+	app.factory('BugPage', function($resource) {
 		  return $resource("/api/projects/:name/bugs");
 	});
 	
@@ -30,15 +30,15 @@
 		});
 	});
 	
-	app.controller('ProjectBugsCtrl', function($scope, $routeParams, $location, Bug) {
+	app.controller('ProjectBugsCtrl', function($scope, $routeParams, $location, BugPage) {
 		if ($routeParams.page) {
 			var page = $routeParams.page;
 		} else {
 			var page = 0;
 		}
 
-		Bug.query({name: $routeParams.name, page: page}, function(data) {
-			$scope.bugs = data;
+		BugPage.get({name: $routeParams.name, page: page}, function(data) {
+			$scope.bugs = data.content;
 			console.log(data);
 		});
 
