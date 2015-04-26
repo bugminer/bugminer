@@ -9,9 +9,9 @@
 				templateUrl: 'partials/projects/index.html',
 				controller: 'ProjectsCtrl'
 			})
-			.when('/projects/:name/bugs', {
-				templateUrl: 'partials/projects/bugs.html',
-				controller: 'ProjectBugsCtrl',
+			.when('/projects/:name/:tab', {
+				templateUrl: 'partials/projects/view.html',
+				controller: 'ProjectCtrl',
 				reloadOnSearch: false
 			});
 	}]);
@@ -29,6 +29,10 @@
 			$scope.projects = data;
 			console.log(data);
 		});
+	});
+
+	app.controller('ProjectCtrl', function($scope, $routeParams) {
+		$scope.tab = $routeParams.tab;
 	});
 	
 	app.controller('ProjectBugsCtrl', function($scope, $routeParams, $location, BugPage) {
