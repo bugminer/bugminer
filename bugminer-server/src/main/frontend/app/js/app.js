@@ -33,6 +33,11 @@
 
 	app.controller('ProjectCtrl', function($scope, $routeParams) {
 		$scope.tab = $routeParams.tab;
+
+		// set dashboard to default
+		if ($scope.tab === null) {
+			$scope.tab = 'dashboard';
+		}
 	});
 	
 	app.controller('ProjectBugsCtrl', function($scope, $routeParams, $location, BugPage) {
