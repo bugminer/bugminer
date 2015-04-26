@@ -1,9 +1,11 @@
 <div class="col-lg-3">
-	<ul id="bug-list" class="list-group">
-		<li class="list-group-item" ng-repeat="bug in bugs">
+	<div id="bug-list" class="list-group">
+		<a href="javascript:void(0);" ng-click="setCurrentBug(bug)"
+		   ng-class="{active: currentBug !== null && bug.id === currentBug.id}"
+		   class="list-group-item" ng-repeat="bug in bugs">
 			<div>{{bug.key}}</div>
-		</li>
-	</ul>
+		</a>
+	</div>
 
 	<pagination total-items="totalItems" items-per-page="itemsPerPage" ng-model="currentPage"
 				direction-links="false" max-size="5" class="pagination-sm" boundary-links="true"></pagination>

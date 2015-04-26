@@ -33,6 +33,7 @@
 	
 	app.controller('ProjectBugsCtrl', function($scope, $routeParams, $location, BugPage) {
 		$scope.currentPage = $routeParams.page;
+		$scope.currentBug = null;
 
 		$scope.$watch('currentPage', function() {
 			$location.search({page: $scope.currentPage});
@@ -43,6 +44,10 @@
 				$scope.itemsPerPage = data.size;
 			});
 		});
+
+		$scope.setCurrentBug = function(bug) {
+			$scope.currentBug = bug;
+		};
 	});
 
 })(angular);
