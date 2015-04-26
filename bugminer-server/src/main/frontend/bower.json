@@ -1,5 +1,5 @@
 {
-	"name": "vita",
+	"name": "bugminer",
 	"description": "",
 	"version": "0.0.0",
 	"private": true,
@@ -8,6 +8,7 @@
 		"angular-route": "~1.2.x",
 		"angular-resource": "~1.2.x",
 		"angular-mocks": "~1.2.x",
-		"bootstrap": "^3.2.0"
+		"bootstrap": "^3.2.0",
+        "angular-bootstrap": "0.12.1"
 	}
 }

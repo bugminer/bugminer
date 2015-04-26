@@ -60,6 +60,11 @@ module.exports = function(grunt) {
           src: ['angular.js'],
           dest: '<%= javascriptPath %>'
         }, {
+			expand: true,
+			cwd: '<%= bowerrc.directory %>/angular-bootstrap/',
+			src: ['ui-bootstrap-tpls.js'],
+			dest: '<%= javascriptPath %>'
+		}, {
           expand: true,
           cwd: '<%= bowerrc.directory %>/angular-route/',
           src: ['angular-route.js'],

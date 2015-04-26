@@ -1,7 +1,7 @@
 (function(angular) {
 	'use strict';
 	
-	var app = angular.module('bugminerApp', ['ngResource', 'ngRoute']);
+	var app = angular.module('bugminerApp', ['ngResource', 'ngRoute', 'ui.bootstrap']);
 	
 	app.config(['$routeProvider', function($routeProvider) {
 		$routeProvider
@@ -11,16 +11,17 @@
 			})
 			.when('/projects/:name/bugs', {
 				templateUrl: 'partials/projects/bugs.html',
-				controller: 'ProjectBugsCtrl'
+				controller: 'ProjectBugsCtrl',
+				reloadOnSearch: false
 			});
 	}]);
 	
 	app.factory('Project', function($resource) {
-		  return $resource("/api/projects/:name");
+		  return $resource('/api/projects/:name');
 	});
 	
-	app.factory('BugPage', function($resource) {
-		  return $resource("/api/projects/:name/bugs");
+	app.factory('BugPage', function($resource, $routeParams) {
+		  return $resource('/api/projects/:name/bugs', {name: $routeParams.name});
 	});
 	
 	app.controller('ProjectsCtrl', function($scope, Project) {
@@ -31,21 +32,17 @@
 	});
 	
 	app.controller('ProjectBugsCtrl', function($scope, $routeParams, $location, BugPage) {
-		if ($routeParams.page) {
-			var page = $routeParams.page;
-		} else {
-			var page = 0;
-		}
+		$scope.currentPage = $routeParams.page;
 
-		BugPage.get({name: $routeParams.name, page: page}, function(data) {
-			$scope.bugs = data.content;
-			console.log(data);
+		$scope.$watch('currentPage', function() {
+			$location.search({page: $scope.currentPage});
+
+			BugPage.get({page: $scope.currentPage - 1}, function(data) {
+				$scope.bugs = data.content;
+				$scope.totalItems = data.totalElements;
+				$scope.itemsPerPage = data.size;
+			});
 		});
-
-		$scope.switchPage = function(page) {
-			var url = $location.path() + "?page=" + page;
-			$location.url(url);
-		};
 	});
 
 })(angular);
