@@ -46,9 +46,8 @@ public class BugController {
 	@RequestMapping(value = "/projects/{name}/bugs", method = RequestMethod.GET)
 	public Page<Bug> bugsForProject(@PathVariable(value = "name") String name, Pageable pageable) {
 		Project project = projectRepo.findByName(name).orElseThrow(() -> new NotFoundException());
-        PageRequest request = new PageRequest(pageable.getPageNumber(), BUG_LIST_PAGE_SIZE);
-
-		return bugRepo.findByProject(project, request);
+		
+		return bugRepo.findByProject(project, pageable);
 	}
 
 	/**

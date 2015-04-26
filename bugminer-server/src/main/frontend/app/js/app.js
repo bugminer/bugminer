@@ -21,7 +21,7 @@
 	});
 	
 	app.factory('BugPage', function($resource, $routeParams) {
-		  return $resource('/api/projects/:name/bugs', {name: $routeParams.name});
+		  return $resource('/api/projects/:name/bugs', {name: $routeParams.name, sort: 'reportTime', size: 10});
 	});
 	
 	app.controller('ProjectsCtrl', function($scope, Project) {
