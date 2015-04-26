@@ -9,7 +9,7 @@
 				templateUrl: 'partials/projects/index.html',
 				controller: 'ProjectsCtrl'
 			})
-			.when('/projects/:name/:tab', {
+			.when('/projects/:name/:tab?', {
 				templateUrl: 'partials/projects/view.html',
 				controller: 'ProjectCtrl',
 				reloadOnSearch: false
@@ -31,13 +31,17 @@
 		});
 	});
 
-	app.controller('ProjectCtrl', function($scope, $routeParams) {
+	app.controller('ProjectCtrl', function($scope, $routeParams, $location) {
 		$scope.tab = $routeParams.tab;
 
 		// set dashboard to default
-		if ($scope.tab === null) {
+		if ($scope.tab == null) {
 			$scope.tab = 'dashboard';
 		}
+
+		$scope.navigateTo = function(tab) {
+			$location.path('/projects/' + $routeParams.name + '/' + tab);
+		};
 	});
 	
 	app.controller('ProjectBugsCtrl', function($scope, $routeParams, $location, BugPage) {
