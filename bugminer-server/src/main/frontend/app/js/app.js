@@ -38,6 +38,9 @@
 		$scope.$watch('currentPage', function() {
 			$location.search({page: $scope.currentPage});
 
+			// reset when navigating, as bug will not be in the list anymore
+			$scope.currentBug = null;
+
 			BugPage.get({page: $scope.currentPage - 1}, function(data) {
 				$scope.bugs = data.content;
 				$scope.totalItems = data.totalElements;
