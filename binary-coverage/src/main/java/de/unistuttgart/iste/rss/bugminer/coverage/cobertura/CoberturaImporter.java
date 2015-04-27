@@ -15,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CoberturaImporter {
 	private List<SourceCodeFile> files;
@@ -30,7 +32,26 @@ public class CoberturaImporter {
 	public CoberturaImporter() {
 	}
 	
-	public CoverageReport read(List<Path> coverageFiles) throws SAXException, IOException {
+	public CoverageReport read(List<Path> allCoverageFiles) throws SAXException, IOException {
+		// filter empty coverage traces
+		final List<Path> coverageFiles = allCoverageFiles
+				.stream()
+				.filter(f -> {
+					try (Stream<String> executedLines = Files.lines(f).parallel()
+							.filter(s -> s.matches(".*hits=\"[1-9].*"))) {
+						if (executedLines.findFirst().isPresent()) {
+							return true;
+						} else {
+							System.err.println(String.format(
+									"Did not add file %s as it did not execute a single node.", f.getFileName()));
+							return false;
+						}
+					} catch (final Exception e) {
+						throw new RuntimeException(e);
+					}
+				}).collect(Collectors.toList());
+
+		// to continue, we'll need at least one coverage file
 		if (coverageFiles.isEmpty())
 			return new CoverageReport(ImmutableList.of(), ImmutableList.of());
 
