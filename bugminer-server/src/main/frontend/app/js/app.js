@@ -41,11 +41,12 @@
 
 		$scope.navigateTo = function(tab) {
 			$location.path('/projects/' + $routeParams.name + '/' + tab);
+			$location.search({});
 		};
 	});
 	
 	app.controller('ProjectBugsCtrl', function($scope, $routeParams, $location, BugPage) {
-		$scope.currentPage = $routeParams.page;
+		$scope.currentPage = $routeParams.page ? $routeParams.page : 1;
 		$scope.currentBug = null;
 
 		$scope.$watch('currentPage', function() {
