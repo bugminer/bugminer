@@ -139,4 +139,19 @@ public class CoverageReport {
 
 		this.coverageData = Arrays.copyOf(data, data.length);
 	}
+
+	/**
+	 * Determines whether the given line in the source code file is covered by the test case.
+	 *
+	 * @param testCase
+	 * @param file
+	 * @param line
+	 * @return true if it is covered, false otherwise
+	 */
+	public boolean isCovered(final TestCase testCase, final SourceCodeFile file, final int line) {
+		final int fileOffset = this.getOffset(testCase, file);
+		final int lineOffset = file.getOffsetOfLineNumber(line).orElseThrow(
+				() -> new RuntimeException(String.format("Line %d does not exist", line)));
+		return this.coverageData[fileOffset + lineOffset];
+	}
 }
