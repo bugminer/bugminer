@@ -41,6 +41,7 @@
 
 		$scope.navigateTo = function(tab) {
 			$location.path('/projects/' + $routeParams.name + '/' + tab);
+			$location.search({});
 		};
 	});
 	
