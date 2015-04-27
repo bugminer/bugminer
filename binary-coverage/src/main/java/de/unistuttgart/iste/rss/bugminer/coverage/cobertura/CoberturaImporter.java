@@ -136,7 +136,7 @@ public class CoberturaImporter {
 				throw new SAXException("The file names are not the same for all coverage reports");
 			
 			if (coverageOfFiles.containsKey(fileName))
-				currentCoverage = coverageOfFiles.get(fileName);
+				currentCoverage = coverageOfFiles.get(file);
 			else {
 				currentCoverage = new FileCoverage();
 				coverageOfFiles.put(file, currentCoverage);
