@@ -1,24 +1,40 @@
 package de.unistuttgart.iste.rss.bugminer.scm.git;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import de.unistuttgart.iste.rss.bugminer.computing.NodeConnection;
+import de.unistuttgart.iste.rss.bugminer.model.entities.LineChange;
 import de.unistuttgart.iste.rss.bugminer.scm.Commit;
+import org.eclipse.jgit.api.DiffCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
+import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
 import org.eclipse.jgit.lib.AnyObjectId;
+import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
+import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.patch.Patch;
+import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.SshSessionFactory;
 import org.eclipse.jgit.transport.TransportGitSsh;
+import org.eclipse.jgit.treewalk.AbstractTreeIterator;
+import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
@@ -133,6 +149,37 @@ public class GitStrategy implements CodeRepoStrategy {
 	public CodeRevision getParentRevision(CodeRevision rev) throws IOException {
 		return new CodeRevision(rev.getCodeRepo(),
 				open(rev.getCodeRepo()).getRepository().resolve(rev.getCommitId() + "^").getName());
+	}
+
+	public List<LineChange> getDiff(CodeRevision oldest, CodeRevision newest) throws IOException {
+		Git git = open(oldest.getCodeRepo());
+		try {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			StringBuffer buffer = new StringBuffer();
+			List<DiffEntry> diff = git.diff()
+					.setOldTree(getTreeIterator(git, oldest))
+					.setNewTree(getTreeIterator(git, newest))
+					.setOutputStream(out)
+					.call();
+			Patch patch = new Patch();
+			patch.parse(out.toByteArray(), 0, out.size());
+
+			return new ArrayList<>();
+		} catch (GitAPIException e) {
+			throw new IOException(e);
+		}
+	}
+
+	private AbstractTreeIterator getTreeIterator(Git git, CodeRevision rev) throws IOException {
+		final CanonicalTreeParser p = new CanonicalTreeParser();
+		Repository db = git.getRepository();
+		final ObjectReader or = db.newObjectReader();
+		try {
+			p.reset(or, new RevWalk(db).parseTree(ObjectId.fromString(rev.getCommitId())));
+			return p;
+		} finally {
+			or.release();
+		}
 	}
 
 	private void initRepository(NodeConnection node, String remotePath) throws IOException {

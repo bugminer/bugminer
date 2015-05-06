@@ -58,4 +58,17 @@ public class GitStrategyWithoutVagrantIT {
         assertEquals("554068c08d994fee03ecde677725a9e1cc4e6457", commit.getCodeRevision().getCommitId());
         assertEquals("Change fileA\n", commit.getCommitMessage());
     }
+
+    @Test
+    public void testGetDiff() throws IOException {
+        Project project = entityFactory.make(Project.class);
+        project.setName("project");
+        CodeRepo repo = entityFactory.make(CodeRepo.class);
+        repo.setProject(project);
+        repo.setName("main");
+
+        CodeRevision oldest = new CodeRevision(repo, SimpleRepo.FIRST_COMMIT);
+        CodeRevision newest = new CodeRevision(repo, SimpleRepo.THIRD_COMMIT);
+        strategy.getDiff(oldest, newest);
+    }
 }
