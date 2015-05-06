@@ -4,12 +4,17 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 import de.unistuttgart.iste.rss.bugminer.computing.NodeConnection;
+import de.unistuttgart.iste.rss.bugminer.scm.Commit;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
+import org.eclipse.jgit.lib.AnyObjectId;
+import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.SshSessionFactory;
@@ -108,6 +113,17 @@ public class GitStrategy implements CodeRepoStrategy {
 					.setURI(repo.getUrl())
 					.setDirectory(getPath(repo).toFile())
 					.call();
+		} catch (GitAPIException e) {
+			throw new IOException(e);
+		}
+	}
+
+	@Override
+	public Stream<Commit> getCommits(CodeRepo repo) throws IOException {
+		try {
+			return StreamSupport.stream(open(repo).log().all().call().spliterator(), false)
+					.map(c ->  new Commit(c.getAuthorIdent().getName(), new CodeRevision(repo, c.getName()),
+							c.getFullMessage()));
 		} catch (GitAPIException e) {
 			throw new IOException(e);
 		}

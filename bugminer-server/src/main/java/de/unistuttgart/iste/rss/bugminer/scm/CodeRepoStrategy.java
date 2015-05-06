@@ -1,6 +1,7 @@
 package de.unistuttgart.iste.rss.bugminer.scm;
 
 import java.io.IOException;
+import java.util.stream.Stream;
 
 import de.unistuttgart.iste.rss.bugminer.computing.NodeConnection;
 import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRepo;
@@ -39,4 +40,12 @@ public interface CodeRepoStrategy {
 	 * @param repo the repo to download
 	 */
 	public void download(CodeRepo repo) throws IOException;
+
+	/**
+	 * Gets the commits in the default branch of the given repo
+	 * @param repo the repo to get the commits for
+	 * @return a stream of all commits
+	 * @throws IOException
+	 */
+	public Stream<Commit> getCommits(CodeRepo repo) throws IOException;
 }
