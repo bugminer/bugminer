@@ -57,7 +57,7 @@ public class ProjectController {
      * @param git the url of the git repo
      * @param jira the url of the jira instance
      */
-    @RequestMapping(value = "/projects/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/projects", method = RequestMethod.POST)
     public void addProject(@RequestParam(value = "name", required = true) final String name,
                            @RequestParam(value = "git", required = true) final String git,
                            @RequestParam(value = "jira", required = false) final String jira) {
