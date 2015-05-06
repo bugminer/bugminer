@@ -43,6 +43,8 @@ public interface CodeRepoStrategy {
 
 	/**
 	 * Gets the commits in the default branch of the given repo
+	 * they are sorted by time, newest first
+	 * 
 	 * @param repo the repo to get the commits for
 	 * @return a stream of all commits
 	 * @throws IOException
