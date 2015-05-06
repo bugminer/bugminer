@@ -7,6 +7,8 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,11 +107,11 @@ public class JiraIssueTrackerStrategy implements IssueTrackerStrategy {
 	private Collection<Issue> fetchIssues(IssueTracker issueTracker) throws IOException {
 		Collection<Issue> issues = new HashSet<Issue>();
 
-		final URI jiraServerUri = issueTracker.getUri();
-		final JiraRestClient restClient = factory.create(jiraServerUri,
+		JiraURLParser.ParseResult parseResult = new JiraURLParser().parse(issueTracker.getUri());
+
+		final JiraRestClient restClient = factory.create(parseResult.getBaseURI(),
 				new AnonymousAuthenticationHandler());
-		final String projectName = issueTracker.getProject().getName();
-		final String jqlSearchString = "project=" + projectName;
+		final String jqlSearchString = "project=" + parseResult.getProjectKey();
 		int exceptionsOccurred = 0;
 
 		Promise<SearchResult> issuePromise = null;
