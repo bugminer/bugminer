@@ -129,6 +129,12 @@ public class GitStrategy implements CodeRepoStrategy {
 		}
 	}
 
+	@Override
+	public CodeRevision getParentRevision(CodeRevision rev) throws IOException {
+		return new CodeRevision(rev.getCodeRepo(),
+				open(rev.getCodeRepo()).getRepository().resolve(rev.getCommitId() + "^").getName());
+	}
+
 	private void initRepository(NodeConnection node, String remotePath) throws IOException {
 		try (SshConnection connection = sshConnector.connect(node.getConnection().getConfig())) {
 			remoteGit.installGit(connection, node.getNode().getSystemSpecification());

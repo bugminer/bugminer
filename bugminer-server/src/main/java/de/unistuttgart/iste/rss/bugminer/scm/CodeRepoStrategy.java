@@ -48,4 +48,12 @@ public interface CodeRepoStrategy {
 	 * @throws IOException
 	 */
 	public Stream<Commit> getCommits(CodeRepo repo) throws IOException;
+
+	/**
+	 * Gets the parent revision
+	 * @param rev
+	 * @return
+	 * @throws IOException
+	 */
+	public CodeRevision getParentRevision(CodeRevision rev) throws IOException;
 }
