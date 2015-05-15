@@ -4,10 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -23,6 +25,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.Edit;
+import org.eclipse.jgit.errors.CorruptObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
@@ -41,6 +44,8 @@ import org.eclipse.jgit.transport.SshSessionFactory;
 import org.eclipse.jgit.transport.TransportGitSsh;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
+import org.eclipse.jgit.treewalk.TreeWalk;
+import org.eclipse.jgit.treewalk.filter.PathFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
@@ -176,6 +181,9 @@ public class GitStrategy implements CodeRepoStrategy {
 			// prevent ConcurrentModificationExceptions
 			List<FileHeader> files = new ArrayList<>(patch.getFiles());
 			for (FileHeader file : files) {
+				Optional<String[]> oldFile = getBlob(git, file.getOldPath(), oldest);
+				Optional<String[]> newFile = getBlob(git, file.getNewPath(), newest);
+
 				String fileName = file.getOldPath();
 				if (file.getChangeType() == DiffEntry.ChangeType.ADD) {
 					fileName = file.getNewPath();
@@ -183,24 +191,28 @@ public class GitStrategy implements CodeRepoStrategy {
 				for (Edit edit : file.toEditList()) {
 					// deletions
 					for (int line = edit.getBeginA(); line < edit.getEndA(); line++) {
+						assert oldFile.isPresent() : "missing old file for " + file.getOldPath();
 						int deletedLine = line + 1; // line is 0-based
 						LineChange change = new LineChange();
 						change.setCodeRepo(newest.getCodeRepo());
 						change.setFileName(fileName);
 						change.setKind(LineChangeKind.DELETION);
 						change.setOldLineNumber(deletedLine);
+						change.setLineText(oldFile.get()[deletedLine - 1]);
 						lineChanges.add(change);
 					}
 
 					// additions
 					int additionBaseLine = edit.getBeginA() + 1; // beginA is 0-based
 					for (int offset = 0; offset < edit.getLengthB(); offset++) {
+						assert newFile.isPresent() : "missing new file for " + file.getNewPath();
 						LineChange change = new LineChange();
 						change.setCodeRepo(newest.getCodeRepo());
 						change.setFileName(fileName);
 						change.setKind(LineChangeKind.ADDITION);
 						change.setOldLineNumber(additionBaseLine);
 						change.setNewLineNumberIndex(offset);
+						change.setLineText(newFile.get()[edit.getBeginB() + offset]);
 						lineChanges.add(change);
 					}
 				}
@@ -210,6 +222,23 @@ public class GitStrategy implements CodeRepoStrategy {
 		} catch (GitAPIException e) {
 			throw new IOException(e);
 		}
+	}
+
+	private Optional<String[]> getBlob(Git git, String fileName, CodeRevision revision)
+			throws IOException {
+		TreeWalk treeWalk = new TreeWalk(git.getRepository());
+		treeWalk.addTree(getTreeIterator(git, revision));
+		treeWalk.setFilter(PathFilter.create(fileName));
+		treeWalk.setRecursive(true);
+		if (!treeWalk.next()) {
+			return Optional.empty();
+		}
+		ObjectId blobId = treeWalk.getObjectId(0);
+		String content = new String(git.getRepository().getObjectDatabase().open(blobId).getBytes(),
+				Charset.forName("UTF-8"));
+
+		String[] lines = content.split("\n");
+		return Optional.of(lines);
 	}
 
 	private AbstractTreeIterator getTreeIterator(Git git, CodeRevision rev) throws IOException {
