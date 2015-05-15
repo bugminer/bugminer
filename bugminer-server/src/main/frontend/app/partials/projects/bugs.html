@@ -20,6 +20,30 @@
 				{{currentBug.description}}
 			</div>
 		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading">Diff</div>
+			<div class="panel-body">
+				<div ng-repeat="file in changedFiles" style="display: table; width: 100%;">
+					<div ng-repeat="edit in file.edits" style="display: table-row;">
+						<div style="display: table-cell; padding-bottom: 10px; width: 50%;">
+							<ul>
+								<li ng-repeat="lineChange in edit.deletions">
+									{{lineChange.lineText}}
+								</li>
+							</ul>
+						</div>
+						<div style="display: table-cell; padding-bottom: 10px; width: 50%;">
+							<ul>
+								<li ng-repeat="lineChange in edit.additions">
+									{{lineChange.lineText}}
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div class="col-lg-3">

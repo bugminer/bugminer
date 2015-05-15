@@ -23,6 +23,10 @@
 	app.factory('BugPage', function($resource, $routeParams) {
 		  return $resource('/api/projects/:name/bugs', {name: $routeParams.name, sort: 'reportTime', size: 10});
 	});
+
+	app.factory('LineChange', function($resource, $routeParams) {
+		return $resource('/api/projects/:name/bugs/:tracker/:key/diff', {name: $routeParams.name});
+	});
 	
 	app.controller('ProjectsCtrl', function($scope, Project) {
 		Project.query(function(data) {
@@ -45,9 +49,11 @@
 		};
 	});
 	
-	app.controller('ProjectBugsCtrl', function($scope, $routeParams, $location, BugPage) {
+	app.controller('ProjectBugsCtrl', function($scope, $routeParams, $location, BugPage, LineChange) {
 		$scope.currentPage = $routeParams.page ? $routeParams.page : 1;
 		$scope.currentBug = null;
+		$scope.changedFiles = [];
+
 
 		$scope.$watch('currentPage', function() {
 			$location.search({page: $scope.currentPage});
@@ -64,6 +70,51 @@
 
 		$scope.setCurrentBug = function(bug) {
 			$scope.currentBug = bug;
+
+			// fetch line changes
+			LineChange.query({tracker: bug.issueTracker.name, key: bug.key}, function(data) {
+				var lineChanges = data.content;
+				var currentFileName = '';
+				var currentFile = null;
+				var currentEdit = {
+					additions: [],
+					deletions: [],
+					lastLineNumber: 0
+				};
+
+				for (var i = 0; i < lineChanges.length; i++) {
+					if (currentFileName !== lineChanges[i].fileName) {
+						currentFileName = lineChanges[i].fileName;
+
+						currentFile = {
+							name: currentFileName,
+							edits: [currentEdit]
+						};
+
+						$scope.changedFiles.push(currentFile);
+					}
+
+					if (lineChanges[i].oldLineNumber > currentEdit.lastLineNumber + 1) {
+						currentEdit = {
+							additions: [],
+							deletions: [],
+							lastLineNumber: 0
+						};
+
+						currentFile.edits.push(currentEdit);
+					}
+
+					if (lineChanges[i].kind === 'ADDITION') {
+						currentEdit.additions.push(lineChanges[i]);
+						currentEdit.lastLineNumber = lineChanges[i].oldLineNumber;
+					} else {
+						currentEdit.deletions.push(lineChanges[i]);
+						currentEdit.lastLineNumber = lineChanges[i].oldLineNumber;
+					}
+				}
+
+				console.log($scope.changedFiles);
+			});
 		};
 	});
 
