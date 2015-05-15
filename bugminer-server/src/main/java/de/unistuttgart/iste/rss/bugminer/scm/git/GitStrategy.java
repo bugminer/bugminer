@@ -134,13 +134,14 @@ public class GitStrategy implements CodeRepoStrategy {
 	public void download(CodeRepo repo) throws IOException {
 		try {
 			if (Files.exists(getPath(repo))) {
-				open(repo).pull().call();
+				open(repo).fetch().call();
 				return;
 			}
 
 			gitFactory.createCloneCommand()
 					.setURI(repo.getUrl())
 					.setDirectory(getPath(repo).toFile())
+					.setBare(true)
 					.call();
 		} catch (GitAPIException e) {
 			throw new IOException(e);
