@@ -207,7 +207,9 @@ public class GitStrategy implements CodeRepoStrategy {
 						change.setFileName(fileName);
 						change.setKind(LineChangeKind.DELETION);
 						change.setOldLineNumber(deletedLine);
-						change.setLineText(oldFile.get()[deletedLine - 1]);
+						if (deletedLine - 1 >= 0 && deletedLine - 1 < oldFile.get().length) {
+							change.setLineText(oldFile.get()[deletedLine - 1]);
+						}
 						lineChanges.add(change);
 					}
 
@@ -221,7 +223,10 @@ public class GitStrategy implements CodeRepoStrategy {
 						change.setKind(LineChangeKind.ADDITION);
 						change.setOldLineNumber(additionBaseLine);
 						change.setNewLineNumberIndex(offset);
-						change.setLineText(newFile.get()[edit.getBeginB() + offset]);
+						int newFileNumber = edit.getBeginB() + offset;
+						if (newFileNumber >= 0 && newFileNumber < newFile.get().length) {
+							change.setLineText(newFile.get()[edit.getBeginB() + offset]);
+						}
 						lineChanges.add(change);
 					}
 				}
