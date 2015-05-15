@@ -73,6 +73,7 @@
 
 			// fetch line changes
 			LineChange.query({tracker: bug.issueTracker.name, key: bug.key}, function(data) {
+				var changedFiles = [];
 				var lineChanges = data;
 				var currentFileName = '';
 				var currentFile = null;
