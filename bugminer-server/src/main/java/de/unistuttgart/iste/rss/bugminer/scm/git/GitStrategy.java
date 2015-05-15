@@ -152,7 +152,8 @@ public class GitStrategy implements CodeRepoStrategy {
 	public Stream<Commit> getCommits(CodeRepo repo) throws IOException {
 		try {
 			return StreamSupport.stream(open(repo).log().all().call().spliterator(), false)
-					.map(c ->  new Commit(c.getAuthorIdent().getName(), new CodeRevision(repo, c.getName()),
+					.map(c -> new Commit(c.getAuthorIdent().getName(),
+							new CodeRevision(repo, c.getName()),
 							c.getFullMessage(), c.getParentCount() > 1));
 		} catch (GitAPIException e) {
 			throw new IOException(e);
@@ -165,6 +166,13 @@ public class GitStrategy implements CodeRepoStrategy {
 				open(rev.getCodeRepo()).getRepository().resolve(rev.getCommitId() + "^").getName());
 	}
 
+	/**
+	 * Gets the line changes between two revisions in the repository
+	 * @param oldest
+	 * @param newest
+	 * @return
+	 * @throws IOException
+	 */
 	public List<LineChange> getDiff(CodeRevision oldest, CodeRevision newest) throws IOException {
 		Git git = open(oldest.getCodeRepo());
 		try {

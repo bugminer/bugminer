@@ -1,11 +1,13 @@
 package de.unistuttgart.iste.rss.bugminer.scm;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Stream;
 
 import de.unistuttgart.iste.rss.bugminer.computing.NodeConnection;
 import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRepo;
 import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRevision;
+import de.unistuttgart.iste.rss.bugminer.model.entities.LineChange;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
 
 public interface CodeRepoStrategy {
@@ -58,4 +60,13 @@ public interface CodeRepoStrategy {
 	 * @throws IOException
 	 */
 	public CodeRevision getParentRevision(CodeRevision rev) throws IOException;
+
+	/**
+	 * Gets the line changes between two revisions in the repository
+	 * @param oldest
+	 * @param newest
+	 * @return
+	 * @throws IOException
+	 */
+	public List<LineChange> getDiff(CodeRevision oldest, CodeRevision newest) throws IOException;
 }
