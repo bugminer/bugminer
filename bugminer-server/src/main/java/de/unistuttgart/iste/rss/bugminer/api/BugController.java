@@ -3,6 +3,7 @@ package de.unistuttgart.iste.rss.bugminer.api;
 import java.util.Collection;
 import java.util.List;
 
+import de.unistuttgart.iste.rss.bugminer.model.repositories.LineChangeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,6 +33,9 @@ public class BugController {
 
 	@Autowired
 	private IssueTrackerRepository issueTrackerRepo;
+
+	@Autowired
+	private LineChangeRepository lineChangeRepo;
 
 	protected BugController() {
 		// managed bean
@@ -86,6 +90,15 @@ public class BugController {
 	public Collection<LineChange> diffForBug(@PathVariable(value = "name") String name,
 			@PathVariable(value = "issueTrackerName") String issueTrackerName,
 			@PathVariable(value = "key") String key) {
-		return null;
+
+		Project project = projectRepo.findByName(name).orElseThrow(() -> new NotFoundException());
+		IssueTracker issueTracker =
+				issueTrackerRepo.findByProjectAndName(project, issueTrackerName)
+						.orElseThrow(() -> new NotFoundException());
+		Bug bug = bugRepo.findByProjectAndIssueTrackerAndKey(project, issueTracker, key)
+				.orElseThrow(() -> new NotFoundException());
+
+		return lineChangeRepo.
+				findByBugOrderByFileNameAscOrderByOldLineNumberAscOrderByNewLineNumberIndexAsc(bug);
 	}
 }
