@@ -1,6 +1,7 @@
 package de.unistuttgart.iste.rss.bugminer.scm.git;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -12,12 +13,16 @@ import java.util.stream.StreamSupport;
 
 import de.unistuttgart.iste.rss.bugminer.computing.NodeConnection;
 import de.unistuttgart.iste.rss.bugminer.model.entities.LineChange;
+import de.unistuttgart.iste.rss.bugminer.model.entities.LineChangeKind;
 import de.unistuttgart.iste.rss.bugminer.scm.Commit;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.eclipse.jgit.api.DiffCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.diff.DiffEntry;
+import org.eclipse.jgit.diff.Edit;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.internal.storage.file.FileRepository;
@@ -27,6 +32,7 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectReader;
 import org.eclipse.jgit.lib.Ref;
 import org.eclipse.jgit.lib.Repository;
+import org.eclipse.jgit.patch.FileHeader;
 import org.eclipse.jgit.patch.Patch;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.transport.CredentialsProvider;
@@ -46,6 +52,8 @@ import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRepo;
 import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRevision;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
 import de.unistuttgart.iste.rss.bugminer.scm.CodeRepoStrategy;
+
+import javax.sound.sampled.Line;
 
 @Strategy(type = CodeRepoStrategy.class, name = "git")
 public class GitStrategy implements CodeRepoStrategy {
@@ -164,7 +172,41 @@ public class GitStrategy implements CodeRepoStrategy {
 			Patch patch = new Patch();
 			patch.parse(out.toByteArray(), 0, out.size());
 
-			return new ArrayList<>();
+			List<LineChange> lineChanges = new ArrayList<>();
+			// prevent ConcurrentModificationExceptions
+			List<FileHeader> files = new ArrayList<>(patch.getFiles());
+			for (FileHeader file : files) {
+				String fileName = file.getOldPath();
+				if (file.getChangeType() == DiffEntry.ChangeType.ADD) {
+					fileName = file.getNewPath();
+				}
+				for (Edit edit : file.toEditList()) {
+					// deletions
+					for (int line = edit.getBeginA(); line < edit.getEndA(); line++) {
+						int deletedLine = line + 1; // line is 0-based
+						LineChange change = new LineChange();
+						change.setCodeRepo(newest.getCodeRepo());
+						change.setFileName(fileName);
+						change.setKind(LineChangeKind.DELETION);
+						change.setOldLineNumber(deletedLine);
+						lineChanges.add(change);
+					}
+
+					// additions
+					int additionBaseLine = edit.getBeginA() + 1; // beginA is 0-based
+					for (int offset = 0; offset < edit.getLengthB(); offset++) {
+						LineChange change = new LineChange();
+						change.setCodeRepo(newest.getCodeRepo());
+						change.setFileName(fileName);
+						change.setKind(LineChangeKind.ADDITION);
+						change.setOldLineNumber(additionBaseLine);
+						change.setNewLineNumberIndex(offset);
+						lineChanges.add(change);
+					}
+				}
+			}
+
+			return lineChanges;
 		} catch (GitAPIException e) {
 			throw new IOException(e);
 		}

@@ -5,6 +5,8 @@ import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
 import de.unistuttgart.iste.rss.bugminer.config.EntityFactory;
 import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRepo;
 import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRevision;
+import de.unistuttgart.iste.rss.bugminer.model.entities.LineChange;
+import de.unistuttgart.iste.rss.bugminer.model.entities.LineChangeKind;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 import de.unistuttgart.iste.rss.bugminer.scm.Commit;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -17,9 +19,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertEquals;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 /**
  * Tests the git strategy without needing to install vagrant
@@ -69,6 +73,24 @@ public class GitStrategyWithoutVagrantIT {
 
         CodeRevision oldest = new CodeRevision(repo, SimpleRepo.FIRST_COMMIT);
         CodeRevision newest = new CodeRevision(repo, SimpleRepo.THIRD_COMMIT);
-        strategy.getDiff(oldest, newest);
+        List<LineChange> changes = strategy.getDiff(oldest, newest);
+        assertThat(changes, hasSize(3));
+        assertThat(changes.get(0).getCodeRepo(), is(repo));
+        assertThat(changes.get(0).getFileName(), is("fileA"));
+        assertThat(changes.get(0).getKind(), is(LineChangeKind.DELETION));
+        assertThat(changes.get(0).getOldLineNumber(), is(1));
+        assertThat(changes.get(0).getNewLineNumberIndex(), nullValue());
+
+        assertThat(changes.get(1).getCodeRepo(), is(repo));
+        assertThat(changes.get(1).getFileName(), is("fileA"));
+        assertThat(changes.get(1).getKind(), is(LineChangeKind.ADDITION));
+        assertThat(changes.get(1).getOldLineNumber(), is(1));
+        assertThat(changes.get(1).getNewLineNumberIndex(), is(0));
+
+        assertThat(changes.get(2).getCodeRepo(), is(repo));
+        assertThat(changes.get(2).getFileName(), is("fileB"));
+        assertThat(changes.get(2).getKind(), is(LineChangeKind.ADDITION));
+        assertThat(changes.get(2).getOldLineNumber(), is(0));
+        assertThat(changes.get(2).getNewLineNumberIndex(), is(0));
     }
 }
