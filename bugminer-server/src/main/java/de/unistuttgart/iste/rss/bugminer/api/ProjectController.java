@@ -3,6 +3,7 @@ package de.unistuttgart.iste.rss.bugminer.api;
 import java.io.IOException;
 import java.util.Collection;
 
+import de.unistuttgart.iste.rss.bugminer.bugs.BugCommitMapper;
 import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizer;
 import de.unistuttgart.iste.rss.bugminer.cli.ProjectsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,14 @@ public class ProjectController {
 	@Autowired
 	private ProjectRepository projectRepo;
 
-    @Autowired
-    private ProjectsService projectsService;
+	@Autowired
+	private ProjectsService projectsService;
 
-    @Autowired
-    private BugSynchronizer bugSynchronizer;
+	@Autowired
+	private BugSynchronizer bugSynchronizer;
+
+	@Autowired
+	private BugCommitMapper bugCommitMapper;
 
 	protected ProjectController() {
 		// managed bean
@@ -50,30 +54,38 @@ public class ProjectController {
 		return projectRepo.findByName(name).orElseThrow(() -> new NotFoundException());
 	}
 
-    /**
-     * Adds a new project
-     *
-     * @param name the projects name
-     * @param git the url of the git repo
-     * @param jira the url of the jira instance
-     */
-    @RequestMapping(value = "/projects", method = RequestMethod.POST)
-    public void addProject(@RequestParam(value = "name", required = true) final String name,
-                           @RequestParam(value = "git", required = true) final String git,
-                           @RequestParam(value = "jira", required = false) final String jira) {
+	/**
+	 * Adds a new project
+	 *
+	 * @param name the projects name
+	 * @param git  the url of the git repo
+	 * @param jira the url of the jira instance
+	 */
+	@RequestMapping(value = "/projects", method = RequestMethod.POST)
+	public void addProject(@RequestParam(value = "name", required = true) final String name,
+			@RequestParam(value = "git", required = true) final String git,
+			@RequestParam(value = "jira", required = false) final String jira) {
 
-        Project project = projectsService.createProject(name);
-        projectsService.configureMainGitRepo(project, git);
-        if (jira != null) {
-            projectsService.configureJira(project, jira);
-        }
-    }
+		Project project = projectsService.createProject(name);
+		projectsService.configureMainGitRepo(project, git);
+		if (jira != null) {
+			projectsService.configureJira(project, jira);
+		}
+	}
 
-    @RequestMapping(value = "/projects/{name}/synchronize", method = RequestMethod.POST)
-    public void synchronize(@PathVariable(value = "name") String name) throws IOException {
-        Project project = projectRepo.findByName(name)
-                .orElseThrow(() -> new IllegalArgumentException("There is no such project"));
+	@RequestMapping(value = "/projects/{name}/synchronize", method = RequestMethod.POST)
+	public void synchronize(@PathVariable(value = "name") String name) throws IOException {
+		Project project = projectRepo.findByName(name)
+				.orElseThrow(() -> new IllegalArgumentException("There is no such project"));
 
-        bugSynchronizer.synchronize(project);
-    }
+		bugSynchronizer.synchronize(project);
+	}
+
+	@RequestMapping(value = "/projects/{name}/map-commits", method = RequestMethod.POST)
+	public void mapCommits(@PathVariable(value = "name") String name) throws IOException {
+		Project project = projectRepo.findByName(name)
+				.orElseThrow(() -> new IllegalArgumentException("There is no such project"));
+
+		bugCommitMapper.mapCommits(project);
+	}
 }
