@@ -1,6 +1,7 @@
 package de.unistuttgart.iste.rss.bugminer.model.entities;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -23,6 +24,7 @@ public class LineChange extends BaseEntity {
 
 	private String fileName;
 
+	@Column(length = 10000000)
 	private String lineText;
 
 	private int oldLineNumber;
