@@ -195,7 +195,7 @@ public class GitStrategy implements CodeRepoStrategy {
 
 				String fileName = file.getOldPath();
 				if (file.getChangeType() == DiffEntry.ChangeType.ADD) {
-					fileName = file.getNewPath();
+					break; // for now, ignore additions because they generate huge diffs
 				}
 				for (Edit edit : file.toEditList()) {
 					// deletions
