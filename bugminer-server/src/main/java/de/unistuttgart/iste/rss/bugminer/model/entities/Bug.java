@@ -42,6 +42,7 @@ public class Bug extends BaseEntity {
 
 	@OneToMany
 	@JoinColumn(name = "bug_id")
+	@JsonIgnore
 	private Collection<LineChange> lineChanges;
 
 	@OneToMany(cascade = CascadeType.ALL)
