@@ -73,7 +73,7 @@
 
 			// fetch line changes
 			LineChange.query({tracker: bug.issueTracker.name, key: bug.key}, function(data) {
-				var lineChanges = data.content;
+				var lineChanges = data;
 				var currentFileName = '';
 				var currentFile = null;
 				var currentEdit = {
