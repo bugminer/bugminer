@@ -31,66 +31,66 @@ import static org.junit.Assert.*;
 @ContextConfiguration(classes = TestConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class GitStrategyWithoutVagrantIT {
-    @Autowired
-    private GitStrategy strategy;
+	@Autowired
+	private GitStrategy strategy;
 
-    @Autowired
-    @DataDirectory
-    private Path dataDirectory;
+	@Autowired
+	@DataDirectory
+	private Path dataDirectory;
 
-    @Autowired
-    private EntityFactory entityFactory;
+	@Autowired
+	private EntityFactory entityFactory;
 
-    @Before
-    public void setUpGitRepo() throws IOException, GitAPIException {
-        Path repoPath = dataDirectory.resolve("scm").resolve("project").resolve("main");
-        SimpleRepo.bareCloneTo(repoPath);
-    }
+	@Before
+	public void setUpGitRepo() throws IOException, GitAPIException {
+		Path repoPath = dataDirectory.resolve("scm").resolve("project").resolve("main");
+		SimpleRepo.bareCloneTo(repoPath);
+	}
 
-    @Test
-    public void testGetCommits() throws IOException {
-        Project project = entityFactory.make(Project.class);
-        project.setName("project");
-        CodeRepo repo = entityFactory.make(CodeRepo.class);
-        repo.setProject(project);
-        repo.setName("main");
+	@Test
+	public void testGetCommits() throws IOException {
+		Project project = entityFactory.make(Project.class);
+		project.setName("project");
+		CodeRepo repo = entityFactory.make(CodeRepo.class);
+		repo.setProject(project);
+		repo.setName("main");
 
-        Commit commit = strategy.getCommits(repo).findFirst().get();
+		Commit commit = strategy.getCommits(repo).findFirst().get();
 
-        assertEquals("Jan Melcher", commit.getAuthor());
-        assertEquals(repo, commit.getCodeRevision().getCodeRepo());
-        assertEquals("554068c08d994fee03ecde677725a9e1cc4e6457", commit.getCodeRevision().getCommitId());
-        assertEquals("Change fileA\n", commit.getCommitMessage());
-    }
+		assertEquals("Jan Melcher", commit.getAuthor());
+		assertEquals(repo, commit.getCodeRevision().getCodeRepo());
+		assertEquals("554068c08d994fee03ecde677725a9e1cc4e6457", commit.getCodeRevision().getCommitId());
+		assertEquals("Change fileA\n", commit.getCommitMessage());
+	}
 
-    @Test
-    public void testGetDiff() throws IOException {
-        Project project = entityFactory.make(Project.class);
-        project.setName("project");
-        CodeRepo repo = entityFactory.make(CodeRepo.class);
-        repo.setProject(project);
-        repo.setName("main");
+	@Test
+	public void testGetDiff() throws IOException {
+		Project project = entityFactory.make(Project.class);
+		project.setName("project");
+		CodeRepo repo = entityFactory.make(CodeRepo.class);
+		repo.setProject(project);
+		repo.setName("main");
 
-        CodeRevision oldest = new CodeRevision(repo, SimpleRepo.FIRST_COMMIT);
-        CodeRevision newest = new CodeRevision(repo, SimpleRepo.THIRD_COMMIT);
-        List<LineChange> changes = strategy.getDiff(oldest, newest);
-        assertThat(changes, hasSize(3));
-        assertThat(changes.get(0).getCodeRepo(), is(repo));
-        assertThat(changes.get(0).getFileName(), is("fileA"));
-        assertThat(changes.get(0).getKind(), is(LineChangeKind.DELETION));
-        assertThat(changes.get(0).getOldLineNumber(), is(1));
-        assertThat(changes.get(0).getNewLineNumberIndex(), nullValue());
+		CodeRevision oldest = new CodeRevision(repo, SimpleRepo.FIRST_COMMIT);
+		CodeRevision newest = new CodeRevision(repo, SimpleRepo.THIRD_COMMIT);
+		List<LineChange> changes = strategy.getDiff(oldest, newest);
+		assertThat(changes, hasSize(3));
+		assertThat(changes.get(0).getCodeRepo(), is(repo));
+		assertThat(changes.get(0).getFileName(), is("fileA"));
+		assertThat(changes.get(0).getKind(), is(LineChangeKind.DELETION));
+		assertThat(changes.get(0).getOldLineNumber(), is(1));
+		assertThat(changes.get(0).getNewLineNumberIndex(), nullValue());
 
-        assertThat(changes.get(1).getCodeRepo(), is(repo));
-        assertThat(changes.get(1).getFileName(), is("fileA"));
-        assertThat(changes.get(1).getKind(), is(LineChangeKind.ADDITION));
-        assertThat(changes.get(1).getOldLineNumber(), is(1));
-        assertThat(changes.get(1).getNewLineNumberIndex(), is(0));
+		assertThat(changes.get(1).getCodeRepo(), is(repo));
+		assertThat(changes.get(1).getFileName(), is("fileA"));
+		assertThat(changes.get(1).getKind(), is(LineChangeKind.ADDITION));
+		assertThat(changes.get(1).getOldLineNumber(), is(1));
+		assertThat(changes.get(1).getNewLineNumberIndex(), is(0));
 
-        assertThat(changes.get(2).getCodeRepo(), is(repo));
-        assertThat(changes.get(2).getFileName(), is("fileB"));
-        assertThat(changes.get(2).getKind(), is(LineChangeKind.ADDITION));
-        assertThat(changes.get(2).getOldLineNumber(), is(0));
-        assertThat(changes.get(2).getNewLineNumberIndex(), is(0));
-    }
+		assertThat(changes.get(2).getCodeRepo(), is(repo));
+		assertThat(changes.get(2).getFileName(), is("fileB"));
+		assertThat(changes.get(2).getKind(), is(LineChangeKind.ADDITION));
+		assertThat(changes.get(2).getOldLineNumber(), is(0));
+		assertThat(changes.get(2).getNewLineNumberIndex(), is(0));
+	}
 }
