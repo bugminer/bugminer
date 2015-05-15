@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
@@ -28,21 +29,26 @@ import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 @Entity
 public class Project extends BaseEntity {
 	@OneToMany
+	@JoinColumn(name = "project_id")
 	private Collection<Bug> bugs;
 
 	@OneToMany
+	@JoinColumn(name = "project_id")
 	private Collection<Label> labels;
 
 	@OneToMany
+	@JoinColumn(name = "project_id")
 	private Collection<IssueTracker> issueTrackers;
 
 	@OneToMany
+	@JoinColumn(name = "project_id")
 	private Collection<CodeRepo> codeRepos;
 
 	@Column(unique = true)
 	private String name;
 
 	@OneToMany
+	@JoinColumn(name = "project_id")
 	private Collection<BugStatus> bugStatuses;
 
 	@OneToOne

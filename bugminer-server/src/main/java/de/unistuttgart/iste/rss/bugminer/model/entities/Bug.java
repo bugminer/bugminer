@@ -7,6 +7,7 @@ import java.util.Collection;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -36,15 +37,19 @@ public class Bug extends BaseEntity {
 	private Collection<Label> labels;
 
 	@OneToMany
+	@JoinColumn(name = "bug_id")
 	private Collection<Event> events;
 
 	@OneToMany
+	@JoinColumn(name = "bug_id")
 	private Collection<LineChange> lineChanges;
 
 	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "bug_id")
 	private Collection<Classification> classifications;
 
 	@OneToMany
+	@JoinColumn(name = "bug_id")
 	private Collection<BugParticipant> participants;
 
 	@ManyToOne
