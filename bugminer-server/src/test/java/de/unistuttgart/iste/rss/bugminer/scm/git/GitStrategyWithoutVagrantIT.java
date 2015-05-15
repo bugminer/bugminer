@@ -20,6 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.hamcrest.Matchers.*;
@@ -59,7 +60,8 @@ public class GitStrategyWithoutVagrantIT {
 
 		assertEquals("Jan Melcher", commit.getAuthor());
 		assertEquals(repo, commit.getCodeRevision().getCodeRepo());
-		assertEquals("554068c08d994fee03ecde677725a9e1cc4e6457", commit.getCodeRevision().getCommitId());
+		assertEquals("554068c08d994fee03ecde677725a9e1cc4e6457",
+				commit.getCodeRevision().getCommitId());
 		assertEquals("Change fileA\n", commit.getCommitMessage());
 	}
 
@@ -80,17 +82,20 @@ public class GitStrategyWithoutVagrantIT {
 		assertThat(changes.get(0).getKind(), is(LineChangeKind.DELETION));
 		assertThat(changes.get(0).getOldLineNumber(), is(1));
 		assertThat(changes.get(0).getNewLineNumberIndex(), nullValue());
+		assertThat(changes.get(0).getLineText(), is("This is the contents of file A"));
 
 		assertThat(changes.get(1).getCodeRepo(), is(repo));
 		assertThat(changes.get(1).getFileName(), is("fileA"));
 		assertThat(changes.get(1).getKind(), is(LineChangeKind.ADDITION));
 		assertThat(changes.get(1).getOldLineNumber(), is(1));
 		assertThat(changes.get(1).getNewLineNumberIndex(), is(0));
+		assertThat(changes.get(1).getLineText(), is("This is the new contents of file A"));
 
 		assertThat(changes.get(2).getCodeRepo(), is(repo));
 		assertThat(changes.get(2).getFileName(), is("fileB"));
 		assertThat(changes.get(2).getKind(), is(LineChangeKind.ADDITION));
 		assertThat(changes.get(2).getOldLineNumber(), is(0));
 		assertThat(changes.get(2).getNewLineNumberIndex(), is(0));
+		assertThat(changes.get(2).getLineText(), is("This is file B"));
 	}
 }
