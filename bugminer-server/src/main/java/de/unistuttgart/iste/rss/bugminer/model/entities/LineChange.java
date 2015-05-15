@@ -23,6 +23,8 @@ public class LineChange extends BaseEntity {
 
 	private String fileName;
 
+	private String lineText;
+
 	private int oldLineNumber;
 
 	@Basic(optional = true)
@@ -59,6 +61,14 @@ public class LineChange extends BaseEntity {
 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
+	}
+
+	public String getLineText() {
+		return lineText;
+	}
+
+	public void setLineText(String lineText) {
+		this.lineText = lineText;
 	}
 
 	public int getOldLineNumber() {
