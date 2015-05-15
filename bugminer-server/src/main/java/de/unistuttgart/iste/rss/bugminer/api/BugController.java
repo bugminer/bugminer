@@ -98,7 +98,6 @@ public class BugController {
 		Bug bug = bugRepo.findByProjectAndIssueTrackerAndKey(project, issueTracker, key)
 				.orElseThrow(() -> new NotFoundException());
 
-		return lineChangeRepo.
-				findByBugOrderByFileNameAscOrderByOldLineNumberAscOrderByNewLineNumberIndexAsc(bug);
+		return lineChangeRepo.findByBugOrderByFileNameAscOldLineNumberAscNewLineNumberIndexAsc(bug);
 	}
 }

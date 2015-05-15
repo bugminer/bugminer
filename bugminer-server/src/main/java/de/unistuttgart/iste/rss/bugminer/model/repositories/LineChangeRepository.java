@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface LineChangeRepository extends JpaRepository<LineChange, String> {
 
-	List<LineChange> findByBugOrderByFileNameAscOrderByOldLineNumberAscOrderByNewLineNumberIndexAsc(Bug bug);
+	List<LineChange> findByBugOrderByFileNameAscOldLineNumberAscNewLineNumberIndexAsc(Bug bug);
 }
