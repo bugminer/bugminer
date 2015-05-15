@@ -147,7 +147,7 @@ public class GitStrategy implements CodeRepoStrategy {
 		try {
 			return StreamSupport.stream(open(repo).log().all().call().spliterator(), false)
 					.map(c ->  new Commit(c.getAuthorIdent().getName(), new CodeRevision(repo, c.getName()),
-							c.getFullMessage()));
+							c.getFullMessage(), c.getParentCount() > 1));
 		} catch (GitAPIException e) {
 			throw new IOException(e);
 		}
