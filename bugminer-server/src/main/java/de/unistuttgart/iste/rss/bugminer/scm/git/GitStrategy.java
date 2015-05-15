@@ -197,6 +197,10 @@ public class GitStrategy implements CodeRepoStrategy {
 				if (file.getChangeType() == DiffEntry.ChangeType.ADD) {
 					break; // for now, ignore additions because they generate huge diffs
 				}
+				// work around NullPointerException in FileHeader class
+				if (file.getHunks().isEmpty()) {
+					continue;
+				}
 				for (Edit edit : file.toEditList()) {
 					// deletions
 					for (int line = edit.getBeginA(); line < edit.getEndA(); line++) {
