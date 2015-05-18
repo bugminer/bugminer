@@ -44,7 +44,7 @@ public class JiraIssueTrackerStrategyIT {
 			OffsetDateTime.parse("2009-07-08T06:49:30.000-0400",
 					DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ")).toInstant();
 
-	private static final String REPO_URL = "https://issues.jboss.org";
+	private static final String REPO_URL = "https://issues.jboss.org/browse/Byteman";
 
 	@Autowired
 	JiraIssueTrackerStrategy strategy;
