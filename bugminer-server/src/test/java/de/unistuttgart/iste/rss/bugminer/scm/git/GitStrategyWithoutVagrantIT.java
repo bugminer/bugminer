@@ -76,7 +76,7 @@ public class GitStrategyWithoutVagrantIT {
 		CodeRevision oldest = new CodeRevision(repo, SimpleRepo.FIRST_COMMIT);
 		CodeRevision newest = new CodeRevision(repo, SimpleRepo.THIRD_COMMIT);
 		List<LineChange> changes = strategy.getDiff(oldest, newest);
-		assertThat(changes, hasSize(3));
+		assertThat(changes, hasSize(2));
 		assertThat(changes.get(0).getCodeRepo(), is(repo));
 		assertThat(changes.get(0).getFileName(), is("fileA"));
 		assertThat(changes.get(0).getKind(), is(LineChangeKind.DELETION));
