@@ -91,11 +91,6 @@ public class GitStrategyWithoutVagrantIT {
 		assertThat(changes.get(1).getNewLineNumberIndex(), is(0));
 		assertThat(changes.get(1).getLineText(), is("This is the new contents of file A"));
 
-		assertThat(changes.get(2).getCodeRepo(), is(repo));
-		assertThat(changes.get(2).getFileName(), is("fileB"));
-		assertThat(changes.get(2).getKind(), is(LineChangeKind.ADDITION));
-		assertThat(changes.get(2).getOldLineNumber(), is(0));
-		assertThat(changes.get(2).getNewLineNumberIndex(), is(0));
-		assertThat(changes.get(2).getLineText(), is("This is file B"));
+		// note: added files are ignored
 	}
 }
