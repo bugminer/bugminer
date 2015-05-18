@@ -38,7 +38,8 @@ import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 public class JiraIssueTrackerStrategyTest {
 
 	private static final String PROJECT_NAME = "LANG";
-	private static final String REPO_URL = "issues.apache.org/jira";
+	private static final String REPO_URL = "issues.apache.org/jira/browse/LANG";
+	private static final String API_URL = "issues.apache.org/jira/";
 	private static final String BUG_DESCRIPTION = "Description of Issue 1";
 	private static final DateTime BUG_REPORT_TIME = new DateTime(2003, 12, 9, 12, 16, 5, 3);
 	private static final String BUG_RESOLUTION_DATE = "2009-12-16T08:50:37.777+0000";
@@ -82,7 +83,7 @@ public class JiraIssueTrackerStrategyTest {
 		SearchRestClient searchClient = mock(SearchRestClient.class);
 		SearchResult searchResult = mock(SearchResult.class);
 
-		when(factory.create(eq(issueTracker.getUri()),
+		when(factory.create(eq(URI.create(API_URL)),
 				org.mockito.Matchers.isA(AnonymousAuthenticationHandler.class)))
 				.thenReturn(client);
 		when(client.getSearchClient()).thenReturn(searchClient);
