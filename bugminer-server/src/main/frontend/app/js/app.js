@@ -28,10 +28,10 @@
 
 						return BugPage.get({page: page - 1, name: params.name}).$promise.then(function(data) {
 							return {
-								'bugs': data.content,
-								'totalItems': data.totalElements,
-								'itemsPerPage': data.size,
-								'currentPage': page
+								bugs: data.content,
+								totalItems: data.totalElements,
+								itemsPerPage: data.size,
+								currentPage: page
 							};
 						});
 					}
