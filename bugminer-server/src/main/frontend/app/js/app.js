@@ -11,11 +11,31 @@
 			})
 			.state('project', {
 				url: '/projects/:name',
-				templateUrl: 'partials/projects/view.html'
+				templateUrl: 'partials/projects/view.html',
+				resolve: {
+					params: function($stateParams) {
+						return $stateParams;
+					}
+				}
 			})
 			.state('project.bugs', {
-				url: '/bugs',
-				templateUrl: 'partials/projects/bugs.html'
+				url: '/bugs?page',
+				templateUrl: 'partials/projects/bugs.html',
+				controller: 'ProjectBugsCtrl',
+				resolve: {
+					bugPage: function(BugPage, $location, params) {
+						var page = $location.search().page ? $location.search().page : 1;
+
+						return BugPage.get({page: page - 1, name: params.name}).$promise.then(function(data) {
+							return {
+								'bugs': data.content,
+								'totalItems': data.totalElements,
+								'itemsPerPage': data.size,
+								'currentPage': page
+							};
+						});
+					}
+				}
 			});
 	}]);
 	
@@ -23,8 +43,8 @@
 		  return $resource('/api/projects/:name');
 	});
 	
-	app.factory('BugPage', function($resource, $stateParams) {
-		  return $resource('/api/projects/:name/bugs', {name: $stateParams.name, sort: 'reportTime', size: 10});
+	app.factory('BugPage', function($resource) {
+		return $resource('/api/projects/:name/bugs', {sort: 'reportTime', size: 10});
 	});
 
 	app.factory('LineChange', function($resource, $stateParams) {
@@ -42,19 +62,10 @@
 
 	});
 	
-	app.controller('ProjectBugsCtrl', function($scope, $location, BugPage, LineChange) {
-		console.log($location.search());
-		console.log($location.search().page ? true : false);
-		$scope.currentPage = $location.search().page ? $location.search().page : 1;
-		console.log($scope.currentPage);
+	app.controller('ProjectBugsCtrl', function($scope, $location, bugPage, LineChange) {
+		angular.extend($scope, bugPage);
 		$scope.currentBug = null;
 		$scope.changedFiles = [];
-
-		BugPage.get({page: $scope.currentPage - 1}, function(data) {
-			$scope.bugs = data.content;
-			$scope.totalItems = data.totalElements;
-			$scope.itemsPerPage = data.size;
-		});
 
 		$scope.setCurrentBug = function(bug) {
 			$scope.currentBug = bug;
