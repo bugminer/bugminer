@@ -24,7 +24,7 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">Diff</div>
 			<div class="panel-body">
-				<div ng-repeat="file in changedFiles" style="word-wrap: break-word; table-layout: fixed; margin-bottom: 30px; display: table; width: 100%;">
+				<div ng-repeat="file in changedFiles" style="word-wrap: break-word; table-layout: fixed; font-family: monospace; margin-bottom: 30px; display: table; width: 100%;">
 					<span>{{file.fileName}}</span>
 					<div ng-repeat="edit in file.edits" style="display: table-row;">
 						<div style="display: table-cell; padding-bottom: 10px; width: 50%;">
