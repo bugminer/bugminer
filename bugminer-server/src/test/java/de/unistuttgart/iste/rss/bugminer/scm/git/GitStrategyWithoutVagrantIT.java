@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -31,6 +32,7 @@ import static org.junit.Assert.*;
  */
 @ContextConfiguration(classes = TestConfig.class)
 @RunWith(SpringJUnit4ClassRunner.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class GitStrategyWithoutVagrantIT {
 	@Autowired
 	private GitStrategy strategy;
@@ -76,7 +78,7 @@ public class GitStrategyWithoutVagrantIT {
 		CodeRevision oldest = new CodeRevision(repo, SimpleRepo.FIRST_COMMIT);
 		CodeRevision newest = new CodeRevision(repo, SimpleRepo.THIRD_COMMIT);
 		List<LineChange> changes = strategy.getDiff(oldest, newest);
-		assertThat(changes, hasSize(3));
+		assertThat(changes, hasSize(2));
 		assertThat(changes.get(0).getCodeRepo(), is(repo));
 		assertThat(changes.get(0).getFileName(), is("fileA"));
 		assertThat(changes.get(0).getKind(), is(LineChangeKind.DELETION));
@@ -91,11 +93,6 @@ public class GitStrategyWithoutVagrantIT {
 		assertThat(changes.get(1).getNewLineNumberIndex(), is(0));
 		assertThat(changes.get(1).getLineText(), is("This is the new contents of file A"));
 
-		assertThat(changes.get(2).getCodeRepo(), is(repo));
-		assertThat(changes.get(2).getFileName(), is("fileB"));
-		assertThat(changes.get(2).getKind(), is(LineChangeKind.ADDITION));
-		assertThat(changes.get(2).getOldLineNumber(), is(0));
-		assertThat(changes.get(2).getNewLineNumberIndex(), is(0));
-		assertThat(changes.get(2).getLineText(), is("This is file B"));
+		// note: added files are ignored
 	}
 }

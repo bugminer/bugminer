@@ -1,14 +1,13 @@
-package de.unistuttgart.iste.rss.bugminer.bugs;
+package de.unistuttgart.iste.rss.bugminer.bugs2;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
-import java.util.Collection;
-import java.util.HashSet;
-
-import com.atlassian.jira.rest.client.api.domain.Issue;
+import de.unistuttgart.iste.rss.bugminer.TestConfig;
+import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizer;
+import de.unistuttgart.iste.rss.bugminer.config.EntityFactory;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Bug;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Classification;
 import de.unistuttgart.iste.rss.bugminer.model.entities.IssueTracker;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
+import de.unistuttgart.iste.rss.bugminer.model.repositories.BugRepository;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.IssueTrackerRepository;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
 import org.junit.Before;
@@ -20,17 +19,18 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import de.unistuttgart.iste.rss.bugminer.TestConfig;
-import de.unistuttgart.iste.rss.bugminer.config.EntityFactory;
-import de.unistuttgart.iste.rss.bugminer.model.entities.Bug;
-import de.unistuttgart.iste.rss.bugminer.model.entities.Classification;
-import de.unistuttgart.iste.rss.bugminer.model.repositories.BugRepository;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
+
+import static de.unistuttgart.iste.rss.bugminer.testutils.matchers.Matchers.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
 @SpringApplicationConfiguration(classes = TestConfig.class)
-public class BugSynchronizerIT extends AbstractTransactionalJUnit4SpringContextTests {
-
+public class BugSynchronizerIT extends AbstractTransactionalJUnit4SpringContextTests  {
 	private static final String BUG_KEY_2 = "Key2";
 
 	private static final String BUG_KEY = "Key1337";
@@ -45,19 +45,18 @@ public class BugSynchronizerIT extends AbstractTransactionalJUnit4SpringContextT
 	@Autowired
 	BugSynchronizer synchronizer;
 
-    @Autowired
-    ProjectRepository projectRepo;
+	@Autowired
+	ProjectRepository projectRepo;
 
-    @Autowired
-    IssueTrackerRepository issueTrackerRepo;
+	@Autowired
+	IssueTrackerRepository issueTrackerRepo;
 
 	@Autowired
 	EntityFactory factory;
 
 	Collection<Bug> bugsToSynchronize;
 
-    IssueTracker issueTracker;
-
+	IssueTracker issueTracker;
 
 	@Before
 	public void init() {
@@ -102,7 +101,7 @@ public class BugSynchronizerIT extends AbstractTransactionalJUnit4SpringContextT
 
 	@Test
 	public void testSynchronize() {
-        synchronizer.synchronize(bugsToSynchronize, issueTracker);
+		synchronizer.synchronize(bugsToSynchronize, issueTracker);
 
 		assertThat(bugRepo.findByProjectAndIssueTrackerAndKey(issueTracker.getProject(), issueTracker,
 				BUG_KEY).get().getDescription(), is(BUG_NEW_DESCR));

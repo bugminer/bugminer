@@ -7,6 +7,7 @@ module.exports = function(grunt) {
 
     mvnSrcDirectory: '../../',
     appPath: '<%= mvnSrcDirectory %>main/resources/public/',
+    targetPath: '../../../target/classes/public/',
     javascriptPath: '<%= appPath %>js/',
     cssPath: '<%= appPath %>css/',
     fontPath: '<%= appPath %>fonts/',
@@ -161,6 +162,14 @@ module.exports = function(grunt) {
           src: ['shared-worker.js'],
           dest: '<%= javascriptPath %>'
         }]
+      },
+      deploy: {
+        files:[{
+          expand: true,
+          src: ['**'],
+          cwd: '<%= appPath %>',
+          dest: '<%= targetPath %>'
+        }]
       }
     },
     karma: {
@@ -206,19 +215,19 @@ module.exports = function(grunt) {
       },
       less: {
         files: ['app/less/**/*.less'],
-        tasks: ['less']
+        tasks: ['less', 'copy:deploy']
       },
       statics: {
         files: ['app/**/*.html', 'app/img/**'],
-        tasks: ['copy:statics']
+        tasks: ['copy:statics', 'copy:deploy']
       },
       scripts: {
         files: ['app/js/**/*.js'],
-        tasks: ['concat', 'copy:statics']
+        tasks: ['concat', 'copy:statics', 'copy:deploy']
       },
       dependencies: {
         files: ['<%= bowerrc.directory %>/**'],
-        tasks: ['copy:dependencies']
+        tasks: ['copy:dependencies', 'copy:deploy']
       }
     }
   });
