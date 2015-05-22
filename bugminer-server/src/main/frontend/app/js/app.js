@@ -1,18 +1,21 @@
 (function(angular) {
 	'use strict';
 	
-	var app = angular.module('bugminerApp', ['ngResource', 'ngRoute', 'ui.bootstrap']);
+	var app = angular.module('bugminerApp', ['ngResource', 'ui.router', 'ui.bootstrap']);
 	
-	app.config(['$routeProvider', function($routeProvider) {
-		$routeProvider
-			.when('/', {
-				templateUrl: 'partials/projects/index.html',
-				controller: 'ProjectsCtrl'
+	app.config(['$stateProvider', function($stateProvider) {
+		$stateProvider
+			.state('index', {
+				url: '/',
+				templateUrl: 'partials/projects/index.html'
 			})
-			.when('/projects/:name/:tab?', {
-				templateUrl: 'partials/projects/view.html',
-				controller: 'ProjectCtrl',
-				reloadOnSearch: false
+			.state('project', {
+				url: '/projects/:name',
+				templateUrl: 'partials/projects/view.html'
+			})
+			.state('project.bugs', {
+				url: '/bugs',
+				templateUrl: 'partials/projects/bugs.html'
 			});
 	}]);
 	
@@ -20,12 +23,12 @@
 		  return $resource('/api/projects/:name');
 	});
 	
-	app.factory('BugPage', function($resource, $routeParams) {
-		  return $resource('/api/projects/:name/bugs', {name: $routeParams.name, sort: 'reportTime', size: 10});
+	app.factory('BugPage', function($resource, $stateParams) {
+		  return $resource('/api/projects/:name/bugs', {name: $stateParams.name, sort: 'reportTime', size: 10});
 	});
 
-	app.factory('LineChange', function($resource, $routeParams) {
-		return $resource('/api/projects/:name/bugs/:tracker/:key/diff', {name: $routeParams.name});
+	app.factory('LineChange', function($resource, $stateParams) {
+		return $resource('/api/projects/:name/bugs/:tracker/:key/diff', {name: $stateParams.name});
 	});
 	
 	app.controller('ProjectsCtrl', function($scope, Project) {
@@ -35,37 +38,22 @@
 		});
 	});
 
-	app.controller('ProjectCtrl', function($scope, $routeParams, $location) {
-		$scope.tab = $routeParams.tab;
+	app.controller('ProjectCtrl', function($scope) {
 
-		// set dashboard to default
-		if ($scope.tab == null) {
-			$scope.tab = 'dashboard';
-		}
-
-		$scope.navigateTo = function(tab) {
-			$location.path('/projects/' + $routeParams.name + '/' + tab);
-			$location.search({});
-		};
 	});
 	
-	app.controller('ProjectBugsCtrl', function($scope, $routeParams, $location, BugPage, LineChange) {
-		$scope.currentPage = $routeParams.page ? $routeParams.page : 1;
+	app.controller('ProjectBugsCtrl', function($scope, $location, BugPage, LineChange) {
+		console.log($location.search());
+		console.log($location.search().page ? true : false);
+		$scope.currentPage = $location.search().page ? $location.search().page : 1;
+		console.log($scope.currentPage);
 		$scope.currentBug = null;
 		$scope.changedFiles = [];
 
-
-		$scope.$watch('currentPage', function() {
-			$location.search({page: $scope.currentPage});
-
-			// reset when navigating, as bug will not be in the list anymore
-			$scope.currentBug = null;
-
-			BugPage.get({page: $scope.currentPage - 1}, function(data) {
-				$scope.bugs = data.content;
-				$scope.totalItems = data.totalElements;
-				$scope.itemsPerPage = data.size;
-			});
+		BugPage.get({page: $scope.currentPage - 1}, function(data) {
+			$scope.bugs = data.content;
+			$scope.totalItems = data.totalElements;
+			$scope.itemsPerPage = data.size;
 		});
 
 		$scope.setCurrentBug = function(bug) {

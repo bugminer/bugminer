@@ -1,8 +1,8 @@
 <div ng-controller="ProjectCtrl">
 	<ul class="nav nav-tabs">
-		<li role="presentation" ng-click="navigateTo('dashboard')" ng-class="{active: tab === 'dashboard'}"><a href="javascript:void(0);">Dashboard</a></li>
-		<li role="presentation" ng-click="navigateTo('bugs')" ng-class="{active: tab === 'bugs'}"><a href="javascript:void(0);">Bugs</a></li>
+		<li role="presentation"><a href="javascript:void(0);">Dashboard</a></li>
+		<li role="presentation"><a href="javascript:void(0);">Bugs</a></li>
 	</ul>
 
-	<ng-include src=" 'partials/projects/' + tab + '.html' "></ng-include>
+	<div ui-view></div>
 </div>
