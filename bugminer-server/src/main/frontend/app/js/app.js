@@ -62,8 +62,12 @@
 		});
 	});
 
-	app.controller('ProjectCtrl', function($scope) {
+	app.controller('ProjectCtrl', function($scope, $state, $stateParams) {
+		$scope.state = $state.current.name;
 
+		$scope.navigateTo = function(state) {
+			$state.transitionTo(state, {name: $stateParams.name}, {reload: true});
+		};
 	});
 	
 	app.controller('ProjectBugsCtrl', function($scope, $location, bugPage, LineChange) {
