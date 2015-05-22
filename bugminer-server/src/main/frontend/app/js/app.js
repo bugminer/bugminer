@@ -67,6 +67,10 @@
 		$scope.currentBug = null;
 		$scope.changedFiles = [];
 
+		$scope.$watch('currentPage', function() {
+			$location.search({page: $scope.currentPage});
+		});
+
 		$scope.setCurrentBug = function(bug) {
 			$scope.currentBug = bug;
 
