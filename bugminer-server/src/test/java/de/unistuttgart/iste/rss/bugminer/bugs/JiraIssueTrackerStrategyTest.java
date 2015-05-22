@@ -12,6 +12,7 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.HashSet;
 
+import de.unistuttgart.iste.rss.bugminer.bugs.JiraIssueTrackerStrategy;
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;

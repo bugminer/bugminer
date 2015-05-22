@@ -13,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Optional;
 
+import de.unistuttgart.iste.rss.bugminer.bugs.JiraIssueTrackerStrategy;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

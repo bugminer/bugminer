@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.rss.bugminer.bugs;
 
+import de.unistuttgart.iste.rss.bugminer.bugs.JiraURLParser;
 import junit.framework.TestCase;
 
 import java.net.URI;
