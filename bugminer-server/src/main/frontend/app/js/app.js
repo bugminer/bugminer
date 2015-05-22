@@ -12,11 +12,16 @@
 			.state('project', {
 				url: '/projects/:name',
 				templateUrl: 'partials/projects/view.html',
+				abstract: true,
 				resolve: {
 					params: function($stateParams) {
 						return $stateParams;
 					}
 				}
+			})
+			.state('project.dashboard', {
+				url: '',
+				templateUrl: 'partials/projects/dashboard.html'
 			})
 			.state('project.bugs', {
 				url: '/bugs?page&bug',
