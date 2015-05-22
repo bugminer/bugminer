@@ -19,7 +19,7 @@
 				}
 			})
 			.state('project.bugs', {
-				url: '/bugs?page',
+				url: '/bugs?page&bug',
 				templateUrl: 'partials/projects/bugs.html',
 				controller: 'ProjectBugsCtrl',
 				resolve: {
@@ -63,14 +63,31 @@
 	
 	app.controller('ProjectBugsCtrl', function($scope, $location, bugPage, LineChange) {
 		angular.extend($scope, bugPage);
-		$scope.currentBug = null;
 		$scope.changedFiles = [];
+		$scope.currentBug = null;
+		$scope.bug = null;
 
-		$scope.$watch('currentPage', function() {
-			$location.search({page: $scope.currentPage});
+		if ($location.search().bug) {
+			$scope.bug = $location.search().bug;
+			for (var i = 0; i < $scope.bugs.length; i++) {
+				if ($scope.bugs[i].key == $scope.bug) {
+					setCurrentBug($scope.bugs[i]);
+				}
+			}
+		}
+
+
+		$scope.$watch('currentPage', function(newPage, oldPage) {
+			if (newPage !== oldPage) {
+				$location.search({page: $scope.currentPage});
+			}
 		});
 
 		$scope.setCurrentBug = function(bug) {
+			$location.search({page: $scope.currentPage, bug: bug.key});
+		};
+
+		function setCurrentBug(bug) {
 			$scope.currentBug = bug;
 
 			// fetch line changes
