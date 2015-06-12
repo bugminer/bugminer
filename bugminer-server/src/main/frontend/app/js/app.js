@@ -149,12 +149,12 @@
 		angular.extend($scope, bugPage);
 		$scope.changedFiles = [];
 		$scope.currentBug = null;
-		$scope.bug = null;
+		$scope.bugKeyUrl = null;
 
 		if ($location.search().bug) {
-			$scope.bug = $location.search().bug;
+			$scope.bugKeyUrl = $location.search().bug;
 			for (var i = 0; i < $scope.bugs.length; i++) {
-				if ($scope.bugs[i].key == $scope.bug) {
+				if ($scope.bugs[i].key == $scope.bugKeyUrl) {
 					DiffService.computeDiff($scope.bugs[i], function(result) {
 						angular.extend($scope, result);
 						$scope.currentBug = $scope.bugs[i];
