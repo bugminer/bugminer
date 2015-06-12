@@ -23,6 +23,25 @@
 				url: '',
 				templateUrl: 'partials/projects/dashboard.html'
 			})
+			.state('project.classify', {
+				url: '/classify?page&bug',
+				templateUrl: 'partials/projects/classify.html',
+				controller: 'ProjectClassifyCtrl',
+				resolve: {
+					bugPage: function(BugPage, $location, params) {
+						var page = $location.search().page ? $location.search().page : 1;
+
+						return BugPage.get({page: page - 1, name: params.name}).$promise.then(function(data) {
+							return {
+								bugs: data.content,
+								totalItems: data.totalElements,
+								itemsPerPage: data.size,
+								currentPage: page
+							};
+						});
+					}
+				}
+			})
 			.state('project.bugs', {
 				url: '/bugs?page&bug',
 				templateUrl: 'partials/projects/bugs.html',
@@ -55,53 +74,14 @@
 	app.factory('LineChange', function($resource, $stateParams) {
 		return $resource('/api/projects/:name/bugs/:tracker/:key/diff', {name: $stateParams.name});
 	});
-	
-	app.controller('ProjectsCtrl', function($scope, Project) {
-		Project.query(function(data) {
-			$scope.projects = data;
-		});
-	});
 
-	app.controller('ProjectCtrl', function($scope, $state, $stateParams) {
-		$scope.state = $state.current.name;
-
-		$scope.navigateTo = function(state) {
-			$state.transitionTo(state, {name: $stateParams.name}, {reload: true});
-		};
-	});
-	
-	app.controller('ProjectBugsCtrl', function($scope, $location, bugPage, LineChange) {
-		angular.extend($scope, bugPage);
-		$scope.changedFiles = [];
-		$scope.currentBug = null;
-		$scope.bug = null;
-
-		if ($location.search().bug) {
-			$scope.bug = $location.search().bug;
-			for (var i = 0; i < $scope.bugs.length; i++) {
-				if ($scope.bugs[i].key == $scope.bug) {
-					setCurrentBug($scope.bugs[i]);
-				}
-			}
-		}
-
-
-		$scope.$watch('currentPage', function(newPage, oldPage) {
-			if (newPage !== oldPage) {
-				$location.search({page: $scope.currentPage});
-			}
-		});
-
-		$scope.setCurrentBug = function(bug) {
-			$location.search({page: $scope.currentPage, bug: bug.key});
-		};
-
-		function setCurrentBug(bug) {
-			$scope.currentBug = bug;
+	app.service('DiffService', function(LineChange) {
+		this.computeDiff = function(bug, callback) {
+			var result = {};
 
 			// fetch line changes
 			LineChange.query({tracker: bug.issueTracker.name, key: bug.key}, function(data) {
-				$scope.changedFiles = [];
+				result.changedFiles = [];
 				var lineChanges = data;
 				var currentFileName = '';
 				var currentFile = null;
@@ -120,7 +100,7 @@
 							edits: [currentEdit]
 						};
 
-						$scope.changedFiles.push(currentFile);
+						result.changedFiles.push(currentFile);
 					}
 
 					if (lineChanges[i].oldLineNumber > currentEdit.lastLineNumber + 1) {
@@ -141,7 +121,56 @@
 						currentEdit.lastLineNumber = lineChanges[i].oldLineNumber;
 					}
 				}
+
+				callback(result);
 			});
+		};
+	});
+	
+	app.controller('ProjectsCtrl', function($scope, Project) {
+		Project.query(function(data) {
+			$scope.projects = data;
+		});
+	});
+
+	app.controller('ProjectCtrl', function($scope, $state, $stateParams) {
+		$scope.state = $state.current.name;
+
+		$scope.navigateTo = function(state) {
+			$state.transitionTo(state, {name: $stateParams.name}, {reload: true});
+		};
+	});
+
+	app.controller('ProjectClassifyCtrl', function($scope, bugPage) {
+		angular.extend($scope, bugPage);
+	});
+	
+	app.controller('ProjectBugsCtrl', function($scope, $location, bugPage, DiffService) {
+		angular.extend($scope, bugPage);
+		$scope.changedFiles = [];
+		$scope.currentBug = null;
+		$scope.bug = null;
+
+		if ($location.search().bug) {
+			$scope.bug = $location.search().bug;
+			for (var i = 0; i < $scope.bugs.length; i++) {
+				if ($scope.bugs[i].key == $scope.bug) {
+					DiffService.computeDiff($scope.bugs[i], function(result) {
+						angular.extend($scope, result);
+						$scope.currentBug = $scope.bugs[i];
+					});
+				}
+			}
+		}
+
+		$scope.$watch('currentPage', function(newPage, oldPage) {
+			if (newPage !== oldPage) {
+				$location.search({page: $scope.currentPage});
+			}
+		});
+
+		$scope.setCurrentBug = function(bug) {
+			$location.search({page: $scope.currentPage, bug: bug.key});
 		};
 	});
 
