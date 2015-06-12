@@ -1,0 +1,10 @@
+<div class="col-lg-4">
+	<ul class="list-group">
+		<li class="list-group-item">
+			<b>Opened:</b> {{currentBug.reportTime.epochSecond * 1000 || 'No Bug selected' | date: 'longDate'}}
+		</li>
+		<li class="list-group-item">
+			<b>Closed:</b> {{currentBug.closeTime.epochSecond * 1000 || 'No Bug selected' | date: 'longDate'}}
+		</li>
+	</ul>
+</div>

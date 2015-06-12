@@ -1,0 +1,26 @@
+<div class="col-lg-12">
+	<div class="panel panel-default">
+		<div class="panel-heading">Diff</div>
+		<div class="panel-body">
+			<div ng-repeat="file in changedFiles" style="word-wrap: break-word; table-layout: fixed; font-family: monospace; margin-bottom: 30px; display: table; width: 100%;">
+				<span style="display: inline-block; font-weight: bold; font-size: 18px;">{{file.name}}</span>
+				<div ng-repeat="edit in file.edits" style="display: table-row;">
+					<div style="display: table-cell; padding-bottom: 10px; padding-right: 5%;">
+						<ul>
+							<li style="font-size: 12px;" ng-repeat="lineChange in edit.deletions">
+								{{lineChange.lineText}}
+							</li>
+						</ul>
+					</div>
+					<div style="display: table-cell; padding-bottom: 10px; padding-left: 5%;">
+						<ul>
+							<li style="font-size: 12px;" ng-repeat="lineChange in edit.additions">
+								{{lineChange.lineText}}
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
