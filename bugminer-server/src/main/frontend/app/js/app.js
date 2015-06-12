@@ -155,9 +155,11 @@
 			$scope.bugKeyUrl = $location.search().bug;
 			for (var i = 0; i < $scope.bugs.length; i++) {
 				if ($scope.bugs[i].key == $scope.bugKeyUrl) {
-					DiffService.computeDiff($scope.bugs[i], function(result) {
+					var bug = $scope.bugs[i];
+
+					DiffService.computeDiff(bug, function(result) {
 						angular.extend($scope, result);
-						$scope.currentBug = $scope.bugs[i];
+						$scope.currentBug = bug;
 					});
 				}
 			}
