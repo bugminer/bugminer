@@ -141,8 +141,35 @@
 		};
 	});
 
-	app.controller('ProjectClassifyCtrl', function($scope, bugPage) {
+	app.controller('ProjectClassifyCtrl', function($scope, $location, bugPage, DiffService) {
 		angular.extend($scope, bugPage);
+		$scope.changedFiles = [];
+		$scope.currentBug = null;
+		$scope.bugKeyUrl = null;
+
+		if ($location.search().bug) {
+			$scope.bugKeyUrl = $location.search().bug;
+			for (var i = 0; i < $scope.bugs.length; i++) {
+				if ($scope.bugs[i].key == $scope.bugKeyUrl) {
+					var bug = $scope.bugs[i];
+
+					DiffService.computeDiff(bug, function(result) {
+						angular.extend($scope, result);
+						$scope.currentBug = bug;
+					});
+				}
+			}
+		}
+
+		$scope.$watch('currentPage', function(newPage, oldPage) {
+			if (newPage !== oldPage) {
+				$location.search({page: $scope.currentPage});
+			}
+		});
+
+		$scope.setCurrentBug = function(bug) {
+			$location.search({page: $scope.currentPage, bug: bug.key});
+		};
 	});
 	
 	app.controller('ProjectBugsCtrl', function($scope, $location, bugPage, DiffService) {
