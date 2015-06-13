@@ -146,6 +146,7 @@
 		$scope.changedFiles = [];
 		$scope.currentBug = null;
 		$scope.bugKeyUrl = null;
+		$scope.classificationHasChanged = false;
 
 		if ($location.search().bug) {
 			$scope.bugKeyUrl = $location.search().bug;
@@ -160,6 +161,14 @@
 				}
 			}
 		}
+
+		setInterval(function() {
+			if ($scope.classificationHasChanged) {
+				$scope.classificationHasChanged = false;
+
+				console.log("about to send classification");
+			}
+		}, 100);
 
 		$scope.$watch('currentPage', function(newPage, oldPage) {
 			if (newPage !== oldPage) {
