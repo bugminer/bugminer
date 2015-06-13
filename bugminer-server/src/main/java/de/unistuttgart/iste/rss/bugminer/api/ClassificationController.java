@@ -1,12 +1,16 @@
 package de.unistuttgart.iste.rss.bugminer.api;
 
 import java.util.Collection;
+import java.util.Optional;
 
+import de.unistuttgart.iste.rss.bugminer.model.entities.User;
+import de.unistuttgart.iste.rss.bugminer.model.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.unistuttgart.iste.rss.bugminer.api.exceptions.NotFoundException;
@@ -34,6 +38,9 @@ public class ClassificationController {
 
 	@Autowired
 	private IssueTrackerRepository issueTrackerRepo;
+
+	@Autowired
+	private UserRepository userRepo;
 
 	protected ClassificationController() {
 		// managed bean
@@ -80,15 +87,27 @@ public class ClassificationController {
 	 * @return the newly added classification
 	 */
 	@RequestMapping(value = "/projects/{name}/bugs/{issueTrackerName}/{key}/classifications",
-			method = RequestMethod.POST)
-	public Classification addClassification(
+			method = RequestMethod.PUT)
+	public Classification putClassification(
 			@PathVariable(value = "name") String name,
 			@PathVariable(value = "issueTrackerName") String issueTrackerName,
 			@PathVariable(value = "key") String key,
+			@RequestParam(value = "user") String userID,
 			@RequestBody Classification classification) {
+		User user = userRepo.findById(userID).orElseThrow(NotFoundException::new);
+
 		Bug bug = getBugByProjectAndIssueTrackerAndKey(name, issueTrackerName, key);
 
-		classification.setBug(bug);
+		Optional<Classification>
+				classificationFromDB = classificationRepo.findFirstByBugAndUser(bug, user);
+		if (classificationFromDB.isPresent()) {
+			classificationFromDB.get().setLineChangeClassifications(classification.getLineChangeClassifications());
+			classification = classificationFromDB.get();
+		} else {
+			classification.setBug(bug);
+			classification.setUser(user);
+		}
+
 		return classificationRepo.save(classification);
 	}
 
