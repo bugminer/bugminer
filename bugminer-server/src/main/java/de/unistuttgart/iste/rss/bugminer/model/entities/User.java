@@ -3,6 +3,7 @@ package de.unistuttgart.iste.rss.bugminer.model.entities;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 @Entity
 public class User extends BaseEntity {
+	@Column
+	private String name;
+
 	@OneToMany
 	private Collection<Classification> classifications;
 
@@ -27,5 +31,13 @@ public class User extends BaseEntity {
 
 	public void setClassifications(Collection<Classification> classifications) {
 		this.classifications = classifications;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 }
