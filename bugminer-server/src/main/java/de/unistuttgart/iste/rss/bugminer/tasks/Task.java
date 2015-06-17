@@ -1,9 +1,13 @@
 package de.unistuttgart.iste.rss.bugminer.tasks;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Task implements Runnable {
 	private String title;
+	@JsonIgnore
 	private TaskRunnable runnable;
-	private TaskContext context;
+	@JsonIgnore
+	private TaskContext context = new TaskContext();
 	private TaskState state = TaskState.INITIALIZING;
 	private Throwable exception;
 
@@ -19,7 +23,8 @@ public class Task implements Runnable {
 		state = TaskState.SCHEDULED;
 	}
 
-	@Override public void run() {
+	@Override
+	public void run() {
 		if (state != TaskState.SCHEDULED && state != TaskState.INITIALIZING) {
 			throw new IllegalStateException("Can only run in SCHEDULED or INITIALIZING state, but is " + state);
 		}
