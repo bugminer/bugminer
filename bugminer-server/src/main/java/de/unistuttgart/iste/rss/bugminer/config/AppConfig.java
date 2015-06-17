@@ -50,6 +50,10 @@ public class AppConfig {
 
 	@Bean
 	public TaskExecutor getTaskExecutor() {
-		return new ThreadPoolTaskExecutor();
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(3);
+		executor.setCorePoolSize(6);
+		executor.setQueueCapacity(100);
+		return executor;
 	}
 }
