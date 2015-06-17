@@ -16,7 +16,9 @@ import org.springframework.context.annotation.Scope;
 import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientFactory;
 
 import de.unistuttgart.iste.rss.bugminer.annotations.DataDirectory;
+import org.springframework.core.task.TaskExecutor;
 import org.springframework.data.web.config.EnableSpringDataWebSupport;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 @ComponentScan("de.unistuttgart.iste.rss.bugminer")
@@ -44,5 +46,10 @@ public class AppConfig {
 	@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 	public SSHClient getSSHClient() {
 		return new SSHClient();
+	}
+
+	@Bean
+	public TaskExecutor getTaskExecutor() {
+		return new ThreadPoolTaskExecutor();
 	}
 }
