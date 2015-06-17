@@ -6,6 +6,8 @@ import java.util.Collection;
 import de.unistuttgart.iste.rss.bugminer.bugs.BugCommitMapper;
 import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizer;
 import de.unistuttgart.iste.rss.bugminer.cli.ProjectsService;
+import de.unistuttgart.iste.rss.bugminer.tasks.Task;
+import de.unistuttgart.iste.rss.bugminer.tasks.TaskManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +30,9 @@ public class ProjectController {
 
 	@Autowired
 	private BugCommitMapper bugCommitMapper;
+
+	@Autowired
+	private TaskManager taskManager;
 
 	protected ProjectController() {
 		// managed bean
@@ -78,7 +83,8 @@ public class ProjectController {
 		Project project = projectRepo.findByName(name)
 				.orElseThrow(() -> new IllegalArgumentException("There is no such project"));
 
-		bugSynchronizer.synchronize(project);
+		taskManager.schedule(new Task("Synchronize bugs of project " + name,
+				context -> bugSynchronizer.synchronize(project)));
 	}
 
 	@RequestMapping(value = "/projects/{name}/map-commits", method = RequestMethod.POST)
@@ -86,6 +92,7 @@ public class ProjectController {
 		Project project = projectRepo.findByName(name)
 				.orElseThrow(() -> new IllegalArgumentException("There is no such project"));
 
-		bugCommitMapper.mapCommits(project);
+		taskManager.schedule(new Task("Map commits of project " + project.getName(),
+				context -> bugCommitMapper.mapCommits(project)));
 	}
 }
