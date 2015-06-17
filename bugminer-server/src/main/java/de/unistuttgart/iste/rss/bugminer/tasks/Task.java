@@ -20,17 +20,21 @@ public class Task implements Runnable {
 	}
 
 	@Override public void run() {
-		if (state != TaskState.SCHEDULED) {
-			throw new IllegalStateException("Can only run in SCHEDULED state, but is " + state);
+		if (state != TaskState.SCHEDULED && state != TaskState.INITIALIZING) {
+			throw new IllegalStateException("Can only run in SCHEDULED or INITIALIZING state, but is " + state);
 		}
 		state = TaskState.RUNNING;
 		try {
 			runnable.run(context);
+			state = TaskState.FINISHED;
 		} catch (Throwable e) {
-			state = TaskState.FAILED;
 			exception = e;
+			state = TaskState.FAILED;
 		}
-		state = TaskState.FINISHED;
+	}
+
+	public String getTitle() {
+		return title;
 	}
 
 	public double getProgress() {
@@ -47,5 +51,9 @@ public class Task implements Runnable {
 
 	public Throwable getException() {
 		return exception;
+	}
+
+	@Override public String toString() {
+		return getTitle();
 	}
 }
