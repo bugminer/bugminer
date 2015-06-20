@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -30,6 +31,7 @@ import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 public class Project extends BaseEntity {
 	@OneToMany
 	@JoinColumn(name = "project_id")
+	@JsonIgnore
 	private Collection<Bug> bugs;
 
 	@OneToMany
@@ -38,6 +40,7 @@ public class Project extends BaseEntity {
 
 	@OneToMany
 	@JoinColumn(name = "project_id")
+	@JsonIgnore
 	private Collection<IssueTracker> issueTrackers;
 
 	@OneToMany
