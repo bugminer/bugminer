@@ -2,7 +2,8 @@
 
 <ul>
 	<li ng-repeat="task in tasks">
-		<div>{{task.name}}</div>
+		<div>{{task.title}}</div>
 		<div>{{task.state}}</div>
+		<div ng-if="task.exception">{{task.exception.message}}</div>
 	</li>
 </ul>
