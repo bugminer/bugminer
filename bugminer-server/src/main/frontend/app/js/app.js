@@ -75,7 +75,18 @@
 	}]);
 	
 	app.factory('Project', function($resource) {
-		  return $resource('/api/projects/:name');
+		  return $resource('/api/projects/:name', {
+			  name: '@name'
+		  }, {
+			  synchronize: {
+				  method: 'POST',
+				  url: '/api/projects/:name/synchronize'
+			  },
+			  mapCommits: {
+				  method: 'POST',
+				  url: '/api/projects/:name/map-commits'
+			  }
+		  });
 	});
 	
 	app.factory('BugPage', function($resource) {
@@ -148,12 +159,24 @@
 		});
 	});
 
-	app.controller('ProjectCtrl', function($scope, $state, $stateParams) {
+	app.controller('ProjectCtrl', function($scope, $state, $stateParams, Project) {
 		$scope.state = $state.current.name;
+
+		Project.get({name: $stateParams.name}, function(project) {
+			$scope.project = project;
+		});
 
 		$scope.navigateTo = function(state) {
 			$state.transitionTo(state, {name: $stateParams.name}, {reload: true});
 		};
+
+		$scope.synchronize = function() {
+			$scope.project.$synchronize();
+		}
+
+		$scope.mapCommits = function() {
+			$scope.project.$mapCommits();
+		}
 	});
 
 	app.controller('ProjectClassifyCtrl', function($scope, $location, bugPage, DiffService) {
