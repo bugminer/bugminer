@@ -7,7 +7,8 @@
 		$stateProvider
 			.state('index', {
 				url: '/',
-				templateUrl: 'partials/projects/index.html'
+				templateUrl: 'partials/projects/index.html',
+				controller: 'ProjectsCtrl'
 			})
 			.state('project', {
 				url: '/projects/:name',
