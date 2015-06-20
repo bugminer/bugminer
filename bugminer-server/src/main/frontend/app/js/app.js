@@ -60,6 +60,16 @@
 						});
 					}
 				}
+			})
+			.state('task', {
+				url: '/tasks',
+				templateUrl: 'partials/tasks/index.html',
+				controller: 'TasksCtrl',
+				resolve: {
+					params: function($stateParams) {
+						return $stateParams;
+					}
+				}
 			});
 	}]);
 	
@@ -73,6 +83,10 @@
 
 	app.factory('LineChange', function($resource, $stateParams) {
 		return $resource('/api/projects/:name/bugs/:tracker/:key/diff', {name: $stateParams.name});
+	});
+
+	app.factory('Task', function($resource) {
+		return $resource('/api/tasks/:name');
 	});
 
 	app.service('DiffService', function(LineChange) {
@@ -210,6 +224,12 @@
 		$scope.setCurrentBug = function(bug) {
 			$location.search({page: $scope.currentPage, bug: bug.key});
 		};
+	});
+
+	app.controller('TasksCtrl', function($scope, Task) {
+		Task.query(function(data) {
+			$scope.tasks = data;
+		});
 	});
 
 })(angular);
