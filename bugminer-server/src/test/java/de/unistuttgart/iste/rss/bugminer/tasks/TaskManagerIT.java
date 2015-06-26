@@ -25,7 +25,7 @@ public class TaskManagerIT extends TestCase {
 
 	@Test
 	public void testScheduleTask() {
-		Task task = new Task("Test Task", context -> {
+		Task task = new SimpleTask("Test Task", context -> {
 			Thread.sleep(100);
 			task1Executed = true;
 		});
@@ -35,11 +35,11 @@ public class TaskManagerIT extends TestCase {
 
 	@Test
 	public void tasksAreExecutedInParallel() {
-		Task task1 = new Task("Task 1", context -> {
+		Task task1 = new SimpleTask("Task 1", context -> {
 			Thread.sleep(200);
 			task1Executed = true;
 		});
-		Task task2 = new Task("Task 2", context -> {
+		Task task2 = new SimpleTask("Task 2", context -> {
 			task2Started = true;
 		});
 		taskManager.schedule(task1);

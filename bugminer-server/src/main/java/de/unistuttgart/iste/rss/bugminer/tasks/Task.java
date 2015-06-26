@@ -2,12 +2,11 @@ package de.unistuttgart.iste.rss.bugminer.tasks;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.log4j.Logger;
+import org.springframework.transaction.annotation.Transactional;
 
 
-public class Task implements Runnable {
+public abstract class Task implements Runnable {
 	private String title;
-	@JsonIgnore
-	private TaskRunnable runnable;
 	@JsonIgnore
 	private TaskContext context = new TaskContext();
 	private TaskState state = TaskState.INITIALIZING;
@@ -15,9 +14,8 @@ public class Task implements Runnable {
 
 	private static final Logger LOGGER = Logger.getLogger(Task.class);
 
-	public Task(String title, TaskRunnable runnable) {
+	public Task(String title) {
 		this.title = title;
-		this.runnable = runnable;
 	}
 
 	public void markAsScheduled() {
@@ -35,7 +33,7 @@ public class Task implements Runnable {
 		state = TaskState.RUNNING;
 		LOGGER.info("Task started: " + title);
 		try {
-			runnable.run(context);
+			runTask(context);
 			state = TaskState.FINISHED;
 			LOGGER.info("Task finished: " + title);
 		} catch (Throwable e) {
@@ -68,4 +66,6 @@ public class Task implements Runnable {
 	@Override public String toString() {
 		return getTitle();
 	}
+
+	protected abstract void runTask(TaskContext context) throws Exception;
 }

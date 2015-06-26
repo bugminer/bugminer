@@ -7,6 +7,7 @@ import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ClusterRepository;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.NodeRepository;
 import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
+import de.unistuttgart.iste.rss.bugminer.tasks.SimpleTask;
 import de.unistuttgart.iste.rss.bugminer.tasks.Task;
 import de.unistuttgart.iste.rss.bugminer.tasks.TaskManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class NodeController {
 		cluster.getNodes().add(node);
 		nodeRepo.save(node);
 		clusterRepo.save(cluster);
-		taskManager.schedule(new Task("Initialize node in cluster " + cluster.getName(), c -> {
+		taskManager.schedule(new SimpleTask("Initialize node in cluster " + cluster.getName(), c -> {
 			strategyFactory.getStrategy(ClusterStrategy.class, cluster.getProvider())
 					.initializeNode(node);
 		}));
@@ -69,7 +70,7 @@ public class NodeController {
 	public void deleteCluster(@PathVariable("id") final String nodeID) {
 		Node node = nodeRepo.findById(nodeID).orElseThrow(NotFoundException::new);
 		Cluster cluster = node.getCluster();
-		taskManager.schedule(new Task("Delete node in cluster " + cluster.getName(), c -> {
+		taskManager.schedule(new SimpleTask("Delete node in cluster " + cluster.getName(), c -> {
 			strategyFactory.getStrategy(ClusterStrategy.class, cluster.getProvider()).destroyNode(node);
 			clusterRepo.delete(cluster);
 		}));

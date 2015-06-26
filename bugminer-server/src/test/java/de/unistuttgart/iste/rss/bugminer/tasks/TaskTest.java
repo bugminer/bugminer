@@ -10,14 +10,14 @@ public class TaskTest {
 
 	@Test
 	public void testInitialState() {
-		Task task = new Task("Test Task", c -> {});
+		Task task = new SimpleTask("Test Task", c -> {});
 		assertThat(task.getState(), is(TaskState.INITIALIZING));
 		assertThat(task.getTitle(), is("Test Task"));
 	}
 
 	@Test
 	public void testMarkAsScheduled() {
-		Task task = new Task("Test Task", c -> {});
+		Task task = new SimpleTask("Test Task", c -> {});
 		task.markAsScheduled();
 		assertThat(task.getState(), is(TaskState.SCHEDULED));
 	}
@@ -27,7 +27,7 @@ public class TaskTest {
 
 	@Test
 	public void testRun() {
-		task = new Task("Test Task", c -> {
+		task = new SimpleTask("Test Task", c -> {
 			taskStateWhenRunWasCalled = task.getState();
 			taskIsRun = true;
 		});
@@ -39,7 +39,7 @@ public class TaskTest {
 
 	@Test
 	public void testFail() {
-		Task task = new Task("Test Task", c -> { throw new Exception("test exception"); });
+		Task task = new SimpleTask("Test Task", c -> { throw new Exception("test exception"); });
 		task.run();
 		assertThat(task.getState(), is(TaskState.FAILED));
 		assertThat(task.getException().getMessage(), is("test exception"));
