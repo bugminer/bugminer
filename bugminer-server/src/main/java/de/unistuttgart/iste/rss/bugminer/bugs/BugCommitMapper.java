@@ -7,11 +7,16 @@ import de.unistuttgart.iste.rss.bugminer.model.entities.LineChange;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.BugRepository;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.LineChangeRepository;
+import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
 import de.unistuttgart.iste.rss.bugminer.scm.CodeRepoStrategy;
 import de.unistuttgart.iste.rss.bugminer.scm.Commit;
 import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
+import de.unistuttgart.iste.rss.bugminer.tasks.SimpleTask;
+import de.unistuttgart.iste.rss.bugminer.tasks.Task;
+import de.unistuttgart.iste.rss.bugminer.utils.TransactionWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,7 +40,22 @@ public class BugCommitMapper {
 	@Autowired
 	private LineChangeRepository lineChangeRepository;
 
+	@Autowired
+	private ProjectRepository projectRepo;
+
+	@Autowired
+	private TransactionWrapper transactionWrapper;
+
+	public Task createTask(Project project) {
+		return new SimpleTask("Map commis of project " + project.getName(), c ->
+				transactionWrapper.runInTransaction(() -> {
+					mapCommits(projectRepo.findOne(project.getId()));
+				}));
+	}
+
+	@Transactional
 	public void mapCommits(Project project) throws IOException {
+		project = projectRepo.findOne(project.getId());
 		CodeRepo codeRepo = project.getMainRepo();
 		CodeRepoStrategy codeRepoStrategy =
 					strategyFactory.getStrategy(CodeRepoStrategy.class, codeRepo.getProvider());
@@ -87,7 +107,7 @@ public class BugCommitMapper {
 	 * @param commits
 	 * @return
 	 */
-	public Map<Bug, List<Commit>> findCommitsForBugs(Collection<Bug> bugs, Stream<Commit> commits) {
+	private Map<Bug, List<Commit>> findCommitsForBugs(Collection<Bug> bugs, Stream<Commit> commits) {
 		Map<Bug, List<Commit>> commitsByBug = bugs.stream().collect(Collectors.toMap(
 				b -> (Bug)b, b -> new ArrayList<>()));
 

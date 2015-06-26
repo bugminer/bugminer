@@ -5,12 +5,17 @@ import java.util.Collection;
 
 import de.unistuttgart.iste.rss.bugminer.model.entities.IssueTracker;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
+import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
 import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
+import de.unistuttgart.iste.rss.bugminer.tasks.SimpleTask;
+import de.unistuttgart.iste.rss.bugminer.tasks.Task;
+import de.unistuttgart.iste.rss.bugminer.utils.TransactionWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import de.unistuttgart.iste.rss.bugminer.model.entities.Bug;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.BugRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 public class BugSynchronizer {
@@ -21,8 +26,21 @@ public class BugSynchronizer {
     @Autowired
     StrategyFactory strategyFactory;
 
+	@Autowired
+	private ProjectRepository projectRepo;
+
+	@Autowired
+	private TransactionWrapper transactionWrapper;
+
 	protected BugSynchronizer() {
 		// managed bean
+	}
+
+	public Task createTask(Project project) {
+		return new SimpleTask("Synchronize bugs of project " + project.getName(), c ->
+				transactionWrapper.runInTransaction(() -> {
+					synchronize(projectRepo.findOne(project.getId()));
+				}));
 	}
 
     /**
