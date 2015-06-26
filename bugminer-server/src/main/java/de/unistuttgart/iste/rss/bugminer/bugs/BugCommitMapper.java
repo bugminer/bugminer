@@ -47,7 +47,7 @@ public class BugCommitMapper {
 	private TransactionWrapper transactionWrapper;
 
 	public Task createTask(Project project) {
-		return new SimpleTask("Map commis of project " + project.getName(), c ->
+		return new SimpleTask("Map commits of project " + project.getName(), c ->
 				transactionWrapper.runInTransaction(() -> {
 					mapCommits(projectRepo.findOne(project.getId()));
 				}));
