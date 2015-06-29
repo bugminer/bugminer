@@ -105,51 +105,118 @@
 		this.computeDiff = function(bug, callback) {
 			var result = {};
 
-			// fetch line changes
-			LineChange.query({tracker: bug.issueTracker.name, key: bug.key}, function(data) {
-				result.changedFiles = [];
-				var lineChanges = data;
+			LineChange.query({tracker: bug.issueTracker.name, key: bug.key}, function(lineChanges) {
+				result.files = [];
 				var currentFileName = '';
 				var currentFile = null;
-				var currentEdit = {
+				var currentLine = {
 					additions: [],
-					deletions: [],
-					lastLineNumber: 0
+					deletions: []
+				};
+				var currentHunk = {
+					lines: [currentLine],
+					lastLineNumber: -1
 				};
 
+
 				for (var i = 0; i < lineChanges.length; i++) {
-					if (currentFileName !== lineChanges[i].fileName) {
-						currentFileName = lineChanges[i].fileName;
+					var currentLineChange = lineChanges[i];
+					var oldLineNumber = currentLineChange.oldLineNumber;
+
+					// if file name changed then start next file
+					if (currentFileName !== currentLineChange.fileName) {
+						currentFileName = currentLineChange.fileName;
 
 						currentFile = {
 							name: currentFileName,
-							edits: [currentEdit]
+							hunks: []
 						};
 
-						result.changedFiles.push(currentFile);
+						result.files.push(currentFile);
 					}
 
-					if (lineChanges[i].oldLineNumber > currentEdit.lastLineNumber + 1) {
-						currentEdit = {
+					// if line number of this line change is greater than the last + 1
+					// this line change belongs to the next hunk
+					if (oldLineNumber > currentHunk.lastLineNumber + 1) {
+						var currentLine = {
 							additions: [],
-							deletions: [],
+							deletions: []
+						};
+						var currentHunk = {
+							lines: [currentLine],
 							lastLineNumber: 0
 						};
 
-						currentFile.edits.push(currentEdit);
+						currentFile.hunks.push(currentHunk);
+					} else if (oldLineNumber > currentHunk.lastLineNumber) {
+						var currentLine = {
+							additions: [],
+							deletions: []
+						};
+
+						currentHunk.lines.push(currentLine);
 					}
 
-					if (lineChanges[i].kind === 'ADDITION') {
-						currentEdit.additions.push(lineChanges[i]);
-						currentEdit.lastLineNumber = lineChanges[i].oldLineNumber;
+					if (currentLineChange.kind === 'ADDITION') {
+						currentLine.additions.push(currentLineChange);
+						currentHunk.lastLineNumber = oldLineNumber;
 					} else {
-						currentEdit.deletions.push(lineChanges[i]);
-						currentEdit.lastLineNumber = lineChanges[i].oldLineNumber;
+						currentLine.deletions.push(currentLineChange);
+						currentHunk.lastLineNumber = oldLineNumber;
 					}
 				}
-
+				console.log(result);
 				callback(result);
 			});
+
+			//// fetch line changes
+			//LineChange.query({tracker: bug.issueTracker.name, key: bug.key}, function(data) {
+			//	result.changedFiles = [];
+			//	var lineChanges = data;
+			//	var currentFileName = '';
+			//	var currentFile = null;
+			//	var currentEdit = {
+			//		additions: [],
+			//		deletions: [],
+			//		lastLineNumber: 0
+			//	};
+			//
+			//	for (var i = 0; i < lineChanges.length; i++) {
+			//		if (currentFileName !== lineChanges[i].fileName) {
+			//			currentFileName = lineChanges[i].fileName;
+			//
+			//			currentFile = {
+			//				name: currentFileName,
+			//				edits: [currentEdit]
+			//			};
+			//
+			//			result.changedFiles.push(currentFile);
+			//		}
+			//
+			//		if (lineChanges[i].oldLineNumber > currentEdit.lastLineNumber + 1) {
+			//			currentEdit = {
+			//				additions: [],
+			//				deletions: [],
+			//				lastLineNumber: 0
+			//			};
+			//
+			//			currentFile.edits.push(currentEdit);
+			//		}
+			//
+			//		lineChanges[i].edit = currentEdit;
+			//		lineChanges[i].file = currentFile;
+			//
+			//		if (lineChanges[i].kind === 'ADDITION') {
+			//			currentEdit.additions.push(lineChanges[i]);
+			//			currentEdit.lastLineNumber = lineChanges[i].oldLineNumber;
+			//		} else {
+			//			currentEdit.deletions.push(lineChanges[i]);
+			//			currentEdit.lastLineNumber = lineChanges[i].oldLineNumber;
+			//		}
+			//	}
+			//
+			//	callback(result);
+			//});
 		};
 	});
 	
@@ -198,6 +265,10 @@
 					});
 				}
 			}
+		}
+
+		$scope.classify = function(lineChange, classification) {
+
 		}
 
 		setInterval(function() {
