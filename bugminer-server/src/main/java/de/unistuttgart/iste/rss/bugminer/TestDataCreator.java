@@ -81,5 +81,8 @@ public class TestDataCreator {
 		node.setMemory(MemoryQuantity.fromMiB(500));
 		node.setSystemSpecification(SystemSpecification.UBUNTU_1404);
 		nodeRepository.save(node);
+
+		cluster.getNodes().add(node);
+		clusterRepository.save(cluster);
 	}
 }
