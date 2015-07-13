@@ -1,9 +1,11 @@
 <h1>Tasks</h1>
 
 <ul>
-	<li ng-repeat="task in tasks">
-		<div>{{task.title}}</div>
-		<div>{{task.state}}</div>
-		<div ng-if="task.exception">{{task.exception.message}}</div>
+	<li ng-repeat="task in tasks" class="{{panelClass(task.state)}}">
+		<div class="panel-heading"><span class="{{glyphicon(task.state)}}"></span> {{task.title}}</div>
+		<div class="panel-body">
+			<div>{{task.currentStatus}}</div>
+			<pre ng-if="task.exception">{{task.exception.message}}</pre>
+		</div>
 	</li>
 </ul>
