@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ public class Node extends BaseEntity {
 	public static final MemoryQuantity DEFAULT_MEMORY = MemoryQuantity.fromMiB(1500);
 	public static final int DEFAULT_CPU_COUNT = 1;
 
+	@JsonIgnore
 	@ManyToOne
 	private Cluster cluster;
 

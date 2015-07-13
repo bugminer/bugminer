@@ -1,0 +1,27 @@
+<h1>Clusters and nodes</h1>
+
+<ul>
+	<li ng-repeat="cluster in clusters" class="panel panel-default">
+		<div class="panel-heading">{{cluster.name}}</div>
+		<div class="panel-body">
+			<ul>
+				<li ng-repeat="node in cluster.nodes" class="panel panel-default">
+					<div class="panel-heading">{{node.id}}</div>
+					<div class="panel-body">
+						<dl class="dl-horizontal">
+							<dt>Status:</dt>
+							<dd>{{node.status}}</dd>
+							<dt>OS:</dt>
+							<dd>{{node.systemSpecification.operatingSystem}}, {{node.systemSpecification.architecture}},
+								{{node.systemSpecification.distributionName}} {{node.systemSpecification.osVersion}}</dd>
+							<dt>CPUs:</dt>
+							<dd>{{node.cpuCount}}</dd>
+							<dt>Memory:</dt>
+							<dd>{{node.memory}}</dd>
+						</dl>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</li>
+</ul>

@@ -71,6 +71,16 @@
 						return $stateParams;
 					}
 				}
+			})
+			.state('cluster', {
+				url: '/clusters',
+				templateUrl: 'partials/clusters/index.html',
+				controller: 'ClusterCtrl',
+				resolve: {
+					params: function($stateParams) {
+						return $stateParams;
+					}
+				}
 			});
 	}]);
 	
@@ -99,6 +109,10 @@
 
 	app.factory('Task', function($resource) {
 		return $resource('/api/tasks/:name');
+	});
+
+	app.factory('Cluster', function($resource) {
+		return $resource('/api/clusters/:name');
 	});
 
 	app.service('DiffService', function(LineChange) {
@@ -361,6 +375,12 @@
 			return '';
 		};
 		update();
+	});
+
+	app.controller('ClusterCtrl', function($scope, Cluster) {
+		Cluster.query(function(data) {
+			$scope.clusters = data;
+		});
 	});
 
 })(angular);

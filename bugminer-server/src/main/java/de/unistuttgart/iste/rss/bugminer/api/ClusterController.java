@@ -4,10 +4,13 @@ import de.unistuttgart.iste.rss.bugminer.api.exceptions.NotFoundException;
 import de.unistuttgart.iste.rss.bugminer.bugs.BugCommitMapper;
 import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizer;
 import de.unistuttgart.iste.rss.bugminer.cli.ProjectsService;
+import de.unistuttgart.iste.rss.bugminer.computing.ClusterStrategy;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Cluster;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ClusterRepository;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
+import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 import de.unistuttgart.iste.rss.bugminer.tasks.Task;
 import de.unistuttgart.iste.rss.bugminer.tasks.TaskManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,9 @@ public class ClusterController {
 	@Autowired
 	private TaskManager taskManager;
 
+	@Autowired
+	private StrategyFactory strategyFactory;
+
 	protected ClusterController() {
 		// managed bean
 	}
@@ -39,7 +45,18 @@ public class ClusterController {
 	 */
 	@RequestMapping(value = "/clusters", method = RequestMethod.GET)
 	public Collection<Cluster> clusters() {
-		return clusterRepo.findAll();
+		Collection<Cluster> clusters = clusterRepo.findAll();
+		for (Cluster cluster : clusters) {
+			ClusterStrategy strategy = strategyFactory.getStrategy(ClusterStrategy.class, cluster.getProvider());
+			for (Node node : cluster.getNodes()) {
+				try {
+					node.setStatus(strategy.getNodeStatus(node));
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return clusters;
 	}
 
 	/**
