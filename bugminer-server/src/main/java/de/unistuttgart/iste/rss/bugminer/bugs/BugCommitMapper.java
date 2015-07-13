@@ -13,6 +13,7 @@ import de.unistuttgart.iste.rss.bugminer.scm.Commit;
 import de.unistuttgart.iste.rss.bugminer.strategies.StrategyFactory;
 import de.unistuttgart.iste.rss.bugminer.tasks.SimpleTask;
 import de.unistuttgart.iste.rss.bugminer.tasks.Task;
+import de.unistuttgart.iste.rss.bugminer.tasks.TaskContext;
 import de.unistuttgart.iste.rss.bugminer.utils.TransactionWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,26 +50,32 @@ public class BugCommitMapper {
 	public Task createTask(Project project) {
 		return new SimpleTask("Map commits of project " + project.getName(), c ->
 				transactionWrapper.runInTransaction(() -> {
-					mapCommits(projectRepo.findOne(project.getId()));
+					mapCommits(projectRepo.findOne(project.getId()), c);
 				}));
 	}
 
-	@Transactional
 	public void mapCommits(Project project) throws IOException {
+		mapCommits(project, new TaskContext());
+	}
+
+	public void mapCommits(Project project, TaskContext context) throws IOException {
 		project = projectRepo.findOne(project.getId());
 		CodeRepo codeRepo = project.getMainRepo();
 		CodeRepoStrategy codeRepoStrategy =
 					strategyFactory.getStrategy(CodeRepoStrategy.class, codeRepo.getProvider());
+		context.setCurrentStatus("Downloading code repository");
 		codeRepoStrategy.download(codeRepo);
 		Collection<Bug> bugs = project.getBugs();
+		context.setCurrentStatus("Finding commits for bugs");
 		Map<Bug, List<Commit>> commitsForBugs =
-				findCommitsForBugs(bugs, codeRepoStrategy.getCommits(codeRepo));
+				findCommitsForBugs(bugs, codeRepoStrategy.getCommits(codeRepo), context);
 
 		for (Bug bug : bugs) {
 			if (!bug.getLineChanges().isEmpty()) {
 				continue;
 			}
 
+			context.setCurrentStatus("Retrieving diff for bug " + bug.getKey());
 			List<Commit> commits = commitsForBugs.get(bug);
 			List<LineChange> changes = getDiff(commits, codeRepoStrategy);
 			if (changes.isEmpty()) {
@@ -107,11 +114,13 @@ public class BugCommitMapper {
 	 * @param commits
 	 * @return
 	 */
-	private Map<Bug, List<Commit>> findCommitsForBugs(Collection<Bug> bugs, Stream<Commit> commits) {
+	private Map<Bug, List<Commit>> findCommitsForBugs(Collection<Bug> bugs, Stream<Commit> commits,
+			TaskContext context) {
 		Map<Bug, List<Commit>> commitsByBug = bugs.stream().collect(Collectors.toMap(
 				b -> (Bug)b, b -> new ArrayList<>()));
 
 		commits.forEach(c -> {
+			context.setCurrentStatus("Inspecting commit " + c.getCodeRevision().getCommitId());
 			for (Bug bug : bugs) {
 				Pattern pattern = Pattern.compile(".*\\b" + Pattern.quote(bug.getKey()) + "\\b.*", Pattern.DOTALL);
 				if (pattern.matcher(c.getCommitMessage()).matches()) {
