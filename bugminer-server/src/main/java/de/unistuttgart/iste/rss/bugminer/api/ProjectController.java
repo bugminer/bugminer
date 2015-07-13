@@ -1,19 +1,21 @@
 package de.unistuttgart.iste.rss.bugminer.api;
 
-import java.io.IOException;
-import java.util.Collection;
-
-import de.unistuttgart.iste.rss.bugminer.bugs.BugCommitMapTask;
+import de.unistuttgart.iste.rss.bugminer.api.exceptions.NotFoundException;
 import de.unistuttgart.iste.rss.bugminer.bugs.BugCommitMapper;
 import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizer;
 import de.unistuttgart.iste.rss.bugminer.cli.ProjectsService;
-import de.unistuttgart.iste.rss.bugminer.tasks.TaskManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import de.unistuttgart.iste.rss.bugminer.api.exceptions.NotFoundException;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
+import de.unistuttgart.iste.rss.bugminer.tasks.TaskManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+import java.util.Collection;
 
 @RestController
 @RequestMapping(value = "/api")
