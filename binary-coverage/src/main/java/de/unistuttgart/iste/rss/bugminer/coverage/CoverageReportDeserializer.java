@@ -1,7 +1,9 @@
 package de.unistuttgart.iste.rss.bugminer.coverage;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jdk.nashorn.internal.parser.JSONParser;
 import sun.misc.IOUtils;
 
 import java.io.FileInputStream;
@@ -37,6 +39,7 @@ public class CoverageReportDeserializer {
 	public CoverageReport deserialize(InputStream in) throws IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(JsonParser.Feature.AUTO_CLOSE_SOURCE, false);
+		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		CoverageReport report = null;
 		byte[] data = null;
 
