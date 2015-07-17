@@ -94,6 +94,8 @@ public class CoberturaImporter {
 	private SAXParser createParser() {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		try {
+			factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+			factory.setFeature("http://xml.org/sax/features/validation", false);
 			return factory.newSAXParser();
 		} catch (ParserConfigurationException | SAXException e) {
 			throw new RuntimeException(e);
