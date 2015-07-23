@@ -264,10 +264,10 @@
 			for (var i = 0; i < $scope.bugs.length; i++) {
 				if ($scope.bugs[i].key == $scope.bugKeyUrl) {
 					var bug = $scope.bugs[i];
+					$scope.currentBug = bug;
 
 					DiffService.computeDiff(bug, function(result) {
 						angular.extend($scope, result);
-						$scope.currentBug = bug;
 					});
 				}
 			}
