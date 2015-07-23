@@ -1,15 +1,16 @@
 {
-	"name": "bugminer",
-	"description": "",
-	"version": "0.0.0",
-	"private": true,
-	"dependencies": {
-		"angular": "~1.2.x",
-        "angular-ui-router": "0.2.15",
-		"angular-route": "~1.2.x",
-		"angular-resource": "~1.2.x",
-		"angular-mocks": "~1.2.x",
-		"bootstrap": "^3.2.0",
-        "angular-bootstrap": "0.12.1"
-	}
+  "name": "bugminer",
+  "description": "",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "angular": "~1.2.x",
+    "angular-ui-router": "0.2.15",
+    "angular-route": "~1.2.x",
+    "angular-resource": "~1.2.x",
+    "angular-mocks": "~1.2.x",
+    "bootstrap": "^3.2.0",
+    "angular-bootstrap": "0.12.1",
+    "restangular": "~1.5.1"
+  }
 }

@@ -82,6 +82,16 @@ module.exports = function(grunt) {
           dest: '<%= javascriptPath %>'
         }, {
           expand: true,
+          cwd: '<%= bowerrc.directory %>/restangular/dist',
+          src: ['restangular.js'],
+          dest: '<%= javascriptPath %>'
+        }, {
+          expand: true,
+          cwd: '<%= bowerrc.directory %>/lodash',
+          src: ['lodash.js'],
+          dest: '<%= javascriptPath %>'
+        }, {
+          expand: true,
           cwd: '<%= bowerrc.directory %>/bootstrap/dist/css/',
           src: ['bootstrap.css', 'bootstrap-theme.css'],
           dest: '<%= cssPath %>'

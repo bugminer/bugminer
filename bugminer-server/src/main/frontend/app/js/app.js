@@ -1,7 +1,7 @@
 (function(angular) {
 	'use strict';
 	
-	var app = angular.module('bugminerApp', ['ngResource', 'ui.router', 'ui.bootstrap']);
+	var app = angular.module('bugminerApp', ['ngResource', 'ui.router', 'ui.bootstrap', 'restangular']);
 	
 	app.config(['$stateProvider', function($stateProvider) {
 		$stateProvider
@@ -82,6 +82,10 @@
 					}
 				}
 			});
+	}]);
+
+	app.config(['RestangularProvider', function(RestangularProvider) {
+		RestangularProvider.setBaseUrl('/api');
 	}]);
 	
 	app.factory('Project', function($resource) {
