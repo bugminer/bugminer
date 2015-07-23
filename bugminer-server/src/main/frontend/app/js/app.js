@@ -29,15 +29,17 @@
 				templateUrl: 'partials/projects/classify.html',
 				controller: 'ProjectClassifyCtrl',
 				resolve: {
-					bugPage: function(BugPage, $location, params) {
-						var page = $location.search().page ? $location.search().page : 1;
+					bugPage: function(BugPage, $stateParams) {
+						var page = $stateParams.page ? $stateParams.page : 1;
 
-						return BugPage.get({page: page - 1, name: params.name}).$promise.then(function(data) {
+						return BugPage.get({page: page - 1, name: $stateParams.name}).$promise.then(function(data) {
 							return {
 								bugs: data.content,
 								totalItems: data.totalElements,
 								itemsPerPage: data.size,
-								currentPage: page
+								data: {
+									'currentPage': page
+								}
 							};
 						});
 					}
@@ -48,15 +50,17 @@
 				templateUrl: 'partials/projects/bugs.html',
 				controller: 'ProjectBugsCtrl',
 				resolve: {
-					bugPage: function(BugPage, $location, params) {
-						var page = $location.search().page ? $location.search().page : 1;
+					bugPage: function(BugPage, $stateParams) {
+						var page = $stateParams.page ? $stateParams.page : 1;
 
-						return BugPage.get({page: page - 1, name: params.name}).$promise.then(function(data) {
+						return BugPage.get({page: page - 1, name: $stateParams.name}).$promise.then(function(data) {
 							return {
 								bugs: data.content,
 								totalItems: data.totalElements,
 								itemsPerPage: data.size,
-								currentPage: page
+								data: {
+									'currentPage': page
+								}
 							};
 						});
 					}
@@ -297,15 +301,15 @@
 		}
 	});
 
-	app.controller('ProjectClassifyCtrl', function($scope, $location, bugPage, DiffService) {
+	app.controller('ProjectClassifyCtrl', function($scope, $state, $stateParams, bugPage, DiffService) {
 		angular.extend($scope, bugPage);
 		$scope.changedFiles = [];
 		$scope.currentBug = null;
 		$scope.bugKeyUrl = null;
 		$scope.classificationHasChanged = false;
 
-		if ($location.search().bug) {
-			$scope.bugKeyUrl = $location.search().bug;
+		if ($stateParams.bug) {
+			$scope.bugKeyUrl = $stateParams.bug;
 			for (var i = 0; i < $scope.bugs.length; i++) {
 				if ($scope.bugs[i].key == $scope.bugKeyUrl) {
 					var bug = $scope.bugs[i];
@@ -320,7 +324,7 @@
 
 		$scope.classify = function(lineChange, classification) {
 
-		}
+		};
 
 		setInterval(function() {
 			if ($scope.classificationHasChanged) {
@@ -330,25 +334,25 @@
 			}
 		}, 100);
 
-		$scope.$watch('currentPage', function(newPage, oldPage) {
+		$scope.$watch('data.currentPage', function(newPage, oldPage) {
 			if (newPage !== oldPage) {
-				$location.search({page: $scope.currentPage});
+				$state.transitionTo('project.classify', {name: $stateParams.name, page: $scope.data.currentPage}, {reload: true});
 			}
 		});
 
 		$scope.setCurrentBug = function(bug) {
-			$location.search({page: $scope.currentPage, bug: bug.key});
+			$state.transitionTo('project.classify', {name: $stateParams.name, page: $scope.data.currentPage, bug: bug.key}, {reload: true});
 		};
 	});
 	
-	app.controller('ProjectBugsCtrl', function($scope, $location, bugPage, DiffService) {
+	app.controller('ProjectBugsCtrl', function($scope, $state, $stateParams, bugPage, DiffService) {
 		angular.extend($scope, bugPage);
 		$scope.changedFiles = [];
 		$scope.currentBug = null;
 		$scope.bugKeyUrl = null;
 
-		if ($location.search().bug) {
-			$scope.bugKeyUrl = $location.search().bug;
+		if ($stateParams.bug) {
+			$scope.bugKeyUrl = $stateParams.bug;
 			for (var i = 0; i < $scope.bugs.length; i++) {
 				if ($scope.bugs[i].key == $scope.bugKeyUrl) {
 					var bug = $scope.bugs[i];
@@ -361,14 +365,14 @@
 			}
 		}
 
-		$scope.$watch('currentPage', function(newPage, oldPage) {
+		$scope.$watch('data.currentPage', function(newPage, oldPage) {
 			if (newPage !== oldPage) {
-				$location.search({page: $scope.currentPage});
+				$state.transitionTo('project.bugs', {name: $stateParams.name, page: $scope.data.currentPage}, {reload: true});
 			}
 		});
 
 		$scope.setCurrentBug = function(bug) {
-			$location.search({page: $scope.currentPage, bug: bug.key});
+			$state.transitionTo('project.bugs', {name: $stateParams.name, page: $scope.data.currentPage, bug: bug.key}, {reload: true});
 		};
 	});
 
