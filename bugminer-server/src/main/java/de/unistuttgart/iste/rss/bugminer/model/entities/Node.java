@@ -26,7 +26,6 @@ public class Node extends BaseEntity {
 	public static final MemoryQuantity DEFAULT_MEMORY = MemoryQuantity.fromMiB(1500);
 	public static final int DEFAULT_CPU_COUNT = 1;
 
-	@JsonIgnore
 	@ManyToOne
 	private Cluster cluster;
 

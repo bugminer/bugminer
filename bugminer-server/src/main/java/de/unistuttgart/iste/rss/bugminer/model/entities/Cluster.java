@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.unistuttgart.iste.rss.bugminer.model.BaseEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class Cluster extends BaseEntity {
 	@Column(unique = true)
 	private String name;
 
+	@JsonIgnore
 	@OneToMany
 	private Collection<Node> nodes;
 
