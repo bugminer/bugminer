@@ -19,6 +19,8 @@
 							<dt>Memory:</dt>
 							<dd>{{node.memory}}</dd>
 						</dl>
+						<button ng-click="startNode(node)" ng-if="node.status == 'OFFLINE'">Start</button>
+						<button ng-click="stopNode(node)" ng-if="node.status != 'OFFLINE'">Stop</button>
 					</div>
 				</li>
 			</ul>

@@ -87,6 +87,24 @@
 	app.config(['RestangularProvider', function(RestangularProvider) {
 		RestangularProvider.setBaseUrl('/api');
 	}]);
+
+	app.run(['Restangular', function(Restangular) {
+		function getIDField(route) {
+			switch (route) {
+				case 'clusters':
+					return 'name';
+				default:
+					return 'id';
+			}
+		}
+		Restangular.configuration.getIdFromElem = function(elem) {
+			return elem[getIDField(elem.route)];
+		};
+
+		Restangular.configuration.setIdToElem = function(elem, id) {
+			elem[getIDField(elem.route)] = id;
+		};
+	}]);
 	
 	app.factory('Project', function($resource) {
 		  return $resource('/api/projects/:name', {
@@ -117,6 +135,21 @@
 
 	app.factory('Cluster', function($resource) {
 		return $resource('/api/clusters/:name');
+	});
+
+	app.factory('ClusterNode', function($resource) {
+		return $resource('/api/nodes/:id', {
+			id: '@id'
+		}, {
+			  start: {
+				  method: 'POST',
+				  url: '/api/nodes/:id/start'
+			  },
+			  stop: {
+				  method: 'POST',
+				  url: '/api/nodes/:id/start'
+			  }
+		  });
 	});
 
 	app.service('DiffService', function(LineChange) {
@@ -381,10 +414,20 @@
 		update();
 	});
 
-	app.controller('ClusterCtrl', function($scope, Cluster) {
-		Cluster.query(function(data) {
-			$scope.clusters = data;
+	app.controller('ClusterCtrl', function($scope, Restangular) {
+		Restangular.all('clusters').getList().then(function(clusters) {
+			$scope.clusters = clusters;
+			clusters.forEach(function(cluster) {
+				cluster.nodes = cluster.getList('nodes').$object;
+			});
 		});
+
+		$scope.startNode = function(node) {
+			node.customPOST({}, 'start');
+		};
+		$scope.stopNode = function(node) {
+			node.customPOST({}, 'stop');
+		};
 	});
 
 })(angular);
