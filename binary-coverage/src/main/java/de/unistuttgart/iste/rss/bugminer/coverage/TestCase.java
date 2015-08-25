@@ -6,13 +6,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TestCase {
 	private String name;
 	private boolean passed;
+	private TestFailureInfo failure;
+
+	public TestCase(String name, boolean passed) {
+		this(name, passed, null);
+	}
 
 	@JsonCreator
 	public TestCase(
 			@JsonProperty("name") String name,
-			@JsonProperty("passed") boolean passed) {
+			@JsonProperty("passed") boolean passed,
+			@JsonProperty("failure") TestFailureInfo failure) {
 		this.name = name;
 		this.passed = passed;
+		this.failure = failure;
+		if (failure == null) {
+			this.failure = new TestFailureInfo("", "", "");
+		}
 	}
 
 	/**
@@ -28,6 +38,12 @@ public class TestCase {
 	public boolean isPassed() {
 		return passed;
 	}
+
+	/**
+	 * Gets information about the failure (error message etc.)
+	 * @return the failure information
+	 */
+	public TestFailureInfo getFailure() { return failure; }
 
 	@Override
 	public String toString() {
