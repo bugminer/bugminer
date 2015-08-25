@@ -1,10 +1,14 @@
 package de.unistuttgart.iste.rss.bugminer.config;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import net.schmizz.sshj.SSHClient;
 
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSourceFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +26,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 @Configuration
 @ComponentScan("de.unistuttgart.iste.rss.bugminer")
-@PropertySource("META-INF/default.properties")
 @EnableAutoConfiguration
 @EnableSpringDataWebSupport
 public class AppConfig {
@@ -55,5 +58,29 @@ public class AppConfig {
 		executor.setCorePoolSize(6);
 		executor.setQueueCapacity(100);
 		return executor;
+	}
+
+	@Bean
+	public BasicDataSource getDataSource() throws URISyntaxException {
+		String url = System.getenv("DATABASE_URL");
+		if (url == null) {
+			url = "mysql://bugminer:bugminer@localhost:3306/bugminer";
+		}
+
+		URI dbUri = new URI(url);
+		String username = dbUri.getUserInfo().split(":")[0];
+		String password = dbUri.getUserInfo().split(":")[1];
+		String scheme = dbUri.getScheme();
+		if (scheme.equals("postgres")) {
+			scheme = "postgresql";
+		}
+		String dbUrl = "jdbc:" + scheme + "://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
+
+		BasicDataSource basicDataSource = new BasicDataSource();
+		basicDataSource.setUrl(dbUrl);
+		basicDataSource.setUsername(username);
+		basicDataSource.setPassword(password);
+
+		return basicDataSource;
 	}
 }
