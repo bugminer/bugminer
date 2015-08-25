@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.Validate;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,6 +42,9 @@ public class CoverageReport {
 	@JsonCreator
 	public CoverageReport(@JsonProperty("files") Iterable<SourceCodeFile> files,
 			@JsonProperty("testCases") Iterable<TestCase> testCases) {
+		Validate.notNull("files", "files can't be null");
+		Validate.notNull("testCases", "testCases can't be null");
+
 		this.files = Lists.newArrayList(files);
 		this.testCases = Lists.newArrayList(testCases);
 		
@@ -78,6 +82,9 @@ public class CoverageReport {
 	 * @return
 	 */
 	public FileCoverage getCoverage(TestCase testCase, SourceCodeFile file) {
+		Validate.notNull("testCase", "testCase can't be null");
+		Validate.notNull("file", "file can't be null");
+
 		int offset = getOffset(testCase, file);
 		int length = file.getSourceCodeLineNumberCount();
 		
@@ -97,6 +104,10 @@ public class CoverageReport {
 	 * @param coverage
 	 */
 	public void setCoverage(TestCase testCase, SourceCodeFile file, FileCoverage coverage) {
+		Validate.notNull(testCase, "testCase can't be null");
+		Validate.notNull(file, "file can't be null");
+		Validate.notNull(coverage, "coverage can't be null");
+
 		int fileOffset = getOffset(testCase, file);
 		for (Map.Entry<Integer, Boolean> entry : coverage.getData().entrySet()) {
 			int localOffset = file.getOffsetOfLineNumber(entry.getKey())
@@ -106,6 +117,9 @@ public class CoverageReport {
 	}
 	
 	private int getOffset(TestCase testCase, SourceCodeFile file) {
+		Validate.notNull(testCase, "testCase can't be null");
+		Validate.notNull(file, "file can't be null");
+
 		int testCaseIndex = testCases.indexOf(testCase);
 		if (testCaseIndex < 0)
 			throw new IllegalArgumentException("The given de.unistuttgart.iste.rss.bugminer.coverage.TestCase is not present in this report");
@@ -131,6 +145,8 @@ public class CoverageReport {
 	 * @param data
 	 */
 	public void setData(boolean[] data) {
+		Validate.notNull(data, "data can't be null");
+
 		int expectedSize = testCaseDataSize * this.testCases.size();
 		if (data.length != expectedSize) {
 			throw new IllegalArgumentException(String.format(
@@ -149,6 +165,9 @@ public class CoverageReport {
 	 * @return true if it is covered, false otherwise
 	 */
 	public boolean isCovered(final TestCase testCase, final SourceCodeFile file, final int line) {
+		Validate.notNull(testCase, "testCase can't be null");
+		Validate.notNull(file, "file can't be null");
+
 		final int fileOffset = this.getOffset(testCase, file);
 		final int lineOffset = file.getOffsetOfLineNumber(line).orElseThrow(
 				() -> new RuntimeException(String.format("Line %d does not exist", line)));
