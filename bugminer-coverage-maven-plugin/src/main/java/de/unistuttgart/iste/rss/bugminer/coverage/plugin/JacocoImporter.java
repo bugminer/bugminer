@@ -1,4 +1,4 @@
-package de.unistuttgart.iste.rss.bugminer.coverage.jacoco;
+package de.unistuttgart.iste.rss.bugminer.coverage.plugin;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
@@ -6,6 +6,7 @@ import de.unistuttgart.iste.rss.bugminer.coverage.CoverageReport;
 import de.unistuttgart.iste.rss.bugminer.coverage.FileCoverage;
 import de.unistuttgart.iste.rss.bugminer.coverage.SourceCodeFile;
 import de.unistuttgart.iste.rss.bugminer.coverage.TestCase;
+import org.apache.commons.lang3.StringUtils;
 import org.jacoco.core.analysis.Analyzer;
 import org.jacoco.core.analysis.ILine;
 import org.jacoco.core.data.ExecutionDataReader;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import static java.util.stream.Collectors.*;
 
@@ -30,10 +32,16 @@ public class JacocoImporter {
 	private Path classesPath;
 	private Path jacocoExecPath;
 	private CoverageReport report;
+	private List<TestCase> testCases;
+	private Map<String, TestCase> testCaseMap;
 
-	public JacocoImporter(Path classesPath, Path jacocoExecPath) {
+	private static final Logger LOGGER = Logger.getLogger(JacocoImporter.class.getName());
+
+	public JacocoImporter(Path classesPath, Path jacocoExecPath, List<TestCase> testCases) {
 		this.classesPath = classesPath;
 		this.jacocoExecPath = jacocoExecPath;
+		this.testCases = testCases;
+		this.testCaseMap = testCases.stream().collect(toMap(t -> t.getName(), t -> t));
 	}
 
 	public void run() throws IOException {
@@ -104,17 +112,25 @@ public class JacocoImporter {
 			}
 		}).analyzeAll(classesPath.toFile());
 
-		// store the line coverage
-		Map<String, TestCase> testCases =
-				dataStoresForTestCases.keySet().stream().collect(toMap(s -> s, TestCase::new));
-
-		CoverageReport report = new CoverageReport(files.values(), testCases.values());
+		CoverageReport report = new CoverageReport(files.values(), testCases);
 
 		for (Map.Entry<String, ExecutionDataStore> entry : dataStoresForTestCases.entrySet()) {
-			TestCase testCase = testCases.get(entry.getKey());
+			if (StringUtils.isEmpty(entry.getKey())) {
+				continue;
+			}
+
+			String name = entry.getKey().replace(' ', '.');
+			TestCase testCase = testCaseMap.get(name);
+			if (testCase == null) {
+				LOGGER.warning("Test Case " + name + " exists in jacoco file but there is no TestCase fot it");
+				continue;
+			}
 
 			new Analyzer(entry.getValue(), coverage -> {
 				SourceCodeFile file = files.get(coverage.getName());
+				if (file == null) {
+					return; // no coverage for generated files
+				}
 				report.setCoverage(testCase, file, new FileCoverage(file.getLineNumbers().stream()
 						.collect(toMap(n -> n,
 								n -> coverage.getLine(n).getInstructionCounter().getCoveredCount()

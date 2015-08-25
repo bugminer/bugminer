@@ -2,28 +2,38 @@ package de.unistuttgart.iste.rss.bugminer.coverage.plugin;
 
 import de.unistuttgart.iste.rss.bugminer.coverage.CoverageReport;
 import de.unistuttgart.iste.rss.bugminer.coverage.CoverageReportSerializer;
-import de.unistuttgart.iste.rss.bugminer.coverage.jacoco.JacocoImporter;
+import de.unistuttgart.iste.rss.bugminer.coverage.TestCase;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.surefire.report.ReportTestSuite;
+import org.apache.maven.plugins.surefire.report.SurefireReportParser;
+import org.apache.maven.reporting.MavenReportException;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 @Mojo(name = "analyze-coverage")
 public class CoveragePlugin extends AbstractMojo {
 	@Parameter(defaultValue = "${project.build.outputDirectory}")
-	private String classesPath;
+	public String classesPath;
 
 	@Parameter(defaultValue = "${project.build.directory}/jacoco.exec")
-	private String jacocoExecPath;
+	public String jacocoExecPath;
+
+	@Parameter(defaultValue = "${project.build.directory}/surefire-reports")
+	public String surefireReportsPath;
 
 	@Parameter(defaultValue = "${project.build.directory}/coverage.zip")
-	private String coverageOutputPath;
+	public String coverageOutputPath;
 
 	@Override public void execute() throws MojoExecutionException, MojoFailureException {
 		Path jacocoPath = Paths.get(jacocoExecPath);
@@ -36,7 +46,14 @@ public class CoveragePlugin extends AbstractMojo {
 			throw new MojoFailureException(String.format("Directory %s is missing", classesPath));
 		}
 
-		JacocoImporter importer = new JacocoImporter(classesPath2, jacocoPath);
+		List<TestCase> testCases;
+		try {
+			testCases = new SurefireImporter().parse(Paths.get(surefireReportsPath));
+		} catch (IOException e) {
+			throw new MojoExecutionException("Failed to parse surefire reports", e);
+		}
+
+		JacocoImporter importer = new JacocoImporter(classesPath2, jacocoPath, testCases);
 		try {
 			importer.run();
 		} catch (IOException e) {
@@ -50,6 +67,7 @@ public class CoveragePlugin extends AbstractMojo {
 		} catch (IOException e) {
 			throw new MojoExecutionException("Failed to serialize coverage report", e);
 		}
+
 
 		getLog().info(String.format("Saved binary coverage report to %s", coverageOutputPath));
 	}

@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>de.unistuttgart.iste.rss.bugminer</groupId>
 			<artifactId>binary-coverage</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>0.2.2</version>
 		</dependency>
 
 		<dependency>
@@ -66,7 +66,13 @@
 		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>org.jacoco.core</artifactId>
-			<version>0.7.4.201502262128</version>
+			<version>0.7.5.201505241946</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.maven.surefire</groupId>
+			<artifactId>surefire-report-parser</artifactId>
+			<version>2.18.1</version>
 		</dependency>
 
 		<dependency>
