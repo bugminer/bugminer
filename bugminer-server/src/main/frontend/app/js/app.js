@@ -258,6 +258,11 @@
 		$scope.currentBug = null;
 		$scope.bugKeyUrl = null;
 		$scope.classificationHasChanged = false;
+		$scope.classification = {
+			'bug': null,
+			'user': null,
+			'lineChangeClassifications': []
+		};
 
 		if ($stateParams.bug) {
 			$scope.bugKeyUrl = $stateParams.bug;
@@ -273,8 +278,29 @@
 			}
 		}
 
-		$scope.classify = function(lineChange, classification) {
+		$scope.classify = function(lineChange, classificationForm) {
+			console.log('in classify');
+			var elementFound = false;
+			var newLineChangeClassification = {
+				'lineChange': lineChange,
+				'classification': null,
+				'lineChangeClassificationForm': classificationForm
+			};
 
+			for (var i = 0; i < $scope.classification.lineChangeClassifications.length; i++) {
+				var lineChangeClassification = $scope.classification.lineChangeClassifications[i];
+
+				if (lineChangeClassification.lineChange.oldLineNumber == lineChange.oldLineNumber) {
+					elementFound = true;
+					$scope.classification.lineChangeClassifications[i] = newLineChangeClassification;
+				}
+			}
+
+			if (!elementFound) {
+				$scope.classification.lineChangeClassifications.push(newLineChangeClassification);
+			}
+
+			console.log($scope.classification);
 		};
 
 		setInterval(function() {
