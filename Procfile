@@ -1,1 +1,1 @@
-web: java -jar target/bugminer-server-*.jar
+web: java -jar bugminer-server/target/bugminer-server-*.jar
