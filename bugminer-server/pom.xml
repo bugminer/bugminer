@@ -184,27 +184,20 @@
 				</executions>
 			</plugin>
 
+			<!-- Support our own plugin -->
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>de.unistuttgart.iste.rss.bugminer.Application</mainClass>
-						</manifest>
-					</archive>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>make-assembly</id> <!-- this is used for inheritance merges -->
-						<phase>package</phase> <!-- bind to the packaging phase -->
 						<goals>
-							<goal>single</goal>
+							<goal>repackage</goal>
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<mainClass>de.unistuttgart.iste.rss.bugminer.Application</mainClass>
+				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>
@@ -261,23 +254,6 @@
 								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-
-				<!-- Support our own plugin -->
-				<plugin>
-					<groupId>org.springframework.boot</groupId>
-					<artifactId>spring-boot-maven-plugin</artifactId>
-					<version>${spring-boot.version}</version>
-					<executions>
-						<execution>
-							<goals>
-								<goal>repackage</goal>
-							</goals>
-						</execution>
-					</executions>
-					<configuration>
-						<mainClass>${start-class}</mainClass>
 					</configuration>
 				</plugin>
 			</plugins>
