@@ -20,7 +20,7 @@ public class LineChangeClassification extends BaseEntity {
 	@ManyToOne
 	private Classification classification;
 
-	private boolean isBugfix;
+	private LineChangeClassificationForm lineChangeClassificationForm;
 
 	/**
 	 * Creates an empty {@code LineChangeClassification}
@@ -45,11 +45,11 @@ public class LineChangeClassification extends BaseEntity {
 		this.classification = classification;
 	}
 
-	public boolean isBugfix() {
-		return isBugfix;
+	public LineChangeClassificationForm getLineChangeClassificationForm() {
+		return lineChangeClassificationForm;
 	}
 
-	public void setBugfix(boolean isBugfix) {
-		this.isBugfix = isBugfix;
+	public void setLineChangeClassificationForm(LineChangeClassificationForm lineChangeClassificationForm) {
+		this.lineChangeClassificationForm = lineChangeClassificationForm;
 	}
 }
