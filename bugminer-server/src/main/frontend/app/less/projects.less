@@ -13,3 +13,33 @@
 .project-view-container {
   margin-top: 25px;
 }
+
+.diff-view {
+  .diff-table {
+	word-wrap: break-word;
+	table-layout: fixed;
+	font-family: monospace;
+	margin-bottom: 30px;
+	display: table;
+	width: 100%;
+
+	.diff-table-row {
+	  display: table-row;
+
+	  .diff-table-cell {
+		display: table-cell;
+		padding-bottom: 10px;
+
+		.diff-line {
+		  font-size: 12px;
+		  background: #f5f5f5;
+		  padding: 5px;
+
+		  span {
+			padding: 10px;
+		  }
+		}
+	  }
+	}
+  }
+}
