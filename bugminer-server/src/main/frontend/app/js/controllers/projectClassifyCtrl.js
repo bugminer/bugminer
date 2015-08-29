@@ -9,6 +9,9 @@ app.controller('ProjectClassifyCtrl', function($scope, $state, $stateParams, bug
 		'user': null,
 		'lineChangeClassifications': []
 	};
+	$scope.sendClassificationFn = debounce(function() {
+		console.log('about to send classification');
+	}, 500);
 
 	if ($stateParams.bug) {
 		$scope.bugKeyUrl = $stateParams.bug;
@@ -54,16 +57,8 @@ app.controller('ProjectClassifyCtrl', function($scope, $state, $stateParams, bug
 			$scope.classification.lineChangeClassifications.push(newLineChangeClassification);
 		}
 
-		console.log($scope.classification);
+		$scope.sendClassificationFn();
 	};
-
-	setInterval(function() {
-		if ($scope.classificationHasChanged) {
-			$scope.classificationHasChanged = false;
-
-			console.log("about to send classification");
-		}
-	}, 100);
 
 	$scope.$watch('data.currentPage', function(newPage, oldPage) {
 		if (newPage !== oldPage) {
@@ -74,4 +69,19 @@ app.controller('ProjectClassifyCtrl', function($scope, $state, $stateParams, bug
 	$scope.setCurrentBug = function(bug) {
 		$state.transitionTo('project.classify', {name: $stateParams.name, page: $scope.data.currentPage, bug: bug.key}, {reload: true});
 	};
+
+	function debounce(func, wait, immediate) {
+		var timeout;
+		return function() {
+			var context = this, args = arguments;
+			var later = function() {
+				timeout = null;
+				if (!immediate) func.apply(context, args);
+			};
+			var callNow = immediate && !timeout;
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+			if (callNow) func.apply(context, args);
+		};
+	}
 });
