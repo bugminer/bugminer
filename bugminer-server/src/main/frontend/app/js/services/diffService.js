@@ -1,68 +1,57 @@
 app.service('DiffService', function(LineChange) {
 	this.computeDiff = function(bug, callback) {
-		var result = {};
-
 		LineChange.query({tracker: bug.issueTracker.name, key: bug.key}, function(lineChanges) {
-			result.files = [];
-			var currentFileName = '';
 			var currentFile = null;
-			var currentLine = {
-				additions: [],
-				deletions: []
+			var currentOldLineNumber = null;
+			var currentChange = null;
+			var result = {
+				'files': []
 			};
-			var currentHunk = {
-				lines: [currentLine],
-				lastLineNumber: -1
-			};
-
 
 			for (var i = 0; i < lineChanges.length; i++) {
-				var currentLineChange = lineChanges[i];
-				var oldLineNumber = currentLineChange.oldLineNumber;
+				var lineChange = lineChanges[i];
 
-				// if file name changed then start next file
-				if (currentFileName !== currentLineChange.fileName) {
-					currentFileName = currentLineChange.fileName;
+				if (currentFile === null || currentFile.fileName !== lineChange.fileName) {
+					if (currentChange !== null) {
+						currentFile.changes.push(currentChange);
+					}
 
+					currentOldLineNumber = null;
+					currentChange = null;
 					currentFile = {
-						name: currentFileName,
-						hunks: []
+						'fileName': lineChange.fileName,
+						'changes': []
 					};
 
 					result.files.push(currentFile);
 				}
 
-				// if line number of this line change is greater than the last + 1
-				// this line change belongs to the next hunk
-				if (oldLineNumber > currentHunk.lastLineNumber + 1) {
-					var currentLine = {
-						additions: [],
-						deletions: []
-					};
-					var currentHunk = {
-						lines: [currentLine],
-						lastLineNumber: 0
-					};
+				if (lineChange.kind === 'DELETION') {
+					if (currentChange !== null) {
+						currentFile.changes.push(currentChange);
+					}
 
-					currentFile.hunks.push(currentHunk);
-				} else if (oldLineNumber > currentHunk.lastLineNumber) {
-					var currentLine = {
-						additions: [],
-						deletions: []
+					currentChange = {
+						'deletion': lineChange,
+						'addition': null
 					};
-
-					currentHunk.lines.push(currentLine);
 				}
 
-				if (currentLineChange.kind === 'ADDITION') {
-					currentLine.additions.push(currentLineChange);
-					currentHunk.lastLineNumber = oldLineNumber;
-				} else {
-					currentLine.deletions.push(currentLineChange);
-					currentHunk.lastLineNumber = oldLineNumber;
+				if (lineChange.kind === 'ADDITION') {
+					if (currentChange !== null) {
+						currentChange.addition = lineChange;
+					} else {
+						currentChange = {
+							'deletion': null,
+							'addition': lineChange
+						}
+					}
+
+					currentFile.changes.push(currentChange);
+					currentChange = null;
 				}
 			}
-			console.log(result);
+			
 			callback(result);
 		});
 	};
