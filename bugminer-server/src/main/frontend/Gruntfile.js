@@ -93,7 +93,7 @@ module.exports = function(grunt) {
         }, {
           expand: true,
           cwd: '<%= bowerrc.directory %>/bootstrap/dist/css/',
-          src: ['bootstrap.css', 'bootstrap-theme.css'],
+          src: ['bootstrap.css', 'bootstrap-theme.css', 'bootstrap.css.map', 'bootstrap-theme.css.map'],
           dest: '<%= cssPath %>'
         }, {
           expand: true,
