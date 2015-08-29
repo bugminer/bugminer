@@ -5,6 +5,13 @@
 			<div class="panel-body">
 				<div class="diff-table">
 					<div ng-repeat="change in file.changes" class="diff-table-row">
+						<div class="diff-table-cell classification-buttons" ng-if="state === 'project.classify'">
+							<a href="javascript:void(0);" ng-click="classify(line.deletions[0], 'BUG')">++</a>
+							<a href="javascript:void(0);" ng-click="classify(line.deletions[0], 'LIKELY_BUG')">+</a>
+							<a href="javascript:void(0);" ng-click="classify(line.deletions[0], 'NOT_SURE')">0</a>
+							<a href="javascript:void(0);" ng-click="classify(line.deletions[0], 'LIKELY_NO_BUG')">-</a>
+							<a href="javascript:void(0);" ng-click="classify(line.deletions[0], 'NO_BUG')">--</a>
+						</div>
 						<div class="diff-table-cell">
 							<div class="diff-line">
 								<span class="line-number">{{change.deletion.oldLineNumber}}</span>
