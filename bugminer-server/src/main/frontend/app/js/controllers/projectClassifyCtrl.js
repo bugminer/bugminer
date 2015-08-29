@@ -24,9 +24,17 @@ app.controller('ProjectClassifyCtrl', function($scope, $state, $stateParams, bug
 		}
 	}
 
-	$scope.classify = function(lineChange, classificationForm) {
+	$scope.classify = function(change, classificationForm) {
 		console.log('in classify');
 		var elementFound = false;
+		var lineChange;
+
+		if (change.deletion !== null) {
+			lineChange = change.deletion;
+		} else {
+			lineChange = change.addition;
+		}
+
 		var newLineChangeClassification = {
 			'lineChange': lineChange,
 			'classification': null,
