@@ -11,6 +11,10 @@ var app;
 				url: '',
 				templateUrl: 'partials/index.html',
 			})
+			.state('index2', {
+				url: '/',
+				templateUrl: 'partials/index.html',
+			})
 			.state('projects', {
 				url: '/projects',
 				templateUrl: 'partials/projects/index.html',
