@@ -8,7 +8,11 @@ var app;
 	app.config(['$stateProvider', function($stateProvider) {
 		$stateProvider
 			.state('index', {
-				url: '/',
+				url: '',
+				templateUrl: 'partials/index.html',
+			})
+			.state('projects', {
+				url: '/projects',
 				templateUrl: 'partials/projects/index.html',
 				controller: 'ProjectsCtrl'
 			})
