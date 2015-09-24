@@ -6,18 +6,27 @@ import java.nio.file.Path;
 
 import org.apache.commons.lang3.StringUtils;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Transient;
+
 /**
  * Information about how to connect to a remote ssh server
  */
+@Embeddable
 public class SshConfig {
 	private String host;
 	private int port;
 	private String user;
 	private String password;
+	@Transient // TODO store the private key in database?
 	private Path keyFile;
 	private boolean verifyHostKey = true;
 
 	private static final int DEFAULT_PORT = 22;
+
+	private SshConfig() {
+
+	}
 
 	/**
 	 * Creates a ssh configuration with the default port 22
@@ -102,6 +111,9 @@ public class SshConfig {
 	 * @return the port
 	 */
 	public int getPort() {
+		if (port == 0) {
+			return DEFAULT_PORT;
+		}
 		return port;
 	}
 

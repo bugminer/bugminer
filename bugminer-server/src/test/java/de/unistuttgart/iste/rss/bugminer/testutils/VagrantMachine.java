@@ -39,14 +39,11 @@ public class VagrantMachine extends ExternalResource {
 
 	private final Logger logger = Logger.getLogger(VagrantMachine.class.getName());
 
-	private Node createNode() {
-		Node node = entityFactory.make(Node.class);
-		node.setSystemSpecification(SystemSpecification.UBUNTU_1404);
+	private Node createNode() throws IOException {
 		Cluster cluster = entityFactory.make(Cluster.class);
-		node.setCluster(cluster);
 		cluster.setName("unittest-" + UUID.randomUUID());
 		cluster.setProvider("vagrant");
-		node.setCluster(cluster);
+		node = vagrant.createNode(cluster);
 		return node;
 	}
 
@@ -58,7 +55,6 @@ public class VagrantMachine extends ExternalResource {
 
 		try {
 			node = createNode();
-			vagrant.initializeNode(node);
 			vagrant.startNode(node);
 			sshConfig = vagrant.getSshConfig(node);
 			nodeConnection = nodeConnectionFactory.connectTo(node);

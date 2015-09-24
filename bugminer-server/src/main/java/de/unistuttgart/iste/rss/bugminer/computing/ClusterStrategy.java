@@ -9,9 +9,7 @@ import de.unistuttgart.iste.rss.bugminer.model.entities.NodeStatus;
 public interface ClusterStrategy {
 	boolean isAvailable();
 
-	void initializeCluster(Cluster cluster) throws IOException;
-
-	void initializeNode(Node node) throws IOException;
+	Node createNode(Cluster cluster) throws IOException;
 
 	NodeStatus getNodeStatus(Node node) throws IOException;
 
@@ -20,6 +18,4 @@ public interface ClusterStrategy {
 	void stopNode(Node node) throws IOException;
 
 	void destroyNode(Node node) throws IOException;
-
-	SshConfig getSshConfig(Node node) throws IOException;
 }

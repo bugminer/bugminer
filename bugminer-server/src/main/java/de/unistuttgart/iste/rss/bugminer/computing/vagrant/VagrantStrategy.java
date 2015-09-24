@@ -21,9 +21,11 @@ import de.unistuttgart.iste.rss.bugminer.model.entities.Cluster;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
 import de.unistuttgart.iste.rss.bugminer.model.entities.NodeStatus;
 
-@Strategy(type = ClusterStrategy.class, name = "vagrant")
+@Strategy(type = ClusterStrategy.class, name = VagrantStrategy.NAME)
 @Component
 public class VagrantStrategy implements ClusterStrategy {
+	public static final String NAME = "vagrant";
+
 	@Autowired
 	@DataDirectory
 	private Path dataPath;
@@ -68,21 +70,22 @@ public class VagrantStrategy implements ClusterStrategy {
 	}
 
 	@Override
-	public void initializeCluster(Cluster cluster) {
-		// nothing to do
-	}
-
-	@Override
-	public void initializeNode(Node node) throws IOException {
+	public Node createNode(Cluster cluster) throws IOException {
+		Node node = new Node();
+		node.setCluster(cluster);
 		Path nodePath = getPath(node);
 		if (Files.exists(nodePath)) {
-			throw new IOException("The directory for the node to initialze already exists: "
+			throw new IOException("The directory for the node to initialize already exists: "
 					+ nodePath);
 		}
 		Files.createDirectories(nodePath);
 
 		Files.write(nodePath.resolve("Vagrantfile"),
 				getVagrantfileContent(node).getBytes(StandardCharsets.UTF_8));
+
+		node.setSshConfig(getSshConfig(node));
+
+		return node;
 	}
 
 	@Override
@@ -97,11 +100,7 @@ public class VagrantStrategy implements ClusterStrategy {
 
 	@Override
 	public void startNode(Node node) throws IOException {
-		Path nodePath = getPath(node);
-		if (!Files.exists(nodePath)) {
-			initializeNode(node);
-		}
-		executor.execute(nodePath, "vagrant", "up");
+		executor.execute(getPath(node), "vagrant", "up");
 	}
 
 	@Override
@@ -123,7 +122,6 @@ public class VagrantStrategy implements ClusterStrategy {
 		FileUtils.deleteDirectory(nodePath.toFile());
 	}
 
-	@Override
 	public SshConfig getSshConfig(Node node) throws IOException {
 		Path nodePath = getPath(node);
 		String sshConfigStr = executor.execute(nodePath, "vagrant", "ssh-config").getOutput();

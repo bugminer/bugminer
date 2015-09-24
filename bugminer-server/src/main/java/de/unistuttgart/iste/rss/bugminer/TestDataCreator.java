@@ -19,7 +19,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class TestDataCreator {
 	public static final String PROJECT_NAME = "bugminer";
-	public static final String CLUSTER_NAME = "vagrant";
+	public static final String VAGRANT_CLUSTER_NAME = "vagrant";
 	@Autowired
 	private BugRepository bugRepo;
 
@@ -40,7 +40,8 @@ public class TestDataCreator {
 
 	public void createTestData() {
 		createTestProjects();
-		createCluster();
+		createVagrantCluster();
+		createManualCluster();
 	}
 
 	public void createTestProjects() {
@@ -65,14 +66,14 @@ public class TestDataCreator {
 		bugRepo.save(bug);
 	}
 
-	public void createCluster() {
-		if (clusterRepository.findByName("vagrant").isPresent()) {
+	public void createVagrantCluster() {
+		if (clusterRepository.findByName(VAGRANT_CLUSTER_NAME).isPresent()) {
 			return;
 		}
 
 		Cluster cluster = entityFactory.make(Cluster.class);
 		cluster.setProvider("vagrant");
-		cluster.setName(CLUSTER_NAME);
+		cluster.setName(VAGRANT_CLUSTER_NAME);
 		clusterRepository.save(cluster);
 
 		Node node = entityFactory.make(Node.class);
@@ -83,6 +84,17 @@ public class TestDataCreator {
 		nodeRepository.save(node);
 
 		cluster.getNodes().add(node);
+		clusterRepository.save(cluster);
+	}
+
+	public void createManualCluster() {
+		if (clusterRepository.findByName("manual").isPresent()) {
+			return;
+		}
+
+		Cluster cluster = entityFactory.make(Cluster.class);
+		cluster.setProvider("manual");
+		cluster.setName("manual");
 		clusterRepository.save(cluster);
 	}
 }

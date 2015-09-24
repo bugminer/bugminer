@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import de.unistuttgart.iste.rss.bugminer.model.entities.Cluster;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Rule;
@@ -82,8 +84,9 @@ public class VagrantStrategyTest {
 		when(boxes.hasSystem(SPEC)).thenReturn(true);
 		when(boxes.getName(SPEC)).thenReturn(BOX_NAME);
 
-		strategy.initializeNode(prepareNode());
-
+		Cluster cluster = mock(Cluster.class);
+		when(cluster.getName()).thenReturn(VagrantTestData.CLUSTER_NAME);
+		Node node = strategy.createNode(cluster);
 		Path vagrantfilePath = vagrantPath.resolve("Vagrantfile");
 		assertTrue(vagrantfilePath + " does not exist", Files.exists(vagrantfilePath));
 		String content = FileUtils.readFileToString(vagrantfilePath.toFile());

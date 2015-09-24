@@ -21,10 +21,7 @@ public class NodeConnectionFactory {
 	private StrategyFactory strategyFactory;
 
 	public NodeConnection connectTo(Node node) throws IOException {
-		ClusterStrategy clusterStrategy = strategyFactory.getStrategy(ClusterStrategy.class,
-				node.getCluster().getProvider());
-		SshConfig sshConfig = clusterStrategy.getSshConfig(node);
-		SshConnection connection = sshConnector.connect(sshConfig);
+		SshConnection connection = sshConnector.connect(node.getSshConfig());
 		return new NodeConnection(node, connection);
 	}
 }

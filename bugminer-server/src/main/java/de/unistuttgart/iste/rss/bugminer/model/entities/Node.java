@@ -38,6 +38,9 @@ public class Node extends BaseEntity {
 
 	private int cpuCount = DEFAULT_CPU_COUNT;
 
+	@Embedded
+	private SshConfig sshConfig;
+
 	/**
 	 * Creates an empty {@code Node}
 	 */
@@ -83,5 +86,13 @@ public class Node extends BaseEntity {
 
 	public void setCpuCount(int cpuCount) {
 		this.cpuCount = cpuCount;
+	}
+
+	public SshConfig getSshConfig() {
+		return sshConfig;
+	}
+
+	public void setSshConfig(SshConfig sshConfig) {
+		this.sshConfig = sshConfig;
 	}
 }

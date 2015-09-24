@@ -8,6 +8,7 @@ import static de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantTestDat
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import de.unistuttgart.iste.rss.bugminer.model.entities.Cluster;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,9 +39,9 @@ public class VagrantStrategyIT {
 
 	@Test
 	public void testLifecycle() throws IOException {
-		Node node = prepareNode();
+		Cluster cluster = new Cluster();
+		Node node = strategy.createNode(cluster);
 		try {
-			strategy.initializeNode(node);
 			assertThat(strategy.getNodeStatus(node), is(NodeStatus.OFFLINE));
 			strategy.startNode(node);
 			assertThat(strategy.getNodeStatus(node), is(NodeStatus.ONLINE));
