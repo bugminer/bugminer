@@ -1,7 +1,10 @@
 package de.unistuttgart.iste.rss.bugminer.api;
 
+import de.unistuttgart.iste.rss.bugminer.api.exceptions.BadRequestException;
 import de.unistuttgart.iste.rss.bugminer.api.exceptions.NotFoundException;
 import de.unistuttgart.iste.rss.bugminer.computing.ClusterStrategy;
+import de.unistuttgart.iste.rss.bugminer.computing.manual.ManualClusterStrategy;
+import de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantStrategy;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Cluster;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ClusterRepository;
@@ -62,15 +65,32 @@ public class NodeController {
 	 * Adds a new node to a cluster
 	 */
 	@RequestMapping(value = "/clusters/{name}/nodes", method = RequestMethod.POST)
-	public Node addNode(@PathVariable("name") final String clusterName,
-			@RequestBody Node node) {
+	public void addNode(@PathVariable("name") final String clusterName,
+			@RequestBody CreateNodeParams params) {
 		Cluster cluster = clusterRepo.findByName(clusterName).orElseThrow(NotFoundException::new);
-		node.setCluster(cluster);
-		cluster.getNodes().add(node);
-		nodeRepo.save(node);
-		clusterRepo.save(cluster);
-		doWithClusterStrategy(node, "Initialize", s -> s.initializeNode(node));
-		return node;
+		switch (cluster.getProvider()) {
+			case ManualClusterStrategy.NAME:
+				if (params.getSshConfig() == null) {
+					throw new BadRequestException("sshConfig parameter required for nodes in manual cluster");
+				}
+				Node node = new Node();
+				node.setSshConfig(params.getSshConfig());
+				node.setCluster(cluster);
+				cluster.getNodes().add(node);
+				nodeRepo.save(node);
+				clusterRepo.save(cluster);
+				break;
+			default:
+				taskManager.schedule(
+						new SimpleTask("Add node in cluster " + cluster.getName(), c -> {
+							ClusterStrategy strategy = strategyFactory.getStrategy(ClusterStrategy.class,
+									cluster.getProvider());
+							Node node2 = strategy.createNode(cluster);
+							cluster.getNodes().add(node2);
+							nodeRepo.save(node2);
+							clusterRepo.save(cluster);
+						}));
+		}
 	}
 
 	/**
