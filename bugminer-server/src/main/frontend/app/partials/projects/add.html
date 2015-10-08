@@ -1,0 +1,9 @@
+<h1>Add Project</h1>
+
+<form novalidate class="simple-form">
+    Name: <input type="text" ng-model="project.projectName" /><br />
+    Git: <input type="text" ng-model="project.git" /><br />
+    Jira: <input type="text" ng-model="project.jira"/><br />
+
+    <input type="submit" ng-click="add(project)" value="Add" />
+</form>

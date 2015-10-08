@@ -9,16 +9,21 @@ var app;
 		$stateProvider
 			.state('index', {
 				url: '',
-				templateUrl: 'partials/index.html',
+				templateUrl: 'partials/index.html'
 			})
 			.state('index2', {
 				url: '/',
-				templateUrl: 'partials/index.html',
+				templateUrl: 'partials/index.html'
 			})
 			.state('projects', {
 				url: '/projects',
 				templateUrl: 'partials/projects/index.html',
 				controller: 'ProjectsCtrl'
+			})
+			.state('projects/add', {
+				url: '/projects/add',
+				templateUrl: 'partials/projects/add.html',
+				controller: 'ProjectsAddCtrl'
 			})
 			.state('project', {
 				url: '/projects/:name',
