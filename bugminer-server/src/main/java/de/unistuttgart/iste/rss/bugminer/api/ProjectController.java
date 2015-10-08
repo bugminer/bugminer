@@ -6,13 +6,10 @@ import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizer;
 import de.unistuttgart.iste.rss.bugminer.cli.ProjectsService;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
+import de.unistuttgart.iste.rss.bugminer.model.requests.ProjectContext;
 import de.unistuttgart.iste.rss.bugminer.tasks.TaskManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -64,19 +61,15 @@ public class ProjectController {
 	/**
 	 * Adds a new project
 	 *
-	 * @param name the projects name
-	 * @param git  the url of the git repo
-	 * @param jira the url of the jira instance
+	 * @param projectContext the data for the project
 	 */
 	@RequestMapping(value = "/projects", method = RequestMethod.POST)
-	public void addProject(@RequestParam(value = "name", required = true) final String name,
-			@RequestParam(value = "git", required = true) final String git,
-			@RequestParam(value = "jira", required = false) final String jira) {
+	public void addProject(@RequestBody ProjectContext projectContext) {
 
-		Project project = projectsService.createProject(name);
-		projectsService.configureMainGitRepo(project, git);
-		if (jira != null) {
-			projectsService.configureJira(project, jira);
+		Project project = projectsService.createProject(projectContext.getProjectName());
+		projectsService.configureMainGitRepo(project, projectContext.getGit());
+		if (projectContext.getJira() != null && !projectContext.getJira().equals("")) {
+			projectsService.configureJira(project, projectContext.getJira());
 		}
 	}
 
