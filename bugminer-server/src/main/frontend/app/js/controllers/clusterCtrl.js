@@ -12,4 +12,8 @@ app.controller('ClusterCtrl', function($scope, Restangular) {
 	$scope.stopNode = function(node) {
 		node.customPOST({}, 'stop');
 	};
+
+	$scope.showAddNodeForm = function(cluster) {
+		$('#add-node-dialog').modal();
+	};
 });
