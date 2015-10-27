@@ -81,6 +81,11 @@ var app;
 					}
 				}
 			})
+			.state('project.build', {
+				url: '/build',
+				templateUrl: 'partials/projects/build.html',
+				controller: 'ProjectBuildCtrl'
+			})
 			.state('task', {
 				url: '/tasks',
 				templateUrl: 'partials/tasks/index.html',

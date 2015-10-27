@@ -9,6 +9,10 @@ app.factory('Project', function($resource) {
 		mapCommits: {
 			method: 'POST',
 			url: '/api/projects/:name/map-commits'
+		},
+		build: {
+			method: 'POST',
+			url: '/api/projects/:name/build/:revision'
 		}
 	});
 });
