@@ -3,14 +3,19 @@ package de.unistuttgart.iste.rss.bugminer.api;
 import de.unistuttgart.iste.rss.bugminer.api.exceptions.NotFoundException;
 import de.unistuttgart.iste.rss.bugminer.bugs.BugCommitMapper;
 import de.unistuttgart.iste.rss.bugminer.bugs.BugSynchronizer;
+import de.unistuttgart.iste.rss.bugminer.build.ProjectBuilder;
 import de.unistuttgart.iste.rss.bugminer.cli.ProjectsService;
+import de.unistuttgart.iste.rss.bugminer.model.entities.CodeRevision;
+import de.unistuttgart.iste.rss.bugminer.model.entities.Node;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Project;
+import de.unistuttgart.iste.rss.bugminer.model.repositories.NodeRepository;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
 import de.unistuttgart.iste.rss.bugminer.model.requests.ProjectContext;
 import de.unistuttgart.iste.rss.bugminer.tasks.TaskManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.QueryParam;
 import java.io.IOException;
 import java.util.Collection;
 
@@ -20,6 +25,9 @@ public class ProjectController {
 
 	@Autowired
 	private ProjectRepository projectRepo;
+
+	@Autowired
+	private NodeRepository nodeRepo;
 
 	@Autowired
 	private ProjectsService projectsService;
@@ -32,6 +40,9 @@ public class ProjectController {
 
 	@Autowired
 	private BugCommitMapper bugCommitMapper;
+
+	@Autowired
+	private ProjectBuilder projectBuilder;
 
 	protected ProjectController() {
 		// managed bean
@@ -87,5 +98,15 @@ public class ProjectController {
 				.orElseThrow(() -> new IllegalArgumentException("There is no such project"));
 
 		taskManager.schedule(bugCommitMapper.createTask(project));
+	}
+
+	@RequestMapping(value = "/projects/{name}/build/{revision}", method = RequestMethod.POST)
+	public void build(@PathVariable("name") String name, @PathVariable("revision") String commitId, @RequestParam("node") String nodeId) throws IOException {
+		Project project = projectRepo.findByName(name)
+				.orElseThrow(() -> new IllegalArgumentException("There is no such project"));
+		CodeRevision revision = new CodeRevision(project.getMainRepo(), commitId);
+		Node node = nodeRepo.findOne(nodeId);
+
+		taskManager.schedule(projectBuilder.createTask(project, node, revision));
 	}
 }
