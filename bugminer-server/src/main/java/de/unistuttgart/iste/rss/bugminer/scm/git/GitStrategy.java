@@ -19,6 +19,7 @@ import de.unistuttgart.iste.rss.bugminer.model.entities.LineChangeKind;
 import de.unistuttgart.iste.rss.bugminer.scm.Commit;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.jgit.api.DiffCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -42,6 +43,7 @@ import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.RefSpec;
 import org.eclipse.jgit.transport.SshSessionFactory;
 import org.eclipse.jgit.transport.TransportGitSsh;
+import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
 import org.eclipse.jgit.treewalk.AbstractTreeIterator;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.treewalk.TreeWalk;
@@ -96,6 +98,10 @@ public class GitStrategy implements CodeRepoStrategy {
 
 		SshSessionFactory sshSessionFactory = new CustomSshConfigSessionFactory(sshConfig);
 		CredentialsProvider credentialsProvider = null; // TODO implement password authentication
+		if (!StringUtils.isEmpty(sshConfig.getPassword())) {
+			credentialsProvider = new UsernamePasswordCredentialsProvider(
+					sshConfig.getUser(), sshConfig.getPassword());
+		}
 		try {
 			git.push()
 					.setRefSpecs(refspec)
