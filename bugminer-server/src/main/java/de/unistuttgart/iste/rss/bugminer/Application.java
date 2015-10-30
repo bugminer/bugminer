@@ -6,11 +6,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.IOException;
+
 @Configuration
 @EnableAutoConfiguration
 @ComponentScan
 public class Application {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		String[] arguments = new String[1];
 		arguments[0] = "--server.port=8181";
 		ApplicationContext ctx = SpringApplication.run(Application.class, arguments);

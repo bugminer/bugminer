@@ -1,6 +1,7 @@
 package de.unistuttgart.iste.rss.bugminer;
 
 import de.unistuttgart.iste.rss.bugminer.computing.MemoryQuantity;
+import de.unistuttgart.iste.rss.bugminer.computing.vagrant.VagrantStrategy;
 import de.unistuttgart.iste.rss.bugminer.config.EntityFactory;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Bug;
 import de.unistuttgart.iste.rss.bugminer.model.entities.Cluster;
@@ -15,6 +16,8 @@ import de.unistuttgart.iste.rss.bugminer.model.repositories.NodeRepository;
 import de.unistuttgart.iste.rss.bugminer.model.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 @Component
 public class TestDataCreator {
@@ -38,7 +41,10 @@ public class TestDataCreator {
 	@Autowired
 	private EntityFactory entityFactory;
 
-	public void createTestData() {
+	@Autowired
+	private VagrantStrategy vagrantStrategy;
+
+	public void createTestData() throws IOException {
 		createTestProjects();
 		createVagrantCluster();
 		createManualCluster();
@@ -66,7 +72,7 @@ public class TestDataCreator {
 		bugRepo.save(bug);
 	}
 
-	public void createVagrantCluster() {
+	public void createVagrantCluster() throws IOException {
 		if (clusterRepository.findByName(VAGRANT_CLUSTER_NAME).isPresent()) {
 			return;
 		}
@@ -76,11 +82,7 @@ public class TestDataCreator {
 		cluster.setName(VAGRANT_CLUSTER_NAME);
 		clusterRepository.save(cluster);
 
-		Node node = entityFactory.make(Node.class);
-		node.setCluster(cluster);
-		node.setCpuCount(1);
-		node.setMemory(MemoryQuantity.fromMiB(500));
-		node.setSystemSpecification(SystemSpecification.UBUNTU_1404);
+		Node node = vagrantStrategy.createNode(cluster);
 		nodeRepository.save(node);
 
 		cluster.getNodes().add(node);
