@@ -7,6 +7,7 @@ import net.schmizz.sshj.connection.channel.direct.Session;
 import net.schmizz.sshj.connection.channel.direct.Session.Command;
 import net.schmizz.sshj.connection.channel.direct.Session.Shell;
 import net.schmizz.sshj.transport.verification.PromiscuousVerifier;
+import net.schmizz.sshj.userauth.keyprovider.KeyPairWrapper;
 import net.schmizz.sshj.xfer.InMemoryDestFile;
 import net.schmizz.sshj.xfer.InMemorySourceFile;
 import org.apache.commons.io.IOUtils;
@@ -50,8 +51,8 @@ public class SshConnection implements AutoCloseable, CommandExecutor {
 		client.connect(config.getHost(), config.getPort());
 		if (config.getPassword() != null) {
 			client.authPassword(config.getUser(), config.getPassword());
-		} else if (config.getKeyFile() != null) {
-			client.authPublickey(config.getUser(), config.getKeyFile().toString());
+		} else if (config.getKeyPair() != null) {
+			client.authPublickey(config.getUser(), new KeyPairWrapper(config.getKeyPair()));
 		} else {
 			client.authPassword(config.getUser(), "");
 		}

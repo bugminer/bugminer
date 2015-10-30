@@ -1,12 +1,19 @@
 package de.unistuttgart.iste.rss.bugminer.computing;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
+import java.security.KeyFactory;
+import java.security.KeyPair;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import net.schmizz.sshj.SSHClient;
+import net.schmizz.sshj.userauth.keyprovider.KeyProvider;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Lob;
 import javax.persistence.Transient;
 
 /**
@@ -17,9 +24,14 @@ public class SshConfig {
 	private String host;
 	private int port;
 	private String user;
+
+	@JsonIgnore
 	private String password;
-	@Transient // TODO store the private key in database?
-	private Path keyFile;
+
+	@Lob
+	@JsonIgnore
+	private KeyPair keyPair;
+
 	private boolean verifyHostKey = true;
 
 	private static final int DEFAULT_PORT = 22;
@@ -53,7 +65,7 @@ public class SshConfig {
 
 	private SshConfig copy() {
 		SshConfig other = new SshConfig(host, port, user);
-		other.keyFile = this.keyFile;
+		other.keyPair = this.keyPair;
 		other.password = this.password;
 		other.verifyHostKey = this.verifyHostKey;
 		return other;
@@ -71,6 +83,12 @@ public class SshConfig {
 		return result;
 	}
 
+	public SshConfig withKeyPair(KeyPair keyPair) {
+		SshConfig result = copy();
+		result.keyPair = keyPair;
+		return result;
+	}
+
 	/**
 	 * Creates a new {@code SshConfig}, but with a specified private key file
 	 *
@@ -78,9 +96,16 @@ public class SshConfig {
 	 * @return the new {@code SshConfig}
 	 */
 	public SshConfig withKeyFile(Path keyFile) {
-		SshConfig result = copy();
-		result.keyFile = keyFile;
-		return result;
+		SSHClient client = new SSHClient();
+		KeyPair keyPair;
+		try {
+			KeyProvider provider = client.loadKeys(keyFile.toString());
+			keyPair = new KeyPair(provider.getPublic(), provider.getPrivate());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+		return withKeyPair(keyPair);
 	}
 
 	/**
@@ -132,8 +157,8 @@ public class SshConfig {
 	 * @return the path to the key file, or {@code null} if no private key authentication should be
 	 *         used
 	 */
-	public Path getKeyFile() {
-		return keyFile;
+	public KeyPair getKeyPair() {
+		return keyPair;
 	}
 
 	/**

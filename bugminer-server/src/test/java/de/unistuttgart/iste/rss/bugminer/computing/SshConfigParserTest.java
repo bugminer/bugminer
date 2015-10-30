@@ -44,7 +44,7 @@ public class SshConfigParserTest {
 		assertThat(config.getHost(), is("127.0.0.1")); // NOPMD - hard-coded ip
 		assertThat(config.getUser(), is("vagrant"));
 		assertThat(config.getPort(), is(2222));
-		assertThat(config.getKeyFile(), is(Paths.get("/home/jan/.vagrant.d/insecure_private_key")));
+		assertThat(config.getKeyPair(), is(notNullValue()));
 		assertThat(config.getPassword(), is(nullValue()));
 		assertThat(config.getVerifyHostKey(), is(false));
 	}

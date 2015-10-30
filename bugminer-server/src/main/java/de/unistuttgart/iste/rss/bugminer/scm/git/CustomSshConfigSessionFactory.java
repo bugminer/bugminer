@@ -1,5 +1,6 @@
 package de.unistuttgart.iste.rss.bugminer.scm.git;
 
+import com.jcraft.jsch.KeyPair;
 import org.eclipse.jgit.transport.JschConfigSessionFactory;
 import org.eclipse.jgit.transport.OpenSshConfig.Host;
 import org.eclipse.jgit.util.FS;
@@ -23,8 +24,10 @@ public class CustomSshConfigSessionFactory extends JschConfigSessionFactory {
 	@Override
 	protected JSch getJSch(Host hc, FS fs) throws JSchException {
 		JSch jsch = super.getJSch(hc, fs);
-		if (config.getKeyFile() != null) {
-			jsch.addIdentity(config.getKeyFile().toString());
+		if (config.getKeyPair() != null) {
+			KeyPair kp = KeyPair.load(jsch, config.getKeyPair().getPrivate().getEncoded(),
+					config.getKeyPair().getPublic().getEncoded());
+			jsch.addIdentity(new KeyPairIdentity(kp), null);
 		}
 
 		if (!config.getVerifyHostKey()) {
