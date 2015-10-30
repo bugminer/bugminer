@@ -1,62 +1,21 @@
-<h1>Clusters and nodes</h1>
+<h1>Add Node to Cluster {{cluster.name}}</h1>
 
-<ul>
-	<li ng-repeat="cluster in clusters" class="panel panel-default">
-		<div class="panel-heading">{{cluster.name}}</div>
-		<div class="panel-body">
-			<ul>
-				<li ng-repeat="node in cluster.nodes" class="panel panel-default">
-					<div class="panel-heading">{{node.id}}</div>
-					<div class="panel-body">
-						<dl class="dl-horizontal">
-							<dt>Status:</dt>
-							<dd>{{node.status}}</dd>
-							<dt>OS:</dt>
-							<dd>{{node.systemSpecification.operatingSystem}}, {{node.systemSpecification.architecture}},
-								{{node.systemSpecification.distributionName}} {{node.systemSpecification.osVersion}}</dd>
-							<dt>CPUs:</dt>
-							<dd>{{node.cpuCount}}</dd>
-							<dt>Memory:</dt>
-							<dd>{{node.memory}}</dd>
-						</dl>
-						<button class="btn btn-default" ng-click="startNode(node)" ng-if="node.status == 'OFFLINE'">Start</button>
-						<button class="btn btn-default" ng-click="stopNode(node)" ng-if="node.status != 'OFFLINE'">Stop</button>
-						<button class="btn btn-danger" ng-click="deleteNode(node)" ng-if="node.status == 'OFFLINE'">Delete</button>
-					</div>
-				</li>
-			</ul>
-			<button class="btn btn-default" ng-click="showAddNodeForm(cluster)">Add Node</button>
-		</div>
-	</li>
-</ul>
+<form class="form form-horizontal">
+    <div class="form-group">
+        <label>Operating System:</label>
+        <span>Ubuntu 14.04</span>
+    </div>
+    <div class="form-group">
+        <label>Memory:</label>
+        <input type="number" name="memory" value="2048"> MB
+    </div>
+    <div class="form-group">
+        <label>CPUs:</label>
+        <input type="number" name="cpus" value="2">
+    </div>
+</form>
 
-<div class="modal fade" id="add-node-dialog">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title">Add Node to cluster</h4>
-			</div>
-            <div class="modal-body">
-                <form class="form form-horizontal">
-                    <div class="form-group">
-                        <label>Operating System:</label>
-                        <span>Ubuntu 14.04</span>
-                    </div>
-                    <div class="form-group">
-                        <label>Memory:</label>
-                        <input type="number" name="memory" value="2048"> MB
-                    </div>
-                    <div class="form-group">
-                        <label>CPUs:</label>
-                        <input type="number" name="cpus" value="2">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-default">Cancel</button>
-                <button class="btn btn-primary">Add</button>
-            </div>
-        </div>
-	</div>
+<div>
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    <button class="btn btn-primary" ng-click="add()">Add</button>
 </div>

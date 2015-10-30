@@ -14,6 +14,6 @@ app.controller('ClusterCtrl', function($scope, Restangular) {
 	};
 
 	$scope.showAddNodeForm = function(cluster) {
-		$('#add-node-dialog').modal();
+		// todo route
 	};
 });
