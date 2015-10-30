@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import de.unistuttgart.iste.rss.bugminer.model.entities.SystemSpecification;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,7 @@ public class VagrantStrategy implements ClusterStrategy {
 	@Override
 	public Node createNode(Cluster cluster) throws IOException {
 		Node node = new Node();
+		node.setSystemSpecification(SystemSpecification.UBUNTU_1404);
 		node.setCluster(cluster);
 		Path nodePath = getPath(node);
 		if (Files.exists(nodePath)) {
@@ -83,6 +85,8 @@ public class VagrantStrategy implements ClusterStrategy {
 		Files.write(nodePath.resolve("Vagrantfile"),
 				getVagrantfileContent(node).getBytes(StandardCharsets.UTF_8));
 
+		// need to start the node in order to get ssh config
+		startNode(node);
 		node.setSshConfig(getSshConfig(node));
 
 		return node;
