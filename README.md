@@ -19,11 +19,21 @@ to build the front end. Additionally, a data base has to be set up.
 2. Install MySQL (e.g. with XAMPP)
 3. Run `npm install -g grunt-cli`
 
-### Set up
+### Set up bugminer
 1. Import the project in IDEA
 2. Create a database called `bugminer` and a user called `bugminer` with the passsword
    `bugminer` (these values are defined in `AppConfig`)
-3. Open a console in `bugminer-server/src/main/frontend` and run `grunt` in this directory
+	1. create database 'bugminer';
+	2. grant all on bugminer.* to 'bugminer'@'localhost';
+3. Set up the frontend using grunt
+	1. 'cd bugminer/bugminer-server/src/main/frontend'
+	2. 'npm install'
+	3. 'grunt'
+
+If there is a message, that there is no programm called node, you have to create
+a symlink to nodejs called node. (E.g. 'ln -s /usr/bin/nodejs
+/usr/local/bin/node'
+
 
 ### Development
 
