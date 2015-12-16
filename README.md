@@ -15,7 +15,7 @@ We suggest using IntelliJ IDEA for development. Node.js is required
 to build the front end. Additionally, a data base has to be set up.
 
 ### Prerequisites
-1. Download and install Node.js
+1. Download and install Node.js, npm and maven
 2. Install MySQL (e.g. with XAMPP)
 3. Run `npm install -g grunt-cli`
 
@@ -30,9 +30,6 @@ to build the front end. Additionally, a data base has to be set up.
 	2. 'npm install'
 	3. 'grunt'
 
-If there is a message, that there is no programm called node, you have to create
-a symlink to nodejs called node. (E.g. 'ln -s /usr/bin/nodejs
-/usr/local/bin/node'
 
 
 ### Development
