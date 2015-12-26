@@ -14,6 +14,7 @@ import de.unistuttgart.iste.rss.bugminer.tasks.SimpleTask;
 import de.unistuttgart.iste.rss.bugminer.tasks.Task;
 import de.unistuttgart.iste.rss.bugminer.tasks.TaskManager;
 import de.unistuttgart.iste.rss.bugminer.utils.ThrowingConsumer;
+import de.unistuttgart.iste.rss.bugminer.utils.TransactionWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,6 +41,9 @@ public class NodeController {
 
 	@Autowired
 	private StrategyFactory strategyFactory;
+
+	@Autowired
+	private TransactionWrapper transactionWrapper;
 
 	protected NodeController() {
 		// managed bean
@@ -83,12 +87,15 @@ public class NodeController {
 			default:
 				taskManager.schedule(
 						new SimpleTask("Add node in cluster " + cluster.getName(), c -> {
-							ClusterStrategy strategy = strategyFactory.getStrategy(ClusterStrategy.class,
-									cluster.getProvider());
-							Node node2 = strategy.createNode(cluster);
-							cluster.getNodes().add(node2);
-							nodeRepo.save(node2);
-							clusterRepo.save(cluster);
+							transactionWrapper.runInTransaction(() -> {
+								Cluster mutableCluster = clusterRepo.findByName(clusterName).orElseThrow(NotFoundException::new);
+								ClusterStrategy strategy = strategyFactory.getStrategy(ClusterStrategy.class,
+										mutableCluster.getProvider());
+								Node node2 = strategy.createNode(mutableCluster);
+								mutableCluster.getNodes().add(node2);
+								nodeRepo.save(node2);
+								clusterRepo.save(mutableCluster);
+							});
 						}));
 		}
 	}
@@ -102,10 +109,13 @@ public class NodeController {
 	public void deleteNode(@PathVariable("id") final String nodeID) {
 		Node node = nodeRepo.findById(nodeID).orElseThrow(NotFoundException::new);
 		doWithClusterStrategy(node, "Delete", s -> {
-			s.destroyNode(node);
-			node.getCluster().getNodes().remove(node);
-			clusterRepo.save(node.getCluster());
-			nodeRepo.delete(node);
+			transactionWrapper.runInTransaction(() -> {
+				Node mutableNode = nodeRepo.findById(nodeID).orElseThrow(NotFoundException::new);
+				s.destroyNode(mutableNode);
+				mutableNode.getCluster().getNodes().remove(mutableNode);
+				clusterRepo.save(mutableNode.getCluster());
+				nodeRepo.delete(mutableNode);
+			});
 		});
 	}
 
