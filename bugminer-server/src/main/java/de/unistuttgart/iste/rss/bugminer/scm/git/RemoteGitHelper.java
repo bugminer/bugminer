@@ -35,6 +35,7 @@ public class RemoteGitHelper {
 					"Only ubuntu is supported for git installation at the moment");
 		}
 
+		connection.execute("sudo", "apt-get", "-y", "update");
 		connection.execute("sudo", "apt-get", "-y", "install", "git");
 
 		if (!isGitInstalled(connection)) {
