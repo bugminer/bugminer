@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+	<property name="sonar.projectKey" value="org.adrian:hello" />
+	<property name="sonar.projectVersion" value="0.0.1-SNAPSHOT" />
+	<property name="sonar.projectName" value="Adrian Hello" />
+
+	<property name="sonar.sources" value="${src.dir}" />
+	<property name="sonar.binaries" value="${classes.dir}" />
+	<property name="sonar.tests" value="${test.src.dir}" />
+
+	<property name="sonar.junit.reportsPath" value="${reports.dir}/junit" />
+	<property name="sonar.dynamicAnalysis" value="reuseReports" />
+	<property name="sonar.java.coveragePlugin" value="jacoco" />
+	<property name="sonar.jacoco.reportPath" value="${build.dir}/jacoco.exec" />

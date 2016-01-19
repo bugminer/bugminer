@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <!-- TODO do the coverage testing and all the stuff bugminer is intended to do -->
+
+    <target name="junit" depends="compile-tests" description="Run unit tests and code coverage reporting">
+    <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml" classpathref="build.path"/>
+    <jacoco:coverage destfile="${build.dir}/jacoco.exec" xmlns:jacoco="antlib:org.jacoco.ant">
+        <junit haltonfailure="no" fork="true" forkmode="once">
+            <classpath>
+                <path refid="test.path"/>
+                <pathelement path="${classes.dir}"/>
+                <pathelement path="${test.classes.dir}"/>
+            </classpath>
+            <formatter type="xml"/>
+            <batchtest todir="${reports.dir}/junit">
+                <fileset dir="${test.src.dir}">
+                    <include name="**/*Test*.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </jacoco:coverage>
+    </target>
+
+    <target name="test-report" depends="junit">
+    <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml"  classpathref="build.path"/>
+    <jacoco:report xmlns:jacoco="antlib:org.jacoco.ant">
+        <executiondata>
+            <file file="${build.dir}/jacoco.exec" />
+        </executiondata>
+
+        <structure name="JaCoCo Ant Example">
+            <classfiles>
+                <fileset dir="${classes.dir}" />
+            </classfiles>
+            <sourcefiles encoding="UTF-8">
+                <fileset dir="${src.dir}" />
+            </sourcefiles>
+        </structure>
+
+        <html destdir="${reports.dir}" />
+    </jacoco:report>
+    </target>
+
+    <target name="sonar" depends="test-report" description="Upload metrics to Sonar">
+    <taskdef uri="antlib:org.sonar.ant" resource="org/sonar/ant/antlib.xml" classpathref="build.path"/>
+
+    <sonar:sonar xmlns:sonar="antlib:org.sonar.ant"/>
+    </target>
