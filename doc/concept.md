@@ -3,12 +3,12 @@
 The concept of bugminer is as follows:
 
 ## Overview
-Server
+### Server
 - has all the information about the project
 - collects the data
 - manages the nodes
 
-Nodes
+### Nodes
 - pulls the projects
 - builds the projects
 - generates coverage data
