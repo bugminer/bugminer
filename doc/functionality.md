@@ -21,9 +21,23 @@ The new node button does nothing.
 
 
 # Backend
-
 The backend is the bugminer-server which manages the nodes and provides a
 REST-API
 
+## Node management
+Bugminer has the possibility to create new nodes and configure them. The
+configuration is stored in the bugminer database and contains:
+- the port of the ssh-daemon
+- the username
+- the password
+- the machine provider
+- the host-ip
+- operating system information
+- machine information
+
+When nodes are deleted, they are removed from the database but their files stay
+on the host.
 
 ## REST API
+Bugminer can be managed via the REST-API. You can find further instructions in
+the restapi.md file.
