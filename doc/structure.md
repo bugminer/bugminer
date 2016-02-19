@@ -1,6 +1,6 @@
 # Structure
 
-Here is a descripton of the structure of this project.
+Here is a description of the structure of this project.
 Mainly this is a list of all the important files.
 
 ## Frontend

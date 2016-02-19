@@ -24,20 +24,20 @@ Debian (Sid):
 ## Setup
 
 To install bugminer it is recommended to include the [Bugminer
-Project](https://gihtub.com/bugminer/bugminer/) into IntelliJ IDEA and let it
+Project](https://github.com/bugminer/bugminer/) into IntelliJ IDEA and let it
 download the project.
 
 Afterward you should change into the bugminer/bugminer-server/src/main/frontend
 and run
 
-	sudo npm install -g grunt-cl
+	sudo npm install -g grunt-cli
 	npm install
 	grunt
 
 It is also necessary to create a database. So log into mysql as mysql root and
 run the following commands.
 
-	create user 'bugminer'@'localhost' identified by 'bugminer';
+	create user 'bugminer'@''localhost' identified by 'bugminer';
 	create database 'bugminer';
 	grant all on bugminer.* to bugminer@'localhost';
 
