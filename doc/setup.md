@@ -15,7 +15,7 @@ This is the guide to install bugminer on your machine
 -	mysql-server
 -	intellij idea
 
-To install all of these:
+To install most of these:
 
 Debian (Sid):
 
