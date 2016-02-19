@@ -37,7 +37,7 @@ and run
 It is also necessary to create a database. So log into mysql as mysql root and
 run the following commands.
 
-	create user 'bugminer'@localhost' identified by 'bugminer';
+	create user 'bugminer'@'localhost' identified by 'bugminer';
 	create database 'bugminer';
 	grant all on bugminer.* to bugminer@'localhost';
 
